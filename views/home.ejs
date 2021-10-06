@@ -8,7 +8,8 @@
   </head>
   <body>
     <center><h1>Home</h1></center>
-    <center><h2>hello <%= username %></h2></center>
+    <center><h2>hello <%= user.username %></h2></center>
+    <center><img src="<%= user.profileUrl %> " alt="User photo" /></center>
     <a href="auth/logout">logout</a>
   </body>
 </html>

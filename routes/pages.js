@@ -10,7 +10,7 @@ router.get("/register", (req, res) => {
 
 router.get("/", (req, res) => {
   if (req.isAuthenticated()) {
-    res.render("home", { username: req.user.username });
+    res.render("home", { user: req.user });
   } else {
     res.redirect("/login");
   }

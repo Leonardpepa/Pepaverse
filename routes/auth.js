@@ -20,9 +20,8 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, password } = req.body;
   const user = new User({
-    username: username,
     email: email,
     password: password,
   });

@@ -13,10 +13,13 @@ const userSchema = new Mongoose.Schema({
   },
   username: {
     type: String,
-    required: true,
+    // required: true,
     unique: true,
   },
   googleId: {
+    type: String,
+  },
+  profileUrl: {
     type: String,
   },
 });

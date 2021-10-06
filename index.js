@@ -64,6 +64,7 @@ passport.use(
           googleId: profile.id,
           username: profile.displayName,
           email: profile.emails[0].value,
+          profileUrl: profile.photos[0].value,
         },
         function (err, user) {
           return cb(err, user);
