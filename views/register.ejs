@@ -17,6 +17,7 @@
             placeholder="Enter your email"
             required
           />
+          <span style="color: red">* <%= error %> </span>
         </div>
         <div class="group">
           <label for="username">Username</label>
@@ -46,6 +47,7 @@
           />
         </div>
         <button type="submit">Register</button>
+        <a href="/auth/google">Register with google</a>
       </form>
       <a href="/login">login</a>
     </main>

@@ -4,6 +4,9 @@ const ejs = require("ejs");
 const session = require("express-session");
 const passport = require("passport");
 const User = require("./models/user");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
+require("dotenv").config();
 
 const pagesRouter = require("./routes/pages");
 const authRouter = require("./routes/auth");
@@ -30,15 +33,48 @@ app.use(passport.session());
 app.use("/", pagesRouter);
 app.use("/auth", authRouter);
 
-Mongoose.connect("mongodb://localhost:27017/chatApp", {
+Mongoose.connect(process.env.MONGO_DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
-app.listen(3000, (req, res) => {
-  console.log("App is listening on port 3000");
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/auth/google/home",
+      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      User.findOrCreate(
+        {
+          googleId: profile.id,
+          username: profile.displayName,
+          email: profile.emails[0].value,
+        },
+        function (err, user) {
+          return cb(err, user);
+        }
+      );
+    }
+  )
+);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, (req, res) => {
+  console.log(`App is listening on port ${PORT}`);
 });
