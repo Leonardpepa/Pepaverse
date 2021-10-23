@@ -3,15 +3,13 @@ const User = require("../models/user");
 const passport = require("passport");
 
 router.post("/register", (req, res) => {
-  const { email, username, password } = req.body;
+  const { username, password } = req.body;
+  const name = username.split("@")[0];
 
-  User.register({ email, username }, password, (err, user) => {
+  User.register({ username, name }, password, (err, user) => {
     if (err) {
-      if (err.code === 11000) {
-        res.render("register", { error: "Email already in use" });
-      } else {
-        res.redirect("/register");
-      }
+      console.log(err);
+      res.redirect("/register");
     }
     passport.authenticate("local")(req, res, () => {
       res.redirect("/");
@@ -22,17 +20,17 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
   const user = new User({
-    username: username,
-    password: password,
+    username,
+    password,
   });
   req.login(user, (err) => {
     if (err) {
       console.log(err);
-    } else {
-      passport.authenticate("local")(req, res, () => {
-        res.redirect("/");
-      });
+      return;
     }
+    passport.authenticate("local")(req, res, () => {
+      res.redirect("/");
+    });
   });
 });
 

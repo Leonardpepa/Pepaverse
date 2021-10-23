@@ -59,17 +59,26 @@ passport.use(
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate(
-        {
-          googleId: profile.id,
-          username: profile.displayName,
-          email: profile.emails[0].value,
-          profileUrl: profile.photos[0].value,
-        },
-        function (err, user) {
-          return cb(err, user);
+      User.findOne({ username: profile.emails[0].value }, (err, found) => {
+        if (err) {
+          console.log(err);
         }
-      );
+
+        if (found) {
+          return cb(err, found);
+        }
+        User.findOrCreate(
+          {
+            googleId: profile.id,
+            username: profile.emails[0].value,
+            name: profile.displayName,
+            profileUrl: profile.photos[0].value,
+          },
+          function (err, user) {
+            return cb(err, user);
+          }
+        );
+      });
     }
   )
 );

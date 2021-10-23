@@ -1,9 +1,10 @@
 const Mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
-var findOrCreate = require("mongoose-findorcreate");
+const findOrCreate = require("mongoose-findorcreate");
 
 const userSchema = new Mongoose.Schema({
-  email: {
+  //email
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -11,10 +12,8 @@ const userSchema = new Mongoose.Schema({
   password: {
     type: String,
   },
-  username: {
+  name: {
     type: String,
-    // required: true,
-    unique: true,
   },
   googleId: {
     type: String,

@@ -10,21 +10,11 @@
     <main>
       <form action="/auth/register" method="post">
         <div class="group">
-          <label for="email">Email</label>
+          <label for="username">Email</label>
           <input
             type="email"
-            name="email"
-            placeholder="Enter your email"
-            required
-          />
-          <span style="color: red">* <%= error %> </span>
-        </div>
-        <div class="group">
-          <label for="username">Username</label>
-          <input
-            type="name"
             name="username"
-            placeholder="Create your username"
+            placeholder="Enter your email"
             required
           />
         </div>
@@ -37,7 +27,7 @@
             required
           />
         </div>
-        <div class="group">
+        <!-- <div class="group">
           <label for="confirm">Password</label>
           <input
             type="password"
@@ -45,7 +35,7 @@
             placeholder="Confirm Password"
             required
           />
-        </div>
+        </div> -->
         <button type="submit">Register</button>
         <a href="/auth/google">Register with google</a>
       </form>
