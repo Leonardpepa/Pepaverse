@@ -1,11 +1,20 @@
 const router = require("express").Router();
 const User = require("../models/user");
 const passport = require("passport");
+const { validateEmail, validatePassword } = require("../utils/validation.js");
 
 router.post("/register", (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, confirm } = req.body;
   const name = username.split("@")[0];
 
+  if (!validateEmail(username)) {
+    res.render("register", { error: "Invalid Email" });
+    return;
+  }
+  if (!validatePassword(password, confirm)) {
+    res.render("register", { error: "Invalid Password" });
+    return;
+  }
   User.register({ username, name }, password, (err, user) => {
     if (err) {
       console.log(err);
@@ -28,9 +37,13 @@ router.post("/login", (req, res) => {
       console.log(err);
       return;
     }
-    passport.authenticate("local")(req, res, () => {
-      res.redirect("/");
-    });
+    passport.authenticate("local", { failureRedirect: "/login" })(
+      req,
+      res,
+      () => {
+        res.redirect("/");
+      }
+    );
   });
 });
 

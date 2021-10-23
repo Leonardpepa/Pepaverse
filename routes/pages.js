@@ -5,7 +5,7 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/register", (req, res) => {
-  res.render("register");
+  res.render("register", { error: "" });
 });
 
 router.get("/", (req, res) => {
