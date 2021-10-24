@@ -5,14 +5,71 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>home</title>
+    <link rel="stylesheet" href="/home.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <center><h1>Home</h1></center>
-    <center><h2>hello <%= user.name %></h2></center>
-    <center>
-      <img src="<%= user.profileUrl || "default-profile.jpg" %> " alt="User
-      photo" />
-    </center>
-    <a href="auth/logout">logout</a>
+    <main id="main">
+      <nav id="nav">
+        <a href="/"><img class="logo" src="/logo.png" alt="logo" /></a>
+        <ul class="nav-links">
+          <a href="/profile/<%= user._id.toString() %>"><li>Profile</li></a>
+          <a href="auth/logout"><li>Logout</li></a>
+        </ul>
+      </nav>
+      <div class="create-post">
+        <form action="/users/post/<%= user._id.toString() %> " method="post">
+          <h3 style="text-align: left; margin-bottom: 1rem">Create a post</h3>
+          <div class="group">
+            <img src="<%= user.profileUrl %> " alt="Users Profile" />
+            <textarea
+              required
+              name="postTextContent"
+              id="postTextContent"
+              cols="45"
+              rows="3"
+              placeholder="What is in your mind <%= user.name %> ? "
+            ></textarea>
+            <input class="post-btn" type="submit" value="Post" />
+          </div>
+        </form>
+      </div>
+      <div id="posts">
+        <h2>Feed</h2>
+        <div class="post-conteiner">
+          <% posts.forEach(post => { %>
+          <div class="post">
+            <div class="information">
+              <img
+                class="post-profile"
+                src="<%= post.authorProfileUrl %> "
+                alt="Users profile"
+              />
+              <div>
+                <p><%= post.author %></p>
+                <p class="createdAt">
+                  created at: <%= post.createdAt.toUTCString() %>
+                </p>
+              </div>
+            </div>
+            <div class="content"><%= post.content %></div>
+            <br />
+            <div>Likes: <%= post.likes.length%></div>
+            <br />
+            <div class="like-container">
+              Like
+              <i class="far fa-thumbs-up <%= post._id %>"></i>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </main>
+    <script></script>
   </body>
 </html>

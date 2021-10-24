@@ -6,6 +6,7 @@ const { validateEmail, validatePassword } = require("../utils/validation.js");
 router.post("/register", (req, res) => {
   const { username, password, confirm } = req.body;
   const name = username.split("@")[0];
+  const profileUrl = "/default-profile.jpg";
 
   if (!validateEmail(username)) {
     res.render("register", { error: { emailError: "Invalid email format" } });
@@ -20,7 +21,7 @@ router.post("/register", (req, res) => {
     });
     return;
   }
-  User.register({ username, name }, password, (err, user) => {
+  User.register({ username, name, profileUrl }, password, (err, user) => {
     if (err) {
       console.log(err);
       res.redirect("/register");

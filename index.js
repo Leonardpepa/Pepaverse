@@ -10,6 +10,7 @@ require("dotenv").config();
 
 const pagesRouter = require("./routes/pages");
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -32,6 +33,7 @@ app.use(passport.session());
 
 app.use("/", pagesRouter);
 app.use("/auth", authRouter);
+app.use("/users", userRouter);
 
 Mongoose.connect(process.env.MONGO_DB_URL, {
   useNewUrlParser: true,

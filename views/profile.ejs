@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="/profile.css" />
+    <link rel="icon" href="/logo.png" type="image/x-icon" />
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="img-container">
+          <img
+            class="logo"
+            src="<%= profileUser.profileUrl %> "
+            alt="Users profile photo"
+          />
+        </div>
+        <div class="informations">
+          <h3 class="name"><%= profileUser.name %></h3>
+          <p class="description">
+            <%= user.description || "No description is provided" %>
+          </p>
+          <% if (user._id.toString() === profileUser._id.toString()) { %>
+          <button class="edit">Edit profile</button>
+          <% } %>
+        </div>
+      </div>
+
+      <form
+        class="update-form hidden"
+        action="/users/update/<%= user._id.toString() %> "
+        method="post"
+      >
+        <label for="description">Give us a description for yourself</label>
+        <input type="text" name="description" id="description" value ="<%=
+        user.description || "No description is provided" %>" />
+        <label for="profileUrl">Change the link to your profile picture</label>
+        <input
+          type="link"
+          name="profileUrl"
+          id="profileUrl"
+          value="<%= user.profileUrl %>"
+        />
+        <input type="submit" class="submit-btn" />
+      </form>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
