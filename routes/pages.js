@@ -1,11 +1,12 @@
 const router = require("express").Router();
+const User = require("../models/user");
 
 router.get("/login", (req, res) => {
   res.render("login");
 });
 
 router.get("/register", (req, res) => {
-  res.render("register", { error: "" });
+  res.render("register", { error: {} });
 });
 
 router.get("/", (req, res) => {

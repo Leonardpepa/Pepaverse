@@ -21,6 +21,9 @@ const userSchema = new Mongoose.Schema({
   profileUrl: {
     type: String,
   },
+  friends: {
+    type: Array,
+  },
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -8,11 +8,16 @@ router.post("/register", (req, res) => {
   const name = username.split("@")[0];
 
   if (!validateEmail(username)) {
-    res.render("register", { error: "Invalid Email" });
+    res.render("register", { error: { emailError: "Invalid email format" } });
     return;
   }
   if (!validatePassword(password, confirm)) {
-    res.render("register", { error: "Invalid Password" });
+    res.render("register", {
+      error: {
+        passwordError:
+          "Password should contain atleast one digit, one lower and upper case letter and the length should be atleast 8 characters",
+      },
+    });
     return;
   }
   User.register({ username, name }, password, (err, user) => {
@@ -37,13 +42,11 @@ router.post("/login", (req, res) => {
       console.log(err);
       return;
     }
-    passport.authenticate("local", { failureRedirect: "/login" })(
-      req,
-      res,
-      () => {
-        res.redirect("/");
-      }
-    );
+    passport.authenticate("local", {
+      failureRedirect: "/login",
+    })(req, res, () => {
+      res.redirect("/");
+    });
   });
 });
 

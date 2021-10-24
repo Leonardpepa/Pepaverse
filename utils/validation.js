@@ -6,7 +6,10 @@ function validateEmail(email) {
 }
 
 function validatePassword(password, confirm) {
-  if (password.length >= 8 && password === confirm) {
+  if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(password)) {
+    return false;
+  }
+  if (password === confirm) {
     return true;
   }
   return false;

@@ -5,12 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
+    <link rel="stylesheet" href="/login-register.css" />
+    <link rel="icon" href="/logo.png" type="image/x-icon" />
   </head>
   <body>
-    <main>
-      <form action="/auth/register" method="post">
+    <main id="main">
+      <div class="logo-container">
+        <img class="logo" src="/logo.png" alt="Logo" />
+      </div>
+      <form class="form" action="/auth/register" method="post">
         <div class="group">
-          <span style="color: red"><%= error %> </span><br />
+          <% if (error.emailError) { %>
+          <span class="error"><%="error.emailError" %> </span><br />
+          <% } %>
           <label for="username">Email</label>
           <input
             type="email"
@@ -37,10 +44,17 @@
             required
           />
         </div>
-        <button type="submit">Register</button>
-        <a href="/auth/google">Register with google</a>
+        <% if (error.passwordError) { %>
+        <span class="error"><%= error.passwordError %> </span><br />
+        <% } %>
+        <div class="group">
+          <button class="submit" type="submit">Register</button>
+          <span class="log-text"
+            >Already have an account? <a href="/login">login</a> or register
+            with <a class="link" href="/auth/google">google</a></span
+          >
+        </div>
       </form>
-      <a href="/login">login</a>
     </main>
   </body>
 </html>
