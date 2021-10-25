@@ -61,9 +61,9 @@
             <br />
             <div>Likes: <%= post.likes.length%></div>
             <br />
-            <div class="like-container">
+            <div class="like-container <%= post._id %>">
               <span>Like</span>
-              <i class="far fa-thumbs-up <%= post._id %>"></i>
+              <i class="far fa-thumbs-up"></i>
             </div>
           </div>
           <% }) %>
@@ -71,25 +71,18 @@
       </div>
     </main>
     <script>
-      const likesArray = document.querySelectorAll(".like-container");
-
-      likesArray.forEach((likeBtn) => {
-        likeBtn.addEventListener("click", (e) => {
-          fetch("/likes/" + likeBtn.children[0].classList[2], {
-            method: "POST",
+      const allLikeBtns = document.querySelectorAll(".like-container");
+      allLikeBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          let query = btn.classList[1];
+          fetch(`/likes/${query}`, {
             credentials: "include",
+            method: "POST",
           })
             .then((res) => res.json())
             .then((data) => {
-              console.log(data);
-              likeBtn.parentElement.children[3].textContent =
-                "Likes: " + data.n;
-              likeBtn.style.color = data.liked ? "blue" : "black";
-            })
-            .catch((err) => {
-              if (err) {
-                alert("An unexpected error has occured");
-              }
+              btn.parentElement.children[3].textContent = "Likes: " + data.n;
+              btn.style.color = data.liked ? "blue" : "black";
             });
         });
       });

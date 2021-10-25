@@ -1,5 +1,4 @@
 const Mongoose = require("mongoose");
-const User = require("../models/user");
 
 const likeSchema = new Mongoose.Schema({
   postId: {

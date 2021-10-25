@@ -9,12 +9,11 @@ router.post("/:postid", (req, res, next) => {
   //if false we have to like the post
   //we store the like if it exists in the variable likeToDelete
 
-  const postId = req.params.postid;
   const user = req.user;
   let likeToDelete;
   let likesCount;
 
-  Post.findOne({ postId }, (err, postFound) => {
+  Post.findOne({ _id: req.params.postid }, (err, postFound) => {
     if (err) {
       throw err;
     }
@@ -43,25 +42,26 @@ router.post("/:postid", (req, res, next) => {
         }
       });
     } else {
-      const newLike = Like({
-        postId: postFound._id,
-        userId: user._id,
-        username: user.name,
-      });
-
-      newLike.save((err) => {
-        if (!err) {
-          postFound.likes.push(newLike);
-          postFound.save((err) => {
-            if (!err) {
-              res.json({
-                n: postFound.likes.length,
-                liked: true,
-              });
-            }
-          });
+      Like.create(
+        {
+          postId: req.params.postid,
+          userId: user._id,
+          username: user.name,
+        },
+        (err, newLike) => {
+          if (!err) {
+            postFound.likes.push(newLike);
+            postFound.save((err) => {
+              if (!err) {
+                res.json({
+                  n: postFound.likes.length,
+                  liked: true,
+                });
+              }
+            });
+          }
         }
-      });
+      );
     }
   });
 });
