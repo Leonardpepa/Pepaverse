@@ -62,7 +62,7 @@
             <div>Likes: <%= post.likes.length%></div>
             <br />
             <div class="like-container">
-              Like
+              <span>Like</span>
               <i class="far fa-thumbs-up <%= post._id %>"></i>
             </div>
           </div>
@@ -70,6 +70,29 @@
         </div>
       </div>
     </main>
-    <script></script>
+    <script>
+      const likesArray = document.querySelectorAll(".like-container");
+
+      likesArray.forEach((likeBtn) => {
+        likeBtn.addEventListener("click", (e) => {
+          fetch("/likes/" + likeBtn.children[0].classList[2], {
+            method: "POST",
+            credentials: "include",
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              likeBtn.parentElement.children[3].textContent =
+                "Likes: " + data.n;
+              likeBtn.style.color = data.liked ? "blue" : "black";
+            })
+            .catch((err) => {
+              if (err) {
+                alert("An unexpected error has occured");
+              }
+            });
+        });
+      });
+    </script>
   </body>
 </html>

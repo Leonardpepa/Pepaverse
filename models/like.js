@@ -1,13 +1,17 @@
 const Mongoose = require("mongoose");
-const User = require("./user");
+const User = require("../models/user");
 
 const likeSchema = new Mongoose.Schema({
   postId: {
     type: String,
     required: true,
   },
-  user: {
-    type: User,
+  userId: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
     required: true,
   },
 });
