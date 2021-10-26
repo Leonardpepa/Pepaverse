@@ -3,10 +3,6 @@ const User = require("../models/user");
 const Post = require("../models/post");
 
 router.post("/update/:userid", (req, res) => {
-  if (req.isUnauthenticated()) {
-    res.redirect("/");
-  }
-
   let { description, profileUrl } = req.body;
   const userid = req.params.userid;
 
@@ -39,11 +35,6 @@ router.post("/update/:userid", (req, res) => {
 });
 
 router.post("/post/:userid", (req, res) => {
-  if (req.isUnauthenticated()) {
-    res.redirect("/");
-    return;
-  }
-
   const content = req.body.postTextContent;
   const authorId = req.params.userid;
 
