@@ -5,7 +5,7 @@ const session = require("express-session");
 const passport = require("passport");
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
+const morgan = require("morgan");
 require("dotenv").config();
 
 const pagesRouter = require("./routes/pages");
@@ -18,6 +18,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 app.use(express.static(__dirname + "/public"));
 app.use(
   session({

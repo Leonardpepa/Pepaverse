@@ -11,14 +11,11 @@ router.post("/:postid", (req, res, next) => {
 
   const user = req.user;
   let likeToDelete;
-  let likesCount;
 
   Post.findOne({ _id: req.params.postid }, (err, postFound) => {
     if (err) {
       throw err;
     }
-
-    likesCount = postFound.likes.length;
 
     postFound.likes.forEach((like) => {
       if (like.userId.toString() === user._id.toString()) {

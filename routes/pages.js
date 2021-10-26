@@ -3,11 +3,19 @@ const User = require("../models/user");
 const Post = require("../models/post");
 
 router.get("/login", (req, res) => {
-  res.render("login");
+  if (req.isAuthenticated()) {
+    res.redirect("/");
+  } else {
+    res.render("login");
+  }
 });
 
 router.get("/register", (req, res) => {
-  res.render("register", { error: {} });
+  if (req.isAuthenticated()) {
+    res.redirect("/");
+  } else {
+    res.render("register", { error: {} });
+  }
 });
 
 router.get("/", (req, res) => {
