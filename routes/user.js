@@ -59,7 +59,12 @@ router.post("/post/:userid", (req, res) => {
     if (err) {
       console.log(err);
     }
-    res.redirect("/");
+    req.user.posts.push(post._id);
+    req.user.save((err) => {
+      if (!err) {
+        res.redirect("/");
+      }
+    });
   });
 });
 

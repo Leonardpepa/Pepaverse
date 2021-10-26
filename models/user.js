@@ -27,6 +27,15 @@ const userSchema = new Mongoose.Schema({
   description: {
     type: String,
   },
+  likedPosts: {
+    type: Array,
+  },
+  comments: {
+    type: Array,
+  },
+  posts: {
+    type: Array,
+  },
 });
 
 userSchema.plugin(passportLocalMongoose);

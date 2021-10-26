@@ -62,8 +62,7 @@
             <div>Likes: <%= post.likes.length%></div>
             <br />
             <div class="like-container <%= post._id %>">
-              <span>Like</span>
-              <i class="far fa-thumbs-up"></i>
+              <i class="<%= user.likedPosts.includes(post._id) ? "fas red-color": "far black-color" %> fa-heart fa-2x"></i>
             </div>
           </div>
           <% }) %>
@@ -82,7 +81,18 @@
             .then((res) => res.json())
             .then((data) => {
               btn.parentElement.children[3].textContent = "Likes: " + data.n;
-              btn.style.color = data.liked ? "blue" : "black";
+              let removefa = "fas";
+              let addfa = "far";
+              let color = "black";
+
+              if (data.liked) {
+                removefa = "far";
+                addfa = "fas";
+                color = "red";
+              }
+              btn.children[0].classList.remove(removefa);
+              btn.children[0].classList.add(addfa);
+              btn.children[0].style.color = color;
             });
         });
       });

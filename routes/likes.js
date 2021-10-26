@@ -33,9 +33,14 @@ router.post("/:postid", (req, res, next) => {
         if (!err) {
           postFound.save((err) => {
             if (!err) {
-              res.json({
-                n: postFound.likes.length,
-                liked: false,
+              user.likedPosts.pull(postFound._id);
+              user.save((err) => {
+                if (!err) {
+                  res.json({
+                    n: postFound.likes.length,
+                    liked: false,
+                  });
+                }
               });
             }
           });
@@ -53,9 +58,14 @@ router.post("/:postid", (req, res, next) => {
             postFound.likes.push(newLike);
             postFound.save((err) => {
               if (!err) {
-                res.json({
-                  n: postFound.likes.length,
-                  liked: true,
+                user.likedPosts.push(postFound._id);
+                user.save((err) => {
+                  if (!err) {
+                    res.json({
+                      n: postFound.likes.length,
+                      liked: true,
+                    });
+                  }
                 });
               }
             });

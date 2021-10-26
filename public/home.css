@@ -44,6 +44,7 @@ li:hover {
 
 a {
   text-decoration: none;
+  color: black;
 }
 
 a:visited {
@@ -149,6 +150,15 @@ a:visited {
   color: blue;
   cursor: pointer;
 }
+
+.red-color {
+  color: red;
+}
+
+.black-color {
+  color: black;
+}
+
 @media (max-width: 600px) {
   body {
     width: 80%;
