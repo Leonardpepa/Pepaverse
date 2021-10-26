@@ -42,13 +42,19 @@ li:hover {
   transition: all 0.3s;
 }
 
-a {
+.nav-links a,
+.information a {
   text-decoration: none;
   color: black;
 }
 
-a:visited {
+.nav-links a:visited,
+.information a:visited {
   color: black;
+}
+a {
+  padding: 0;
+  margin: 0;
 }
 
 .create-post {

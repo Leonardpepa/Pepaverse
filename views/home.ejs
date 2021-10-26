@@ -51,7 +51,7 @@
                 alt="Users profile"
               />
               <div>
-                <p><%= post.author %></p>
+                <a href="/profile/<%= post.authorId %>"><%= post.author %></a>
                 <p class="createdAt">
                   created at: <%= post.createdAt.toUTCString() %>
                 </p>
