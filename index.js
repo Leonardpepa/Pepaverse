@@ -10,7 +10,7 @@ require("dotenv").config();
 
 const pagesRouter = require("./routes/pages");
 const authRouter = require("./routes/auth");
-const userRouter = require("./routes/user");
+const userRouter = require("./routes/users");
 const likeRouter = require("./routes/likes");
 
 const app = express();
