@@ -1,35 +1,9 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+#main{
+  margin: 1rem auto;
 }
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  place-items: center;
-  margin: 10% auto 0;
-  border: 1px solid rgba(155, 153, 153, 0.658);
-  border-radius: 8%;
-  padding: 3rem 1rem;
-  width: fit-content;
-  height: auto;
-}
-
-.logo {
+.logo, .navigation-logo {
   width: 100%;
-  max-width: 200px;
+  max-width: 100px;
   height: auto;
-  border-radius: 50%;
-  margin: 1rem 0;
 }
 
-.informations {
-  text-align: center;
-}
-
-.hidden {
-  visibility: hidden;
-}

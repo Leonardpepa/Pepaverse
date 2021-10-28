@@ -37,7 +37,8 @@ router.post("/update/:userid", (req, res) => {
 router.post("/post/:userid", (req, res) => {
   const content = req.body.postTextContent;
   const authorId = req.params.userid;
-
+  console.log("here", content);
+  
   const post = new Post({
     content,
     authorId,
@@ -58,5 +59,20 @@ router.post("/post/:userid", (req, res) => {
     });
   });
 });
+
+router.post("/search", (req, res, next) => {
+  const { search } =  req.body;
+
+  User.find({ name: { $regex :'.*' + search + ".*"} },{} ,(err, found) => {
+    if(!err){
+      console.log(found);
+      res.json({
+        result: found
+      });
+    }
+  }).limit(5);
+
+});
+
 
 module.exports = router;

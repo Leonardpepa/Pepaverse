@@ -1,194 +1,25 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", "Geneva", Verdana, sans-serif;
+.create-post-img{
+    border-radius: 50%;
+    max-width: 60px;
+    margin-left: 18%;
 }
 
-body {
-  width: 65%;
-  margin: 0 auto;
-}
-#nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
+.post-img{
+    border-radius: 50%;
+    max-width: 87px;    
 }
 
-.logo {
-  width: 100%;
-  max-width: 100px;
-  height: auto;
+.create-post-name{
+    width: 100%;
+    min-width: max-content;
+    margin: 0 1.2rem;
+    text-decoration: none;
 }
 
-.nav-links {
-  display: flex;
-  justify-content: space-evenly;
+.post-name{
+    text-decoration: none;
 }
 
-li {
-  margin: 20px;
-  list-style: none;
-  font-size: 1.2rem;
-  padding: 0.5rem 1.5rem;
-}
-
-li:hover {
-  transform: scale(1.02);
-  background-color: rgb(141, 150, 231);
-  color: whitesmoke;
-  transition: all 0.3s;
-}
-
-.nav-links a,
-.information a {
-  text-decoration: none;
-  color: black;
-}
-
-.nav-links a:visited,
-.information a:visited {
-  color: black;
-}
-a {
-  padding: 0;
-  margin: 0;
-}
-
-.create-post {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 4rem 0;
-  width: fit-content;
-}
-.group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.group * {
-  margin: 0.4rem;
-}
-
-.group img {
-  width: 100%;
-  max-width: 50px;
-  height: auto;
-  border-radius: 50%;
-}
-
-.post-btn {
-  margin-top: 0.3rem;
-  background-color: rgb(60, 60, 228);
-  color: white;
-  padding: 0.2rem;
-  width: 95px;
-  font-size: large;
-}
-
-.post-btn:hover {
-  background-color: rgb(72, 72, 236);
-  cursor: pointer;
-  transform: scale(1.01);
-  transition: all 0.3s;
-}
-
-#postTextContent {
-  padding: 0.2rem;
-}
-
-#posts {
-  margin: 1rem auto;
-}
-
-.post-container {
-  margin: 2rem auto;
-}
-
-.post {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid beige;
-  padding: 1rem;
-  background-color: beige;
-  margin: 1rem auto;
-}
-
-.information {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.information * {
-  margin: 10px;
-}
-
-.post-profile {
-  width: 100%;
-  max-width: 50px;
-  height: auto;
-  border-radius: 50%;
-}
-
-.createdAt {
-  font-size: 12px;
-  text-decoration: underline;
-}
-
-.content {
-  text-align: justify;
-  margin-left: 93px;
-  white-space: initial;
-  overflow-wrap: break-word;
-}
-
-.like-container {
-  width: fit-content;
-}
-
-.fa-thumbs-up:hover,
-.like-container:hover {
-  color: blue;
-  cursor: pointer;
-}
-
-.red-color {
-  color: red;
-}
-
-.black-color {
-  color: black;
-}
-
-@media (max-width: 600px) {
-  body {
-    width: 80%;
-  }
-  li {
-    font-size: 0.8rem;
-    margin: 0;
-  }
-  #nav {
-    justify-content: space-evenly;
-    margin: 0 auto;
-  }
-  .nav-links {
-    justify-content: space-evenly;
-  }
-  .logo {
-    width: 55px;
-    height: auto;
-  }
-
-  .create-post {
-    width: fit-content;
-  }
-  #postTextContent {
-    width: 200px;
-  }
+.create-post-name:visited, .post-name{
+    color: black;
 }
