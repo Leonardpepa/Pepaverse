@@ -4,7 +4,7 @@
 </head>
 <body>
   <%-  include('partials/nav', {user: ""}); %> 
-  <main id="main" class="container-sm p-4 d-flex flex-column justify-content-center align-items-center">
+  <main id="main" class="container-sm p-4 d-sm-flex flex-sm-column justify-content-sm-center align-items-sm-center align-content-sm-center">
     <h2 class="text-uppercase  mb-4" style="margin: 1rem auto;">Home Page</h2>
 
     <!-- create-post -->
@@ -16,7 +16,7 @@
               <a href="/profile/<%= user._id %> ">
                 <img class = "create-post-img img-thumbnail" src = " <%= user.profileUrl %> " class="img-fluid rounded-start" alt="Users profile">
               </a>
-              <a class="create-post-name card-title" href=" /profile/<%= user._id %> "> <%= user.name %> </a>
+              <a class="create-post-name" href=" /profile/<%= user._id %> "> <h5 class="card-title"><%= user.name %></h5> </a>
             </div>
           </div>
           <div class="col-md-0">

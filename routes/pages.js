@@ -44,6 +44,7 @@ router.get("/profile/:userid", (req, res) => {
       if (!found) {
         res.redirect("/");
       }
+
       res.render("profile", { profileUser: found, user: req.user });
     });
   } else {

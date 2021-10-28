@@ -6,6 +6,7 @@ const passport = require("passport");
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const morgan = require("morgan");
+const http = require("http");
 require("dotenv").config();
 
 const pagesRouter = require("./routes/pages");
@@ -14,6 +15,9 @@ const userRouter = require("./routes/users");
 const likeRouter = require("./routes/likes");
 
 const app = express();
+const server = http.createServer(app);
+
+const io = require("socket.io")(server);
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -102,6 +106,6 @@ passport.use(
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, (req, res) => {
+server.listen(PORT, (req, res) => {
   console.log(`App is listening on port ${PORT}`);
 });
