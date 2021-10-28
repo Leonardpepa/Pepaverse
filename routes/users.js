@@ -74,5 +74,8 @@ router.post("/search", (req, res, next) => {
 
 });
 
+router.post("/:userid/add/:requser", (req, res) => {
+
+});
 
 module.exports = router;
