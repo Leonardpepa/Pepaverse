@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-0">
             <div class="card-body">
-              <form  action="/users/post/<%= user._id %>" method="post">
+              <form  action="/users/post" method="post">
                 <div class="form-floating mb-1">
                   <input required type="text" class="form-control" name="postTextContent">
                   <label for="postTextContent">What is in your mind <%= user.name %> ?</label>
@@ -38,16 +38,21 @@
         <% posts.forEach(post => { %>
           <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 530px;">
             <div class="row g-0 p-0">
-                <div class="col-md-4 text-center p-1">
-                  <a href="/profile/<%= user._id %> ">
-                    <img class="post-img img-thumbnail" src="<%= post.authorProfileUrl %> " class="img-fluid rounded-start" alt="Users profile">
+                <div class="col-md-3 text-center p-0">
+                  <a href="/profile/<%= post.author._id %> ">
+                    <img class="post-img img-thumbnail" src="<%= post.author.profileUrl %> " class="img-fluid rounded-start" alt="Users profile">
                   </a>
                 </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <a class="post-name" href="/profile/<%= user._id %> "><h5 class="card-title"><%= post.author %> </h5></a>
+                  <a class="post-name" href="/profile/<%= post.author._id %> "><h5 class="card-title"><%= post.author.name %> </h5></a>
                   <p class="card-text"><%= post.content %> </p>
                   <p class="card-text"><small class="text-muted"><%= post.createdAt.toUTCString() %> </small></p>
+                </div>
+                <div class="d-flex">
+                  <p  class="m-2 p-2 like"><i class="far fa-heart "></i> Like</p>
+                  <p class="m-2 p-2 comment"><i class="far fa-comment "></i> Comment</p>
+                  <p class="m-2 p-2 share"><i class="far fa-share-square"></i> Share</p>
                 </div>
               </div>
             </div>

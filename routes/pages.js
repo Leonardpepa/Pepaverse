@@ -1,12 +1,14 @@
 const router = require("express").Router();
 const User = require("../models/user");
 const Post = require("../models/post");
+const Request = require("../models/request");
 
 router.get("/login", (req, res) => {
+
   if (req.isAuthenticated()) {
     res.redirect("/");
   } else {
-    res.render("login");
+    res.render("login", {error: {genericError: req.query?.e}});
   }
 });
 
@@ -20,14 +22,8 @@ router.get("/register", (req, res) => {
 
 router.get("/", (req, res) => {
   if (req.isAuthenticated()) {
-    Post.find({ authorId: req.user._id })
-      .sort({ createdAt: "descending" })
-      .exec((err, docs) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        res.render("home", { user: req.user, posts: docs });
+      Post.find({author: req.user._id}).populate({path: "author", select: ["name", "profileUrl"]}).exec((err, results) => {
+        res.render("home", { user: req.user, posts: results });
       });
   } else {
     res.redirect("/login");

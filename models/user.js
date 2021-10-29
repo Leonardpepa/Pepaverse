@@ -22,19 +22,29 @@ const userSchema = new Mongoose.Schema({
     type: String,
   },
   friends: {
-    type: Array,
+   type: [Mongoose.SchemaTypes.ObjectId],
+   ref: "User"
   },
   description: {
     type: String,
   },
   likedPosts: {
-    type: Array,
+    type: [Mongoose.SchemaTypes.ObjectId],
+    ref: "Like"
   },
   comments: {
     type: Array,
   },
   posts: {
-    type: Array,
+    type: [Mongoose.SchemaTypes.ObjectId],
+    ref: "Post"
+  },
+  requests: {
+    type: [Mongoose.SchemaTypes.ObjectId],
+    ref: "Request"
+  },
+  searchName: {
+    type: String,
   },
 });
 

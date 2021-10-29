@@ -30,3 +30,10 @@ h5:hover{
 .create-post-name:visited, .post-name{
     color: black;
 }
+
+.like:hover, .comment:hover, .share:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+    box-shadow:  0 1rem 3rem rgba(0.1, .175);;
+    transition: all 0.3s;
+}

@@ -13,7 +13,17 @@
           alt="logo"
         />
       </div>
-      <form action="/auth/login" method="post">
+      <% if (error.genericError) { %>
+        <div class="alert alert-danger" role="alert">
+        <%= error.genericError %>
+        </div>
+      <% } %>
+      <form action="/auth/register" method="post">
+        <% if (error.emailError) { %>
+          <div class="alert alert-danger" role="alert">
+          <%= error.emailError %>
+          </div>
+        <% } %>
         <div class="form-floating mb-3">
           <input
             type="email"
@@ -47,11 +57,16 @@
           />
           <label for="floatingconfirm">Confirm your password</label>
         </div>
+        <% if (error.passwordError) { %>
+          <div class="alert alert-danger" role="alert">
+          <%= error.passwordError %>
+          </div>
+        <% } %>
         <div class="submit-btn-container">
           <button type="submit" class="btn btn-primary">Sing Up</button>
-          <span>OR </span
+          <span style="margin: 0.5rem;">OR </span
           ><a
-            href="auth/google"
+            href="/auth/google"
             type="button"
             class="btn btn-outline-secondary"
           >

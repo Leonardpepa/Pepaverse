@@ -1,16 +1,22 @@
 const searchForm = document.querySelector(".search-form");
 const searchInput = document.getElementById("search");
 
+const searchResult = document.querySelector(".search-result");
+
 searchForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log( await fetchUser(searchInput.value));
+    
+    if(!searchInput.value) return;
+
+    const users = await fetchUser(searchInput.value);
+    console.log(users.result);
+    updateList( await users.result);
 });
 
 searchInput.addEventListener("input", async (e) => {
-    const data = await fetchUser(searchInput.value);
-    if(data.result){
-        console.log(data.result);
-    }
+    const users = await fetchUser(searchInput.value);
+    console.log(users.result);
+    updateList( await users.result);
 });
 
 
@@ -27,4 +33,22 @@ const fetchUser = async (name) => {
     const data = await res.json();
     return data;
 }
+
+
+const updateList = (list) => {
+    searchResult.innerHTML = "";
+    const ul = document.createElement("ul");
+    ul.classList.add("list-group");
+
+    list.forEach(element => {
+        const a = document.createElement("a");
+        a.classList.add("list-group-item");
+        a.classList.add("list-group-action");
+        a.href =`/profile/${element._id}`;
+        a.textContent = element.name;
+        ul.appendChild(a);
+    });
+    searchResult.appendChild(ul);
+}
+
 

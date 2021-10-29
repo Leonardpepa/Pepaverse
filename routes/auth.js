@@ -7,6 +7,7 @@ router.post("/register", (req, res) => {
   const { username, password, confirm } = req.body;
   const name = username.split("@")[0];
   const profileUrl = "/default-profile.jpg";
+  const searchName = name.toLowerCase();
 
   if (!validateEmail(username)) {
     res.render("register", { error: { emailError: "Invalid email format" } });
@@ -21,10 +22,15 @@ router.post("/register", (req, res) => {
     });
     return;
   }
-  User.register({ username, name, profileUrl }, password, (err, user) => {
+  User.register({ username, name, profileUrl, searchName }, password, (err, user) => {
     if (err) {
       console.log(err);
-      res.redirect("/register");
+      res.render("register", 
+        {
+          error: {
+            genericError: "An unexpected error ocured please try again"
+        }
+      });
     }
     passport.authenticate("local")(req, res, () => {
       res.redirect("/");
@@ -41,10 +47,11 @@ router.post("/login", (req, res) => {
   req.login(user, (err) => {
     if (err) {
       console.log(err);
+      res.render("login", {error: {genericEror: "An unexpected error occured please try again"}})
       return;
     }
     passport.authenticate("local", {
-      failureRedirect: "/login",
+      failureRedirect: "/login?e=Email or Password are incorrect",
     })(req, res, () => {
       res.redirect("/");
     });

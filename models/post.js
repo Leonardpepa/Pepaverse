@@ -10,15 +10,8 @@ const postSchema = new Mongoose.Schema({
     required: true,
   },
   author: {
-    type: String,
-    required: true,
-  },
-  authorId: {
-    type: String,
-    required: true,
-  },
-  authorProfileUrl: {
-    type: String,
+    type: Mongoose.SchemaTypes.ObjectId,
+    ref: "User"
   },
   likes: {
     type: Array,

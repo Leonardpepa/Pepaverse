@@ -14,6 +14,11 @@
           alt="logo"
         />
       </div>
+      <% if (error.genericError) { %>
+        <div class="alert alert-danger" role="alert">
+          <%= error.genericError %>  
+        </div>
+      <% } %>
       <form action="/auth/login" method="post">
         <div class="form-floating mb-3">
           <input
@@ -39,7 +44,7 @@
         </div>
         <div class="submit-btn-container">
           <button type="submit" class="btn btn-primary">Sing In</button>
-          <span>OR </span
+          <span style="margin: 0.5rem;">OR </span
           ><a
             href="auth/google"
             type="button"

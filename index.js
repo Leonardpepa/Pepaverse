@@ -1,4 +1,3 @@
-const express = require("express");
 const Mongoose = require("mongoose");
 const ejs = require("ejs");
 const session = require("express-session");
@@ -6,18 +5,15 @@ const passport = require("passport");
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const morgan = require("morgan");
-const http = require("http");
+// const flash = require("connect-flash");
+const {server, app, io, express} = require("./server.config");
+
 require("dotenv").config();
 
 const pagesRouter = require("./routes/pages");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/users");
 const likeRouter = require("./routes/likes");
-
-const app = express();
-const server = http.createServer(app);
-
-const io = require("socket.io")(server);
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -34,6 +30,7 @@ app.use(
     },
   })
 );
+// app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -94,6 +91,7 @@ passport.use(
             username: profile.emails[0].value,
             name: profile.displayName,
             profileUrl: profile.photos[0].value,
+            searchName: profile.displayName.toLowerCase(),
           },
           function (err, user) {
             return cb(err, user);
@@ -103,6 +101,10 @@ passport.use(
     }
   )
 );
+
+io.on("connection", (socket) => {
+  console.log("user connected");
+});
 
 const PORT = process.env.PORT || 3000;
 

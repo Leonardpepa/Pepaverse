@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const User = require("../models/user");
 const Post = require("../models/post");
+const Request = require("../models/request");
+const  { io } = require("../server.config");
 
 router.post("/update/:userid", (req, res) => {
   let { description, profileUrl } = req.body;
@@ -34,16 +36,13 @@ router.post("/update/:userid", (req, res) => {
   );
 });
 
-router.post("/post/:userid", (req, res) => {
+router.post("/post", (req, res) => {
   const content = req.body.postTextContent;
-  const authorId = req.params.userid;
-  console.log("here", content);
+  const author = req.user._id;
   
   const post = new Post({
     content,
-    authorId,
-    author: req.user.name,
-    authorProfileUrl: req.user.profileUrl,
+    author,
     createdAt: new Date(),
   });
 
@@ -62,19 +61,18 @@ router.post("/post/:userid", (req, res) => {
 
 router.post("/search", (req, res, next) => {
   const { search } =  req.body;
+  if(!search){
+    next();
+    return;
+  }
 
-  User.find({ name: { $regex :'.*' + search + ".*"} },{} ,(err, found) => {
+  User.find({ searchName : { $regex :'.*' + search.toLowerCase() + ".*"} },{} ,(err, found) => {
     if(!err){
-      console.log(found);
       res.json({
         result: found
       });
     }
   }).limit(5);
-
-});
-
-router.post("/:userid/add/:requser", (req, res) => {
 
 });
 

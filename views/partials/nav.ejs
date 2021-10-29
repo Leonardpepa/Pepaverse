@@ -45,9 +45,8 @@
                   Νotifications
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
                   <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider" /></li>
+                  <!-- <li><hr class="dropdown-divider" /></li> -->
                   <li>
                     <a class="dropdown-item" href="#">Something else here</a>
                   </li>
@@ -62,6 +61,7 @@
   
             <form class="d-flex search-form">
               <input
+                autocomplete="off"
                 class="form-control me-2"
                 type="search"
                 placeholder="Search"
@@ -73,8 +73,12 @@
                 Search
               </button>
             </form>
+            <div class="search-result">
+            </div>
           </div>
         </div>
       </nav>
-      <script src="/search.js" defer></script>
+      <% if (user) { %>
+        <script src="/search.js" defer></script>
+      <% } %>
   
