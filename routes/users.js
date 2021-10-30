@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const User = require("../models/user");
 const Post = require("../models/post");
-const Request = require("../models/request");
+const Like = require("../models/like");
+
 const  { io } = require("../server.config");
 
 router.post("/update/:userid", (req, res) => {
@@ -73,7 +74,51 @@ router.post("/search", (req, res, next) => {
       });
     }
   }).limit(5);
-
 });
+
+
+router.post("/like", async (req, res) => {
+  const postId = req.body.postId;
+
+  Post.findById(postId, async (err, post) => {
+    if(!err){
+       Like.findOne({$and: [{userId: req.user._id},{postId: postId}]}, async (err, likeFound) => {
+        if(likeFound){
+          post.likes.pull(likeFound._id);
+          req.user.likedPosts.pull(post._id);
+          await post.save();
+          await req.user.save();
+          Like.findByIdAndDelete(likeFound._id, (err, result) => {
+            if(!err){
+              res.json({
+                n: post.likes.length,
+                message: "Like Removed",
+                ok: true,
+                liked: false,
+              });
+            }
+          });
+        }else{
+          const newLike = new Like({
+            userId: req.user._id,
+            postId: post._id,
+          });
+          await newLike.save();
+          req.user.likedPosts.push(post._id);
+          await req.user.save();
+          post.likes.push(await newLike._id);
+          await post.save();
+          res.json({
+            n: post.likes.length,
+            message: "Like Added",
+            ok: true,
+            liked: true,
+          });
+        }
+      });
+    }
+  });
+});
+
 
 module.exports = router;

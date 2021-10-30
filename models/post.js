@@ -3,7 +3,7 @@ const Mongoose = require("mongoose");
 const postSchema = new Mongoose.Schema({
   content: {
     type: String,
-    required: [true, "Post cant be empty"],
+    required: [true, "Post cannot be empty"],
   },
   createdAt: {
     type: Date,
@@ -13,12 +13,18 @@ const postSchema = new Mongoose.Schema({
     type: Mongoose.SchemaTypes.ObjectId,
     ref: "User"
   },
-  likes: {
-    type: Array,
-  },
-  comments: {
-    type: Array,
-  },
+  likes: [
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Like"
+    }
+  ],
+  comments: [
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+    }
+  ],
 });
 
 const Post = Mongoose.model("Post", postSchema);

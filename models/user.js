@@ -14,6 +14,7 @@ const userSchema = new Mongoose.Schema({
   },
   name: {
     type: String,
+    unique: true,
   },
   googleId: {
     type: String,
@@ -21,28 +22,33 @@ const userSchema = new Mongoose.Schema({
   profileUrl: {
     type: String,
   },
-  friends: {
-   type: [Mongoose.SchemaTypes.ObjectId],
-   ref: "User"
-  },
+  friends: [
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
   description: {
     type: String,
   },
-  likedPosts: {
-    type: [Mongoose.SchemaTypes.ObjectId],
-    ref: "Like"
-  },
-  comments: {
-    type: Array,
-  },
-  posts: {
-    type: [Mongoose.SchemaTypes.ObjectId],
-    ref: "Post"
-  },
-  requests: {
-    type: [Mongoose.SchemaTypes.ObjectId],
-    ref: "Request"
-  },
+  likedPosts:[ 
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Like"
+    }
+  ],
+  comments:[
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Comment"
+    }
+  ],
+  posts: [
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Post"
+    }
+  ],
   searchName: {
     type: String,
   },

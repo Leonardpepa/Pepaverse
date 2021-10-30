@@ -9,10 +9,6 @@ const likeSchema = new Mongoose.Schema({
     type: Mongoose.SchemaTypes.ObjectId,
     ref: "User"
   },
-  username: {
-    type: String,
-    required: true,
-  },
 });
 
 const Like = Mongoose.model("Like", likeSchema);

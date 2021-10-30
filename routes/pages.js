@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/user");
 const Post = require("../models/post");
-const Request = require("../models/request");
 
 router.get("/login", (req, res) => {
 
@@ -22,7 +21,7 @@ router.get("/register", (req, res) => {
 
 router.get("/", (req, res) => {
   if (req.isAuthenticated()) {
-      Post.find({author: req.user._id}).populate({path: "author", select: ["name", "profileUrl"]}).exec((err, results) => {
+      Post.find({author: req.user._id}).populate({path: "author", select: ["name", "profileUrl"]}).populate({path: "likes", select: ["userId"]}).sort({ createdAt: "descending" }).exec((err, results) => {
         res.render("home", { user: req.user, posts: results });
       });
   } else {
