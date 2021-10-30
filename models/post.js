@@ -7,7 +7,7 @@ const postSchema = new Mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    required: true,
+    default: Date.now,
   },
   author: {
     type: Mongoose.SchemaTypes.ObjectId,

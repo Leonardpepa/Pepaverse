@@ -44,7 +44,6 @@ router.post("/post", (req, res) => {
   const post = new Post({
     content,
     author,
-    createdAt: new Date(),
   });
 
   post.save((err) => {
