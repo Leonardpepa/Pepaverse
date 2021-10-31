@@ -4,18 +4,23 @@ const User = require("../models/user");
 
 
 const createPost = async (content, userId) => {
-    const post = await new Post({
-        content,
-        author: userId,
-    }).save();
+    try {
+        const post = await new Post({
+            content,
+            author: userId,
+        }).save();
+        
+        await User.findOneAndUpdate( { _id: post.author }, { $push: { posts: post._id } } );
 
-    await post
-    .populate("author")
-    .populate("likes")
-    .populate("comments")
-    .execPopulate();
-
-    return await post;
+        const p = await Post.findById(post._id)
+        .populate("author")
+        .populate("likes")
+        .exec();
+    
+        return await p;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // const deletePost = async (id) => {
@@ -26,18 +31,26 @@ const createPost = async (content, userId) => {
 // }
 
 const updatePost = async (id, fieldsToUpdate) => {
-    const post = await Post.findOneAndUpdate( { _id: id }, { ...fieldsToUpdate } )
-                    .populate("author")
-                    .populate("likes")
-                    .populate("comments")
-                    .execPopulate();
-                    
-    return await post;
+    try {
+        const post = await Post.findOneAndUpdate( { _id: id }, { ...fieldsToUpdate } )
+                        .populate("author")
+                        .populate("likes")
+                        .populate("comments")
+                        .execPopulate();
+                        
+        return await post;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 const findPostById = async (id) => {
-    const post = await Post.findById(id);
-    return await post;
+    try {
+        const post = await Post.findById(id);
+        return await post;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 

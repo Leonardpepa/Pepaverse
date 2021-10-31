@@ -19,8 +19,9 @@ const likeController = {
         const userId = req.user._id;
 
         const like = await findLikeByUserIdandPostId(userId, postId);
+        
         const deletedLike = await deleteLike(like._id);
-        const post = await findPostById(deleteLike.postId);
+        const post = await findPostById(postId);
         await res.json({
             n: post.likes.length,
             message: "Like Removed",
@@ -30,6 +31,6 @@ const likeController = {
     }
 }
 
-export default likeController;
+module.exports = likeController;
 
 

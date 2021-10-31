@@ -5,14 +5,9 @@ const passport = require("passport");
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const morgan = require("morgan");
-// const flash = require("connect-flash");
 const {server, app, io, express} = require("./server.config");
-
+const router = require("./router.js");
 require("dotenv").config();
-
-const pagesRouter = require("./routes/pages");
-const authRouter = require("./routes/auth");
-const userRouter = require("./routes/users");
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -29,25 +24,11 @@ app.use(
     },
   })
 );
-// app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-const middleAuth = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.redirect("/");
-  }
-};
-
-app.use("/users", middleAuth);
-app.use("/likes", middleAuth);
-
-app.use("/", pagesRouter);
-app.use("/auth", authRouter);
-app.use("/users", userRouter);
+app.use("/", router);
 
 Mongoose.connect(process.env.MONGO_DB_URL, {
   useNewUrlParser: true,
@@ -109,5 +90,3 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, (req, res) => {
   console.log(`App is listening on port ${PORT}`);
 });
-
-module.exports = { io };

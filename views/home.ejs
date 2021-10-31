@@ -35,7 +35,10 @@
     <h3 class="text-uppercase  mb-4" style="margin: 1rem auto;">Feed</h3>
     <section id="feed"  class="container" >
       <div class="posts">
-        <% posts.forEach(post => { %>
+      <script>
+        let yes = {};
+      </script>
+        <% posts.forEach((post) => { %>
           <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 530px;">
             <div class="row g-0 p-0">
                 <div class="col-md-3 text-center p-0">
@@ -51,6 +54,9 @@
                 </div>
                 <div class="d-flex">
                   <% if (user.likedPosts.includes(post._id)) { %>
+                    <script>
+                      yes["<%= post._id %>"] = true;
+                    </script>
                     <p style="color: red;"  class="m-2 p-2 like <%= post._id %>"><i class="fas fa-heart "></i> <span>Liked</span></p>
                   <% }else {%>
                     <p style="color: black;"  class="m-2 p-2 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
@@ -74,11 +80,13 @@
         const res = await sendLikeRequest(btn.classList[3]);
         if(res.ok){
           if(res.liked){
+            yes[btn.classList[3]] = true;
             btn.style.color = "red";
             btn.children[0].classList.remove("far");
             btn.children[0].classList.add("fas");
             btn.children[1].textContent = "Liked"
           }else{
+            yes[btn.classList[3]] = false;
             btn.style.color = "black";
             btn.children[0].classList.remove("fas");
             btn.children[0].classList.add("far");
@@ -88,9 +96,10 @@
       });
     });
 
+
     const sendLikeRequest = async (postId) => {
       const res = await fetch("/users/like", {
-        method: "post",
+        method: yes[postId] ? "delete":"post",
         credentials: "include",
         headers: {
           'Content-Type': 'application/json'
