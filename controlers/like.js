@@ -6,28 +6,51 @@ const likeController = {
     create: async (req, res, next) => {
         const user = req.user;
         const postId = req.body.postId;
+
+        const  likeExists = await findLikeByUserIdandPostId(user._id, postId);
+
+        if(likeExists){
+            await res.json({
+                n: -1,
+                message: "error",
+                ok: false,
+                liked: false,
+              });
+              return;
+        }
+
         const like = await createLike(user._id, postId);
-        await res.json({
-            n: like.postId.likes.length,
-            message: "Like Added",
-            ok: true,
-            liked: true,
-          });
+        if(like){
+            await res.json({
+                n: like.postId.likes.length,
+                message: "Like Added",
+                ok: true,
+                liked: true,
+              });
+        }
     },
     delete: async (req, res, next) => {
         const postId = req.body.postId;
         const userId = req.user._id;
 
         const like = await findLikeByUserIdandPostId(userId, postId);
-        
-        const deletedLike = await deleteLike(like._id);
-        const post = await findPostById(postId);
-        await res.json({
-            n: post.likes.length,
-            message: "Like Removed",
-            ok: true,
-            liked: false,
-        });
+        if(like){
+            const deletedLike = await deleteLike(like._id);
+            const post = await findPostById(postId);
+            await res.json({
+                n: post.likes.length,
+                message: "Like Removed",
+                ok: true,
+                liked: false,
+            });
+        }else{
+            await res.json({
+                n: -1,
+                message: "error",
+                ok: false,
+                liked: false,
+            });
+        }
     }
 }
 

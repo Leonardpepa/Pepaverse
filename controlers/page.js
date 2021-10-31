@@ -7,7 +7,7 @@ const pageController = {
             const user = await findUserById(req.user._id);
             await res.render("home", { user: user, posts: user.posts });
         }else{
-            res.redirect("/login?e=Unauthorized");
+            res.redirect("/login");
         }
     },
     login: (req, res) => {

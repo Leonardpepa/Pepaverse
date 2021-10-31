@@ -4,6 +4,7 @@ const User = require("../models/user");
 
 const createLike = async (userId, postId) => {
     try {
+        
         const like = await new Like({
             userId,
             postId,
