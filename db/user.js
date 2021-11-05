@@ -8,7 +8,7 @@ const findUserById = async (id) => {
         .select("-salt")
         .populate("likes")
         .populate("friends")
-        .populate({ path: "posts", populate: [{path: "author"}] });
+        .populate({ path: "posts", options: { sort: { createdAt: 'desc' } } ,populate: [{path: "author"}] });
   
     return await user;
   } catch (error) {
