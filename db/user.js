@@ -23,7 +23,7 @@ const getUserByEmail = async (username) => {
         .select("-salt")
         .populate("likes")
         .populate("friends")
-        .populate("posts");
+        .populate({ path: "posts", options: { sort: { createdAt: 'desc' } } ,populate: [{path: "author"}] });
   
     return await user;
   } catch (error) {
@@ -40,8 +40,7 @@ const getUserByUsername = async (name)  => {
         .select("-salt")
         .populate("likes")
         .populate("friends")
-        .populate("posts");
-  
+        .populate({ path: "posts", options: { sort: { createdAt: 'desc' } } ,populate: [{path: "author"}] });  
   
       return await user;
     } catch (error) {
@@ -102,10 +101,11 @@ const updateUser = async (id, fieldsToUpdate) => {
   
   try {
     const user = await User.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate } )
-        .populate('posts')
+        .select('-hash')
+        .select("-salt")
         .populate('likes')
-        .populate("friends");
-  
+        .populate("friends")
+        .populate({ path: "posts", options: { sort: { createdAt: 'desc' } } ,populate: [{path: "author"}] });  
       return user;
   } catch (error) {
     console.log(error);

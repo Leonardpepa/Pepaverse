@@ -1,7 +1,8 @@
 
-const {updateUser} = require("../db/user");
+const { updateUser } = require("../db/user");
+const { searchUsers } = require("../db/search");
 
-const usercontroller = {
+const userController = {
     update: async (req, res, next) => {
         let {profileUrl, description } = req.body;
         if(description === ""){
@@ -16,8 +17,16 @@ const usercontroller = {
         if(await user){
             res.redirect("/profile/" + req.user._id);
         }
-    }
+    },
+    search: async (req, res, next) => {
+        try {
+            const result = await searchUsers(req.body.search);
+            await res.json(result);
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }
 
 
-module.exports = usercontroller;
+module.exports = userController;

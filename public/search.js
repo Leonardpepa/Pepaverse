@@ -1,7 +1,6 @@
 const searchForm = document.querySelector(".search-form");
 const searchInput = document.getElementById("search");
-
-const searchResult = document.querySelector(".search-result");
+const searchresults = document.querySelector(".search-results");
 
 searchForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -9,17 +8,21 @@ searchForm.addEventListener("submit", async (e) => {
     if(!searchInput.value) return;
 
     const users = await fetchUser(searchInput.value);
-    console.log(users.result);
-    updateList( await users.result);
+    updateList( await users);
 });
+
+
 
 searchInput.addEventListener("input", async (e) => {
     const users = await fetchUser(searchInput.value);
-    console.log(users.result);
-    updateList( await users.result);
+    updateList( await users);
 });
 
-
+searchInput.addEventListener("focusout", (e) => {
+    setTimeout(() => {
+        updateList([]);
+    }, 100);
+})
 
 const fetchUser = async (name) => {
     const res = await fetch("/users/search", {
@@ -36,19 +39,28 @@ const fetchUser = async (name) => {
 
 
 const updateList = (list) => {
-    searchResult.innerHTML = "";
-    const ul = document.createElement("ul");
-    ul.classList.add("list-group");
+    searchresults.innerHTML = "";
 
-    list.forEach(element => {
-        const a = document.createElement("a");
-        a.classList.add("list-group-item");
-        a.classList.add("list-group-action");
-        a.href =`/profile/${element._id}`;
-        a.textContent = element.name;
-        ul.appendChild(a);
+    list.forEach(user => {
+        const div = document.createElement("div");
+        div.classList.add("list-group-item");
+        div.classList.add("d-flex");
+        div.classList.add("justify-content-start");
+        div.classList.add("align-items-center");
+
+        const aimg = document.createElement("a");
+        aimg.innerHTML = `<img class="img-thumbnail m-1" style="border-radius: 50%; max-width: 35px;" src="${user.profileUrl}" alt="Users profile">`;
+        aimg.href = "/profile/" + user._id;
+
+        const aname = document.createElement("a");
+        aname.classList.add("m-1");
+        aname.textContent = user.name;
+        aname.href = "/profile/" + user._id;
+
+        div.appendChild(aimg);
+        div.appendChild(aname);
+
+        searchresults.appendChild(div);
+
     });
-    searchResult.appendChild(ul);
 }
-
-

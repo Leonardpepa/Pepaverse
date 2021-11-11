@@ -58,27 +58,31 @@
                 >
               </li>
             </ul>
-  
-            <form class="d-flex search-form">
-              <input
-                autocomplete="off"
-                class="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                id="search"
-                name="search"
-              />
-              <button class="btn btn-outline-success search-btn" type="submit">
-                Search
-              </button>
-            </form>
-            <div class="search-result">
+            <div>
+              <form class="d-flex search-form">
+                <input
+                  autocomplete="off"
+                  class="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  id="search"
+                  name="search"
+                  list="suggestions"
+                />
+                <button class="btn btn-outline-success search-btn" type="submit">
+                  Search
+                </button>
+              </form>
+              <% if (user) { %>
+              <ul class="list-group p-2 d-flex search-results">
+              </ul>
+              <% } %>
             </div>
           </div>
         </div>
       </nav>
-      <!-- <% if (user) { %>
+      <% if (user) { %>
         <script src="/search.js" defer></script>
-      <% } %> -->
+      <% } %>
   
