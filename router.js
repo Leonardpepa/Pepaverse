@@ -6,7 +6,7 @@ const postController = require("./controlers/post");
 const pageController = require("./controlers/page");
 const authController = require("./controlers/auth");
 const userController = require("./controlers/user");
-
+const commentController = require("./controlers/comment");
 
 
 
@@ -33,6 +33,10 @@ router.post("/auth/login", authController.login);
 //like post router
 router.post('/users/like', ensureAuth, likeController.create);
 router.delete("/users/like", ensureAuth, likeController.delete);
+
+//comment post
+router.post("/users/comment", ensureAuth, commentController.create);
+router.delete("/users/comment", ensureAuth, commentController.delete);
 
 //upload a post
 router.post("/users/post", ensureAuth, postController.create);

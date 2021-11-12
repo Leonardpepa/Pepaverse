@@ -23,13 +23,6 @@ const createPost = async (content, userId) => {
     }
 }
 
-// const deletePost = async (id) => {
-//     const post = await Post.findByIdAndRemove(id);
-    
-//     await User.findOneAndUpdate( { _id: post.author }, { $pull: {posts: post._id} } );
-//     return await post;
-// }
-
 const updatePost = async (id, fieldsToUpdate) => {
     try {
         const post = await Post.findOneAndUpdate( { _id: id }, { ...fieldsToUpdate } )
