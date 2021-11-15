@@ -35,9 +35,9 @@
     <h3 class="text-uppercase  mb-4" style="margin: 1rem auto;">Feed</h3>
     <section id="feed"  class="container" >
       <div class="posts">
-      <script>
-        let yes = {};
-      </script>
+        <script>
+          let yes = {};
+        </script>
         <% posts.forEach((post) => { %>
           <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 530px;">
             <div class="row g-0 p-0">
@@ -52,6 +52,10 @@
                   <p class="card-text"><%= post.content %> </p>
                   <p class="card-text"><small class="text-muted"><%= post.createdAt.toDateString() %> </small></p>
                 </div>
+                <div class="d-flex post-interactions">
+                  <i style="color: red;" class="fas fa-heart m-2 p-2">  <%= post.likes.length%></i>
+                  <i class="far fa-comment m-2 p-2">  <%= post.comments.length %></i>
+                </div>
                 <div class="d-flex">
                   <% if (user.likedPosts.includes(post._id)) { %>
                     <script>
@@ -61,9 +65,40 @@
                   <% }else {%>
                     <p style="color: black;"  class="m-2 p-2 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
                     <%}%>
-                  <p class="m-2 p-2 comment"><i class="far fa-comment "></i> <span>Comment</span></p>
+                  <p class="<%= post._id%> m-2 p-2 comment-btn"><i class="far fa-comment "></i> <span>Comment</span></p>
                   <p class="m-2 p-2 share"><i class="far fa-share-square"></i> <span>Share</span></p>
                 </div>
+                <!-- comments -->
+                
+                <div class="comments hidden">
+                  <div class="p-2 m-2 shadow-lg p-3 mb-5 bg-body rounded">
+                    <label for="comment">Add a comment</label>
+                    <input class="form-control <%= post._id %>" type="text" id="comment" name="comment">
+                    <button class="comment-post btn btn-primary">Post</button>
+                  </div>
+                  <div>
+                    <% if (post.comments.length !== 0) { %>
+                        <% post.comments.forEach(comment => { %>
+                        <div class="shadow-lg p-3 mb-5 bg-body rounded p-2 m-2 comment">
+                          <div class="row p-0 m-0">
+                            <div class="m-0 p-0">
+                             <a href="profile/<%= comment.author._id %> " class="d-flex justify-content-start align-items-center">
+                               <img style="max-width: 40px;" src="<%= comment.author.profileUrl %> " class="img-fluid img-thumbnail post-img m-1 " alt="user">
+                               <p class="card-title m-1 "><%= comment.author.name %></p>
+                             </a> 
+                            </div>
+                            <div class="m-1 p-0">
+                              <div class="card-body m-0 p-0">
+                                <p class="card-text"><%= comment.content %> </p>
+                                <p class="card-text"><small class="text-muted">Last updated <%= Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60)  %>  mins ago</small></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <% }) %>
+                    <% } %>
+                  </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -78,6 +113,9 @@
     likeBtnArray.forEach(btn => {
       btn.addEventListener("click", async (e) => {
         const res = await sendLikeRequest(btn.classList[3]);
+        const parent = btn.parentElement.parentElement;
+        const div = parent.getElementsByClassName("post-interactions")[0];
+
         if(res.ok){
           if(res.liked){
             yes[btn.classList[3]] = true;
@@ -85,12 +123,14 @@
             btn.children[0].classList.remove("far");
             btn.children[0].classList.add("fas");
             btn.children[1].textContent = "Liked"
+            div.children[0].textContent = " " + (Number(div.children[0].textContent) + 1);
           }else{
             yes[btn.classList[3]] = false;
             btn.style.color = "black";
             btn.children[0].classList.remove("fas");
             btn.children[0].classList.add("far");
             btn.children[1].textContent = "Like"
+            div.children[0].textContent = " " + (Number(div.children[0].textContent) - 1);
           }
         }
       });
@@ -109,4 +149,84 @@
       const data = await res.json();
       return await data;
     }
+
+    const postBtns = document.querySelectorAll(".comment-post");
+
+    postBtns.forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        const parent = btn.parentElement.parentElement;
+        const postInput = parent.getElementsByTagName("input")[0];
+        const div = parent.parentElement.getElementsByClassName("post-interactions")[0];
+        if(postInput.value){
+          const data = await commentPost(postInput.classList[1], postInput.value);
+          if(data.ok){
+            div.children[1].textContent =  " " + (Number(div.children[1].textContent) + 1);
+          }
+        }
+      });
+    })
+
+    const commentPost = async (postId, content) => {
+      const res = await fetch("/users/comment", {
+        method: "post",
+        credentials: "include",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          postId,
+          content,
+        }),
+      });
+      const data = await res.json();
+      return data;
+    }
+
+    const showCommentBtns = document.querySelectorAll(".comment-btn");
+
+    const showComments = (list) => {
+      list.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          btn.parentElement.parentElement.getElementsByClassName("comments")[0].classList.toggle("hidden");
+          // fetchComments(btn.classList[0]);
+        });
+      });
+    }
+
+    showComments(showCommentBtns);
+
+
+    // const fetchComments = async (postId) => {
+    //   const res = await fetch(`/post/${postId}/comment`, {
+    //     method: "get",
+    //     credentials: "include",
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //   });
+    //   const data  = await res.json();
+    //   return data;
+    // }
+
+    // const displayFetchedComments = (list) => {
+    //   list.forEach(comment => {
+    //     const content = `<div class="shadow-lg p-3 mb-5 bg-body rounded p-2 m-2 comment">
+    //                         <div class="row p-0 m-0">
+    //                           <div class="m-0 p-0">
+    //                            <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
+    //                              <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="user">
+    //                              <p class="card-title m-1 ">${comment.author.name}</p>
+    //                            </a> 
+    //                           </div>
+    //                           <div class="m-1 p-0">
+    //                             <div class="card-body m-0 p-0">
+    //                               <p class="card-text">${comment.content}</p>
+    //                               <p class="card-text"><small class="text-muted">Last updated ${Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60)}mins ago</small></p>
+    //                             </div>
+    //                           </div>
+    //                         </div>
+    //                       </div>`
+    //   });
+    // }
+
   </script>

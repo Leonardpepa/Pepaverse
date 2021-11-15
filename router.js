@@ -8,14 +8,11 @@ const authController = require("./controlers/auth");
 const userController = require("./controlers/user");
 const commentController = require("./controlers/comment");
 
-
-
-
 router.get("/", pageController.home);
 router.get("/login", pageController.login);
 router.get("/register", pageController.register);
 router.get("/profile/:userid", ensureAuth, pageController.profile);
-router.post("/users/update/:userid", ensureAuth,userController.update);
+router.post("/users/update/:userid", ensureAuth, userController.update);
 
 router.get("/auth/google", authController.google);
 
@@ -27,31 +24,21 @@ router.post("/auth/register", authController.register);
 
 router.post("/auth/login", authController.login);
 
-
-
-
 //like post router
-router.post('/users/like', ensureAuth, likeController.create);
+router.post("/users/like", ensureAuth, likeController.create);
 router.delete("/users/like", ensureAuth, likeController.delete);
 
 //comment post
 router.post("/users/comment", ensureAuth, commentController.create);
 router.delete("/users/comment", ensureAuth, commentController.delete);
 
+//get comments from post
+router.get("/post/:postId/comment", ensureAuth, commentController.getCommentsByPostId)
+
 //upload a post
 router.post("/users/post", ensureAuth, postController.create);
 
 //search
 router.post("/users/search", ensureAuth, userController.search);
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

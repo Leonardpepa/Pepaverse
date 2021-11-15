@@ -25,35 +25,35 @@ const userSchema = new Mongoose.Schema({
   friends: [
     {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    }
+      ref: "User",
+    },
   ],
   description: {
     type: String,
   },
-  likedPosts:[ 
+  likedPosts: [
     {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: "Post"
-    }
+      ref: "Post",
+    },
   ],
   likes: [
     {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: "Like"
-    }
+      ref: "Like",
+    },
   ],
-  comments:[
+  comments: [
     {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: "Comment"
-    }
+      ref: "Comment",
+    },
   ],
   posts: [
     {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: "Post"
-    }
+      ref: "Post",
+    },
   ],
   searchName: {
     type: String,

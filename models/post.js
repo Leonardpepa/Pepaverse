@@ -11,19 +11,19 @@ const postSchema = new Mongoose.Schema({
   },
   author: {
     type: Mongoose.SchemaTypes.ObjectId,
-    ref: "User"
+    ref: "User",
   },
   likes: [
     {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: "Like"
-    }
+      ref: "Like",
+    },
   ],
   comments: [
     {
       type: Mongoose.Schema.Types.ObjectId,
       ref: "Comment",
-    }
+    },
   ],
 });
 

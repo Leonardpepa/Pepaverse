@@ -5,7 +5,7 @@ const passport = require("passport");
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const morgan = require("morgan");
-const {server, app, io, express} = require("./server.config");
+const { server, app, io, express } = require("./server.config");
 const router = require("./router.js");
 require("dotenv").config();
 
