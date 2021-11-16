@@ -77,26 +77,6 @@
                     <button class="comment-post btn btn-primary">Post</button>
                   </div>
                   <div>
-                    <% if (post.comments.length !== 0) { %>
-                        <% post.comments.forEach(comment => { %>
-                        <div class="shadow-lg p-3 mb-5 bg-body rounded p-2 m-2 comment">
-                          <div class="row p-0 m-0">
-                            <div class="m-0 p-0">
-                             <a href="profile/<%= comment.author._id %> " class="d-flex justify-content-start align-items-center">
-                               <img style="max-width: 40px;" src="<%= comment.author.profileUrl %> " class="img-fluid img-thumbnail post-img m-1 " alt="user">
-                               <p class="card-title m-1 "><%= comment.author.name %></p>
-                             </a> 
-                            </div>
-                            <div class="m-1 p-0">
-                              <div class="card-body m-0 p-0">
-                                <p class="card-text"><%= comment.content %> </p>
-                                <p class="card-text"><small class="text-muted">Last updated <%= Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60)  %>  mins ago</small></p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <% }) %>
-                    <% } %>
                   </div>
                   </div>
               </div>
@@ -161,6 +141,7 @@
           const data = await commentPost(postInput.classList[1], postInput.value);
           if(data.ok){
             div.children[1].textContent =  " " + (Number(div.children[1].textContent) + 1);
+            createUIComment(data.comment, parent.parentElement.getElementsByClassName("comments")[0].children[1]);
           }
         }
       });
@@ -184,11 +165,14 @@
 
     const showCommentBtns = document.querySelectorAll(".comment-btn");
 
-    const showComments = (list) => {
+    const showComments = async (list) => {
       list.forEach(btn => {
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", async (e) => {
           btn.parentElement.parentElement.getElementsByClassName("comments")[0].classList.toggle("hidden");
-          // fetchComments(btn.classList[0]);
+          if(btn.parentElement.parentElement.getElementsByClassName("comments")[0].children[1].children.length === 0){
+            const data = await fetchComments(btn.classList[0]);
+            displayFetchedComments( data.results , btn.parentElement.parentElement.getElementsByClassName("comments")[0].children[1]);
+          }
         });
       });
     }
@@ -196,37 +180,45 @@
     showComments(showCommentBtns);
 
 
-    // const fetchComments = async (postId) => {
-    //   const res = await fetch(`/post/${postId}/comment`, {
-    //     method: "get",
-    //     credentials: "include",
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //   });
-    //   const data  = await res.json();
-    //   return data;
-    // }
+    const fetchComments = async (postId) => {
+      const res = await fetch(`/post/${postId}/comment`, {
+        method: "get",
+        credentials: "include",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      const data  = await res.json();
+      return data;
+    }
 
-    // const displayFetchedComments = (list) => {
-    //   list.forEach(comment => {
-    //     const content = `<div class="shadow-lg p-3 mb-5 bg-body rounded p-2 m-2 comment">
-    //                         <div class="row p-0 m-0">
-    //                           <div class="m-0 p-0">
-    //                            <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
-    //                              <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="user">
-    //                              <p class="card-title m-1 ">${comment.author.name}</p>
-    //                            </a> 
-    //                           </div>
-    //                           <div class="m-1 p-0">
-    //                             <div class="card-body m-0 p-0">
-    //                               <p class="card-text">${comment.content}</p>
-    //                               <p class="card-text"><small class="text-muted">Last updated ${Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60)}mins ago</small></p>
-    //                             </div>
-    //                           </div>
-    //                         </div>
-    //                       </div>`
-    //   });
-    // }
+    const displayFetchedComments = (list, div) => {
+      list.forEach(comment => {
+        createUIComment(comment, div);
+      });
+    }
+
+    const createUIComment = (comment, div) => {
+      const content = document.createElement("div");
+        content.innerHTML = `<div class="shadow-lg p-3 mb-5 bg-body rounded p-2 m-2 comment">
+                            <div class="row p-0 m-0">
+                              <div class="m-0 p-0">
+                               <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
+                                 <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="user">
+                                 <p class="card-title m-1 ">${comment.author.name}</p>
+                               </a> 
+                              </div>
+                              <div class="m-1 p-0">
+                                <div class="card-body m-0 p-0">
+                                  <p class="card-text">${comment.content}</p>
+                                  <p class="card-text"><small class="text-muted">Last updated ${Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60)}mins ago</small></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>`;
+
+        
+        div.appendChild(content);
+    } 
 
   </script>

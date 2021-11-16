@@ -22,7 +22,7 @@ const createComment = async (postId, userId, content) => {
     );
 
     if (comment) {
-      return comment;
+      return comment.populate({path: "author", select: ["name", "profileUrl"]});
     }
     return null;
   } catch (error) {
