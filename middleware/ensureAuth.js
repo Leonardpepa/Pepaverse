@@ -8,7 +8,7 @@ const ensureAuth = (req, res, next) => {
   }
 };
 
-const passportAuthenticate = (req, res) => {
+const passportAuthenticateLocal = (req, res) => {
   passport.authenticate("local", {
     failureRedirect: "/login?e=Email or Password are incorrect",
   })(req, res, () => {
@@ -16,4 +16,4 @@ const passportAuthenticate = (req, res) => {
   });
 };
 
-module.exports = { ensureAuth, passportAuthenticate };
+module.exports = { ensureAuth, passportAuthenticateLocal };

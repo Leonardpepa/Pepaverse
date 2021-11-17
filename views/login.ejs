@@ -15,9 +15,9 @@
           alt="logo"
         />
       </div>
-      <% if (error.genericError) { %>
+      <% if (error.generic) { %>
         <div class="alert alert-danger" role="alert">
-          <%= error.genericError %>  
+          <%= error.generic %>  
         </div>
       <% } %>
       <form action="/auth/login" method="post">

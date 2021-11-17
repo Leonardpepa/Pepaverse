@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const { passportAuthenticate } = require("../middleware/ensureAuth");
+const { passportAuthenticateLocal } = require("../middleware/ensureAuth");
 
 const findUserById = async (id) => {
   try {
@@ -132,18 +132,16 @@ const createUser = async (
       password,
       (err, user) => {
         if (err) {
-          res.json({
-            error: {
-              genericError: "An unexpected error ocured please try again",
-            },
-          });
+          res.redirect(
+            "/register?e=" + err.message
+          );
           return;
         }
-        passportAuthenticate(req, res);
+        passportAuthenticateLocal(req, res);
       }
     );
   } catch (error) {
-    console.log(error);
+    res.redirect("/register?e=An unexpected error ocured please try again");
   }
 };
 
@@ -156,17 +154,13 @@ const loginUser = async (req, res, username, password) => {
 
     await req.login(user, (err) => {
       if (err) {
-        res.render("login", {
-          error: {
-            genericEror: "An unexpected error occured please try again",
-          },
-        });
+        res.redirect("/login?e=An unexpected error ocured please try again");
         return;
       }
-      passportAuthenticate(req, res);
+      passportAuthenticateLocal(req, res);
     });
   } catch (error) {
-    console.log(error);
+    res.redirect("/login?e=An unexpected error ocured please try again");
   }
 };
 

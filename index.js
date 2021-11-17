@@ -9,9 +9,8 @@ initdb();
 app.use("/", router);
 
 io.on("connection", (socket) => {
-  console.log(socket.handshake.headers);
 
-
+  console.log("user connected");
 
   socket.on("disconnect", () => {
     console.log("user disconected");

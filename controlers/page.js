@@ -10,10 +10,10 @@ const pageController = {
     }
   },
   login: (req, res) => {
-    res.render("login", { error: { genericError: req.params?.e } });
+    res.render("login", { error: { generic: req.query.e } });
   },
   register: (req, res) => {
-    res.render("register", { error: {} });
+    res.render("register", { error: {generic: req.query.e} });
   },
   profile: async (req, res) => {
     const id = req.params.userid;
