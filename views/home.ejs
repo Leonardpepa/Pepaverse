@@ -39,7 +39,7 @@
           let yes = {};
         </script>
         <% posts.forEach((post) => { %>
-          <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 530px;">
+          <div class="card mb-3 shadow p-2 mb-5 bg-body rounded" style="max-width: 530px;">
             <div class="row g-0 p-0">
                 <div class="col-md-3 text-center p-0">
                   <a href="/profile/<%= post.author._id %> ">
@@ -50,28 +50,28 @@
                 <div class="card-body">
                   <a class="post-name" href="/profile/<%= post.author._id %> "><h5 class="card-title"><%= post.author.name %> </h5></a>
                   <p class="card-text"><%= post.content %> </p>
-                  <p class="card-text"><small class="text-muted"><%= post.createdAt.toDateString() %> </small></p>
                 </div>
                 <div class="d-flex post-interactions">
-                  <i style="color: red;" class="fas fa-heart m-2 p-2">  <%= post.likes.length%></i>
-                  <i class="far fa-comment m-2 p-2">  <%= post.comments.length %></i>
+                  <i style="color: red;" class="fas fa-heart m-2 p-1">  <%= post.likes.length%></i>
+                  <i class="far fa-comment m-2 p-1">  <%= post.comments.length %></i>
                 </div>
                 <div class="d-flex">
                   <% if (user.likedPosts.includes(post._id)) { %>
                     <script>
                       yes["<%= post._id %>"] = true;
                     </script>
-                    <p style="color: red;"  class="m-2 p-2 like <%= post._id %>"><i class="fas fa-heart "></i> <span>Liked</span></p>
+                    <p style="color: red;"  class="m-2 p-1 like <%= post._id %>"><i class="fas fa-heart "></i> <span>Liked</span></p>
                   <% }else {%>
-                    <p style="color: black;"  class="m-2 p-2 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
+                    <p style="color: black;"  class="m-2 p-1 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
                     <%}%>
-                  <p class="<%= post._id%> m-2 p-2 comment-btn"><i class="far fa-comment "></i> <span>Comment</span></p>
+                  <p class="<%= post._id%> m-2 p-1 comment-btn"><i class="far fa-comment "></i> <span>Comment</span></p>
                   <p class="m-2 p-2 share"><i class="far fa-share-square"></i> <span>Share</span></p>
                 </div>
+                <p class="card-text m-2"><small class="text-muted"><%= post.createdAt.toDateString() %> </small></p>
                 <!-- comments -->
                 
                 <div class="comments hidden">
-                  <div class="p-2 m-2 shadow-lg p-3 mb-5 bg-body rounded">
+                  <div class="p-2 m-2 shadow-lg  mb-5 bg-body rounded">
                     <label for="comment">Add a comment</label>
                     <input class="form-control <%= post._id %>" type="text" id="comment" name="comment">
                     <button class="comment-post btn btn-primary">Post</button>
@@ -200,7 +200,7 @@
 
     const createUIComment = (comment, div) => {
       const content = document.createElement("div");
-        content.innerHTML = `<div class="shadow-lg  mb-5 bg-body rounded p-2 m-2 comment">
+        content.innerHTML = `<div class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
                             <div class="row p-0 m-0">
                               <div class="m-0 p-0">
                                <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
@@ -221,4 +221,8 @@
         div.appendChild(content);
     } 
 
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io("http://localhost:3000");
   </script>

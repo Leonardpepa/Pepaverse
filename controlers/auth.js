@@ -55,7 +55,9 @@ const authController = {
   },
   logout: async (req, res, next) => {
     await req.logout();
-    await res.redirect("/");
+    await req.session.destroy(function (err) {
+      res.redirect('/'); //Inside a callback… bulletproof!
+  });
   },
 };
 
