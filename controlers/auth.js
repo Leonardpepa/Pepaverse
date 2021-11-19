@@ -27,7 +27,7 @@ const authController = {
   register: async (req, res, next) => {
     const { username, password, confirm } = req.body;
     const name = username.split("@")[0];
-    const profileUrl = "/default-profile.jpg";
+    const profileUrl = "";
     const searchName = name.toLowerCase();
 
     if (!validateEmail(username)) {

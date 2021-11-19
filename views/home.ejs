@@ -85,8 +85,11 @@
         <% }) %>
       </div>
     </section>
-  </main>
-  <%- include("partials/footer") %> 
+  </main> 
+  <!-- Button trigger modal -->
+<button style="visibility: hidden; display: none;"  id="click-modal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
   <script>
     const likeBtnArray = document.querySelectorAll(".like");
     
@@ -220,9 +223,95 @@
         
         div.appendChild(content);
     } 
+  </script>
+  <script>
+    const hasAvatar = "<%= user.profileUrl %>";
+
+    window.addEventListener('load', async (e) => {
+      await loadModal(hasAvatar);
+    });
+
+    const requestAvatar = async () => {
+      try {
+        const response = await fetch("https://randomuser.me/api/?inc=email");
+        const data = await response.json();
+
+        const id = data.info.seed;
+        const url = `https://gravatar.com/avatar/${id}?s=400&d=robohash&r=x`;
+        await displayAvatar(url);
+      } catch (error) {
+        alert("An Error Occured Please try again");
+      }
+    }
+
+    const displayAvatar = (url) => {
+      document.getElementById("avatar-img").src = url;
+    }
+
+    const loadModal = async  (hasAvatar) => {
+      if(!hasAvatar){
+        const div = document.createElement("div");
+        div.innerHTML = `
+              <div class="modal fade" data-bs-backdrop="static"  data-bs-keyboard="false" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h6 class=" text-uppercase  mb-4 text-muted modal-title">Select Avatar</h6>
+                    </div>
+                    <div class="model-body d-flex flex-column justify-content-center align-content-center">
+                        <img id="avatar-img" class="img-thumbnail" style="border-radius: 50%; border: 1px solid #111; max-width: 50%; margin: 0 auto;" src="" alt="Avatar">
+                        <div class="d-flex justify-content-center align-content-center">
+                          <button id="refresh-avatar" class="m-2 btn btn-secondary">Random</button>
+                          <button id="save-avatar" class="m-2 btn btn-success">Select</button>
+                        </div>  
+                    </div>
+                  </div>
+                </div>
+              </div>`
+              document.getElementsByTagName("body")[0].appendChild(div);
+
+              document.getElementById("click-modal").click(); 
+              
+              await requestAvatar();
+
+              const refreshAvatar =  document.getElementById("refresh-avatar");
+              refreshAvatar && refreshAvatar.addEventListener("click", async (e) => {
+                await requestAvatar();
+              });
+
+              const saveAvatarBtn = document.getElementById("save-avatar");
+              saveAvatarBtn && saveAvatarBtn.addEventListener("click", async (e) => {
+                await saveAvatar(document.getElementById("avatar-img").src);
+              });
+      }
+    }
+
+    const saveAvatar = async (url) => {
+      const userid = "<%= user._id %>;"
+      try {
+        const response = await fetch("/users/update/" + userid, {
+          method: "post",
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({profileUrl: url})
+        });
+        const data = await response.json();
+        console.log(data);
+
+        if(data.ok){
+          window.location.href = "/";
+        }
+      } catch (error) {
+        alert("An Error Occured Please try again");
+      }
+
+    }
 
   </script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io("http://localhost:3000");
   </script>
+  <%- include("partials/footer") %>
