@@ -19,7 +19,7 @@ searchInput.addEventListener("input", async (e) => {
 searchInput.addEventListener("focusout", (e) => {
   setTimeout(() => {
     updateList([]);
-  }, 100);
+  }, 900);
 });
 
 const fetchUser = async (name) => {

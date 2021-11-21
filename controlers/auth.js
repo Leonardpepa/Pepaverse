@@ -2,6 +2,7 @@ const { createUser, loginUser } = require("../db/user");
 const passport = require("passport");
 const { validateEmail, validatePassword } = require("../utils/validation");
 const User = require("../models/user");
+const  jwt = require('jsonwebtoken');
 
 const authController = {
   google: (req, res) => {
@@ -14,6 +15,8 @@ const authController = {
       (err, user) => {
         req.login(user, (err) => {
           if (!err) {
+            const token = jwt.sign({ user: {username: user.username, id: user._id } }, "process.env.SECRET");
+            res.cookie('token', token);
             res.redirect("/");
           }
         });
@@ -56,6 +59,7 @@ const authController = {
   logout: async (req, res, next) => {
     await req.logout();
     await req.session.destroy(function (err) {
+      res.clearCookie('token');
       res.redirect('/'); //Inside a callback… bulletproof!
   });
   },
