@@ -13,9 +13,9 @@ const authController = {
       "google",
       { failureRedirect: "/login?e=Unauthorized" },
       (err, user) => {
-        req.login(user, (err) => {
+        req.login(user, async (err) => {
           if (!err) {
-            const token = jwt.sign({ user: {username: user.username, id: user._id } }, "process.env.SECRET");
+            const token =  jwt.sign({ user: {username: user.username, _id: user._id } }, "process.env.SECRET");
             res.cookie('token', token);
             res.redirect("/");
           }
@@ -57,11 +57,11 @@ const authController = {
     );
   },
   logout: async (req, res, next) => {
-    await req.logout();
-    await req.session.destroy(function (err) {
+    req.logout();
+    req.session.destroy(function (err) {
       res.clearCookie('token');
       res.redirect('/'); //Inside a callback… bulletproof!
-  });
+    });
   },
 };
 
