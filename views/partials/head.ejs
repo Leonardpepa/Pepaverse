@@ -18,3 +18,9 @@
       integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
       crossorigin="anonymous"
     />
+    <% if (user) { %>
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+        const socket = io("http://localhost:3000");
+      </script>
+    <% } %>
