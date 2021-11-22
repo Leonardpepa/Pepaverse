@@ -4,7 +4,7 @@
   <body>
     <!-- nav -->
     <%- include("partials/nav", {user: user}) %> 
-    <!-- main -->
+    <!-- main --> 
     <main id="main">
       <div class="container-sm">
         <div
@@ -35,6 +35,64 @@
           </div>
         </div>
       </div>
+
+      <div class="container-fluid d-flex justify-content-center align-items-center flex-column">
+        <h3 class="text-uppercase  mb-4" style="margin: 1rem auto;">POSTS</h3>
+        <section id="feed"  class="container-sm" >
+          <div class="posts">
+            <script>
+              let yes = {};
+            </script>
+            <% profileUser.posts.forEach((post) => { %>
+              <div class="card mb-3 shadow p-2 mb-5 bg-body rounded" style="max-width: 530px; margin: 0 auto;">
+                <div class="row g-0 p-0">
+                    <div class="col-md-3 text-center p-0">
+                      <a href="/profile/<%= post.author._id %> ">
+                        <img class="post-img img-thumbnail" src="<%= post.author.profileUrl %> " class="img-fluid rounded-start" alt="Users profile">
+                      </a>
+                    </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <a class="post-name" href="/profile/<%= post.author._id %> "><h5 class="card-title"><%= post.author.name %> </h5></a>
+                      <p class="card-text"><%= post.content %> </p>
+                    </div>
+                    <div class="d-flex post-interactions">
+                      <i style="color: red;" class="fas fa-heart m-2 p-1">  <%= post.likes.length%></i>
+                      <i class="far fa-comment m-2 p-1">  <%= post.comments.length %></i>
+                    </div>
+                    <div class="d-flex">
+                      <% if (user.likedPosts.includes(post._id)) { %>
+                        <script>
+                          yes["<%= post._id %>"] = true;
+                        </script>
+                        <p style="color: red;"  class="m-2 p-1 like <%= post._id %>"><i class="fas fa-heart "></i> <span>Liked</span></p>
+                      <% }else {%>
+                        <p style="color: black;"  class="m-2 p-1 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
+                        <%}%>
+                      <p class="<%= post._id%> m-2 p-1 comment-btn"><i class="far fa-comment "></i> <span>Comment</span></p>
+                      <p class="m-2 p-2 share"><i class="far fa-share-square"></i> <span>Share</span></p>
+                    </div>
+                    <p class="card-text m-2"><small class="text-muted"><%= post.createdAt.toDateString() %> </small></p>
+                    <!-- comments -->
+                    
+                    <div class="comments hidden">
+                      <div class="p-2 m-2 shadow-lg  mb-5 bg-body rounded">
+                        <label for="comment">Add a comment</label>
+                        <input class="form-control <%= post._id %>" type="text" id="comment" name="comment">
+                        <button class="comment-post btn btn-primary">Post</button>
+                      </div>
+                      <div>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        </section>
+      </div>
+      
+
       <!-- Modal -->
       <div
         class="modal fade"
@@ -124,5 +182,139 @@
 
       });
 
+    </script>
+     <script>
+      const likeBtnArray = document.querySelectorAll(".like");
+      
+      likeBtnArray.forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+          const res = await sendLikeRequest(btn.classList[3]);
+          const parent = btn.parentElement.parentElement;
+          const div = parent.getElementsByClassName("post-interactions")[0];
+  
+          if(res.ok){
+            if(res.liked){
+              yes[btn.classList[3]] = true;
+              btn.style.color = "red";
+              btn.children[0].classList.remove("far");
+              btn.children[0].classList.add("fas");
+              btn.children[1].textContent = "Liked"
+              div.children[0].textContent = " " + (Number(div.children[0].textContent) + 1);
+            }else{
+              yes[btn.classList[3]] = false;
+              btn.style.color = "black";
+              btn.children[0].classList.remove("fas");
+              btn.children[0].classList.add("far");
+              btn.children[1].textContent = "Like"
+              div.children[0].textContent = " " + (Number(div.children[0].textContent) - 1);
+            }
+          }
+        });
+      });
+  
+  
+      const sendLikeRequest = async (postId) => {
+        const res = await fetch("/users/like", {
+          method: yes[postId] ? "delete":"post",
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({postId: postId}),
+        });
+        const data = await res.json();
+        return await data;
+      }
+  
+      const postBtns = document.querySelectorAll(".comment-post");
+  
+      postBtns.forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+          const parent = btn.parentElement.parentElement;
+          const postInput = parent.getElementsByTagName("input")[0];
+          const div = parent.parentElement.getElementsByClassName("post-interactions")[0];
+          if(postInput.value){
+            const data = await commentPost(postInput.classList[1], postInput.value);
+            if(data.ok){
+              div.children[1].textContent =  " " + (Number(div.children[1].textContent) + 1);
+              createUIComment(data.comment, parent.parentElement.getElementsByClassName("comments")[0].children[1]);
+            }
+          }
+        });
+      })
+  
+      const commentPost = async (postId, content) => {
+        const res = await fetch("/users/comment", {
+          method: "post",
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            postId,
+            content,
+          }),
+        });
+        const data = await res.json();
+        return data;
+      }
+  
+      const showCommentBtns = document.querySelectorAll(".comment-btn");
+  
+      const showComments = async (list) => {
+        list.forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            btn.parentElement.parentElement.getElementsByClassName("comments")[0].classList.toggle("hidden");
+            if(btn.parentElement.parentElement.getElementsByClassName("comments")[0].children[1].children.length === 0){
+              const data = await fetchComments(btn.classList[0]);
+              displayFetchedComments( data.results , btn.parentElement.parentElement.getElementsByClassName("comments")[0].children[1]);
+            }
+          });
+        });
+      }
+  
+      showComments(showCommentBtns);
+  
+  
+      const fetchComments = async (postId) => {
+        const res = await fetch(`/post/${postId}/comment`, {
+          method: "get",
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        const data  = await res.json();
+        return data;
+      }
+  
+      const displayFetchedComments = (list, div) => {
+        list.forEach(comment => {
+          createUIComment(comment, div);
+        });
+      }
+  
+      const createUIComment = (comment, div) => {
+        const content = document.createElement("div");
+          content.innerHTML = `<div class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
+                              <div class="row p-0 m-0">
+                                <div class="m-0 p-0">
+                                 <a href="/profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
+                                   <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="user">
+                                   <p class="card-title m-1 ">${comment.author.name}</p>
+                                 </a> 
+                                </div>
+                                <div class="m-1 p-0">
+                                  <div class="card-body m-0 p-0">
+                                    <p class="card-text">${comment.content}</p>
+                                    <p class="card-text"><small class="text-muted">Last updated ${Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60)}mins ago</small></p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>`;
+  
+          
+          div.appendChild(content);
+      } 
     </script>
     <%- include('partials/footer'); %>

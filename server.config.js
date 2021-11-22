@@ -6,7 +6,6 @@ const session = require("express-session");
 const cookieParser  = require('cookie-parser');
 const morgan = require("morgan");
 const http = require("http");
-const { Server }  = require('socket.io');
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -26,16 +25,12 @@ app.use(
 );
 
 const { passport } = require("./passport.config");
+
+
 app.use(passport.initialize());
+
 app.use(passport.session());
 
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-});
 
-module.exports = { server, app, io, express };
+module.exports = { server, app, express };

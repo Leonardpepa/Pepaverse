@@ -21,6 +21,8 @@
     <% if (user) { %>
       <script src="/socket.io/socket.io.js"></script>
       <script>
-        const socket = io("http://localhost:3000");
+        const socket = io("<%= process.env.FRONTEND_URL %>", {
+          withCredentials: true,
+        });
       </script>
     <% } %>
