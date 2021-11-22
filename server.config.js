@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 app.use(express.static(__dirname + "/public"));
 app.use(
   session({
-    secret: "this is a long string",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {

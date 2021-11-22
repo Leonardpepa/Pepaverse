@@ -14,7 +14,7 @@ const passportAuthenticateLocal = (req, res) => {
   passport.authenticate("local", {
     failureRedirect: "/login?e=Email or Password are incorrect",
   })(req, res, async () => {
-    const token = jwt.sign({ user: {username: req.user.username, _id: req.user._id } }, "process.env.SECRET");
+    const token = jwt.sign({ user: {username: req.user.username, _id: req.user._id } }, process.env.SECRET);
     res.cookie('token', token);
     res.redirect("/");
   });

@@ -15,7 +15,7 @@ const authController = {
       (err, user) => {
         req.login(user, async (err) => {
           if (!err) {
-            const token =  jwt.sign({ user: {username: user.username, _id: user._id } }, "process.env.SECRET");
+            const token =  jwt.sign({ user: {username: user.username, _id: user._id } }, process.env.SECRET);
             res.cookie('token', token);
             res.redirect("/");
           }
