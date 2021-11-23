@@ -23,3 +23,8 @@
 h5:hover{
   color: rgb(73, 73, 199);
 }
+
+.post-img{
+  border-radius: 50%;
+  max-width: 87px;    
+}

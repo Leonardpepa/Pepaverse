@@ -48,7 +48,7 @@
                 <div class="row g-0 p-0">
                     <div class="col-md-3 text-center p-0">
                       <a href="/profile/<%= post.author._id %> ">
-                        <img class="post-img img-thumbnail" src="<%= post.author.profileUrl %> " class="img-fluid rounded-start" alt="Users profile">
+                        <img class="post-img img-thumbnail img-fluid" src="<%= post.author.profileUrl %> "  alt="Users profile">
                       </a>
                     </div>
                   <div class="col-md-8">
@@ -300,7 +300,7 @@
                               <div class="row p-0 m-0">
                                 <div class="m-0 p-0">
                                  <a href="/profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
-                                   <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="user">
+                                  <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="user">
                                    <p class="card-title m-1 ">${comment.author.name}</p>
                                  </a> 
                                 </div>
