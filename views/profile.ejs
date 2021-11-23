@@ -302,6 +302,19 @@
       }
   
       const createUIComment = (comment, div) => {
+        let updated = Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60);
+        let unit = "minutes";
+        
+        if(updated > 60){
+          updated = Math.floor(updated / 60);
+          unit = "hours";
+        }
+
+        if(updated > 24 && unit === "hours"){
+          updated = Math.floor( updated / 24);
+          unit = "days";
+        }
+        
         const content = document.createElement("div");
           content.innerHTML = `<div class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
                               <div class="row p-0 m-0">
@@ -314,7 +327,7 @@
                                 <div class="m-1 p-0">
                                   <div class="card-body m-0 p-0">
                                     <p class="card-text">${comment.content}</p>
-                                    <p class="card-text"><small class="text-muted">Last updated ${Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60)}mins ago</small></p>
+                                    <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
                                   </div>
                                 </div>
                               </div>
