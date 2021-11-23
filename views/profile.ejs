@@ -242,7 +242,7 @@
               div.children[1].textContent =  " " + (Number(div.children[1].textContent) + 1);
               const comment = createUIComment(data.comment, parent.parentElement.getElementsByClassName("comments")[0].children[1]);
               postInput.value = "";
-              comment.scrollIntoView({behavior: "smooth"});
+              comment.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
             }
           }
         });
