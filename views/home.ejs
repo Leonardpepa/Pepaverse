@@ -148,7 +148,9 @@
           const data = await commentPost(postInput.classList[1], postInput.value);
           if(data.ok){
             div.children[1].textContent =  " " + (Number(div.children[1].textContent) + 1);
-            createUIComment(data.comment, parent.parentElement.getElementsByClassName("comments")[0].children[1]);
+            const comment = createUIComment(data.comment, parent.parentElement.getElementsByClassName("comments")[0].children[1]);
+            postInput.value = "";
+            comment.scrollIntoView({behavior: "smooth"});
           }
         }
       });
@@ -227,6 +229,7 @@
 
         
         div.appendChild(content);
+        return content;
     } 
   </script>
   <script>
