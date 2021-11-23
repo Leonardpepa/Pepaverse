@@ -73,9 +73,11 @@
                 
                 <div class="comments hidden">
                   <div class="p-2 m-2 shadow-lg  mb-5 bg-body rounded">
-                    <label for="comment">Add a comment</label>
-                    <input class="form-control <%= post._id %>" type="text" id="comment" name="comment">
-                    <button class="comment-post btn btn-primary">Post</button>
+                    <form class="comment-form">
+                      <label for="comment">Add a comment</label>
+                      <input class="form-control <%= post._id %> comment-field" type="text" id="comment" name="comment">
+                      <button type="submit" class="comment-post btn btn-primary">Post</button>
+                    </form>
                   </div>
                   <div>
                   </div>
@@ -134,11 +136,12 @@
       return await data;
     }
 
-    const postBtns = document.querySelectorAll(".comment-post");
-
-    postBtns.forEach(btn => {
-      btn.addEventListener("click", async (e) => {
-        const parent = btn.parentElement.parentElement;
+    const commentForms = document.querySelectorAll(".comment-form");
+    
+    commentForms.forEach( async (form) => {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const parent = form.parentElement.parentElement;
         const postInput = parent.getElementsByTagName("input")[0];
         const div = parent.parentElement.getElementsByClassName("post-interactions")[0];
         if(postInput.value){
@@ -149,7 +152,8 @@
           }
         }
       });
-    })
+    });
+
 
     const commentPost = async (postId, content) => {
       const res = await fetch("/users/comment", {
