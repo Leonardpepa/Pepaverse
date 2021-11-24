@@ -45,6 +45,7 @@
             </script>
             <% profileUser.posts.forEach((post) => { %>
               <div id="post<%= post._id %>" class="card mb-3 shadow p-2 mb-5 bg-body rounded" style="max-width: 530px; margin: 0 auto;">
+                <% if (post.author._id.toString() === user._id.toString()) { %>
                 <!-- delete modal popup -->
                 <div class="modal" tabindex="-1" id="deletePostModal<%= post._id%>">
                   <div class="modal-dialog">
@@ -71,7 +72,7 @@
                     <li  data-bs-toggle="modal" data-bs-target="#deletePostModal<%= post._id %> "><a class="dropdown-item pointer"><i class="far fa-trash-alt"></i> Delete</a></li>
                   </ul>
                 </div>
-                
+                <% } %>
                 <div class="row g-0 p-0">
                     <div class="col-md-3 text-center p-0">
                       <a href="/profile/<%= post.author._id %> ">
@@ -344,50 +345,72 @@
         }
         
         const content = document.createElement("div");
-        content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
-                              <div class="dropdown">
-                                  <i class="option fas fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li data-bs-toggle="modal" data-bs-target="#editCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-edit"></i> Edit</a></li>
-                                    <li data-bs-toggle="modal" data-bs-target="#deleteCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-trash-alt"></i> Delete</a></li>
-                                  </ul>
-                                </div>
-                                <div class="row p-0 m-0">
-                                  <div class="m-0 p-0">
-                                    <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
-                                      <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="Users profile">
-                                      <p class="card-title m-1 ">${comment.author.name}</p>
-                                    </a> 
+        
+        if(comment.author._id.toString() === "<%= user._id.toString()%>"){
+          content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">              
+                                <div class="dropdown">
+                                    <i class="option fas fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                      <li data-bs-toggle="modal" data-bs-target="#editCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-edit"></i> Edit</a></li>
+                                      <li data-bs-toggle="modal" data-bs-target="#deleteCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-trash-alt"></i> Delete</a></li>
+                                    </ul>
                                   </div>
-                                  <div class="m-1 p-0">
-                                    <div class="card-body m-0 p-0">
-                                      <p class="card-text">${comment.content}</p>
-                                      <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
+                                  <div class="row p-0 m-0">
+                                    <div class="m-0 p-0">
+                                      <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
+                                        <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="Users profile">
+                                        <p class="card-title m-1 ">${comment.author.name}</p>
+                                      </a> 
+                                    </div>
+                                    <div class="m-1 p-0">
+                                      <div class="card-body m-0 p-0">
+                                        <p class="card-text">${comment.content}</p>
+                                        <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
+                              
+                              <!-- delete modal popup -->
+                              <div class="modal" tabindex="-1" id="deleteCommentModal${comment._id}">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title">Delete Comment</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <p>Are you sure you want to delete this comment? </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                      <button onclick="deleteComment(this.classList[3])" type="button" class="btn btn-danger delete-post  ${comment._id} %>" data-bs-dismiss="modal">Delete</button>
                                     </div>
                                   </div>
                                 </div>
-                            </div>
-                            
-                            <!-- delete modal popup -->
-                            <div class="modal" tabindex="-1" id="deleteCommentModal${comment._id}">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title">Delete Comment</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <p>Are you sure you want to delete this comment? </p>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button onclick="deleteComment(this.classList[3])" type="button" class="btn btn-danger delete-post  ${comment._id} %>" data-bs-dismiss="modal">Delete</button>
-                                  </div>
-                                </div>
                               </div>
-                            </div>
-                            <!-- delete modal popup -->
-                            `;
+                              <!-- delete modal popup -->
+                              `;
+        }
+        else{
+          content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">              
+                                  <div class="row p-0 m-0">
+                                    <div class="m-0 p-0">
+                                      <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
+                                        <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="Users profile">
+                                        <p class="card-title m-1 ">${comment.author.name}</p>
+                                      </a> 
+                                    </div>
+                                    <div class="m-1 p-0">
+                                      <div class="card-body m-0 p-0">
+                                        <p class="card-text">${comment.content}</p>
+                                        <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>`;
+        }
+
 
         
         div.appendChild(content);
