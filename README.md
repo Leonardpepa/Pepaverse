@@ -9,6 +9,8 @@
 * Login-Register ( via email-password or google-auth20 )
 * Edit Profile ( profile picture url and description )
 * Create Post ( only text for now )
+* Delete Post
+* Delete Comment
 * Like Post ( any users post )
 * Search Users ( via name )
 * Logout
