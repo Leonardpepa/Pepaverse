@@ -44,3 +44,18 @@ h5:hover{
     width: 0;
     height: 0;
 }
+
+.option{
+    width: max-content;
+    padding: 0.5rem;
+}
+
+.option:hover{
+    background-color: rgb(240, 240, 240);
+    cursor: pointer;
+    transition: all 0.3s linear;
+}
+
+.pointer:hover{
+    cursor: pointer;
+}

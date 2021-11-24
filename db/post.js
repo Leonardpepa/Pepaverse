@@ -1,6 +1,8 @@
 const Like = require("../models/like");
 const Post = require("../models/post");
 const User = require("../models/user");
+const { deleteComment } = require("./comment");
+const { deleteLike } = require("./like");
 
 const createPost = async (content, userId) => {
   try {
@@ -25,6 +27,31 @@ const createPost = async (content, userId) => {
   }
 };
 
+const deletePost = async (postId) => {
+  try {
+    const deletedPost = await Post.findByIdAndRemove(postId);
+
+    await User.findByIdAndUpdate(deletedPost.author, { $pull: { posts: postId } });
+
+    const comments = deletedPost.comments;
+
+    comments.forEach( async (comment) => {
+      await deleteComment(comment);
+    });
+
+    const likes = deletedPost.likes;
+
+    likes.forEach(async (like) => {
+      await deleteLike(like);
+    });
+
+
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
 const updatePost = async (id, fieldsToUpdate) => {
   try {
     const post = await Post.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate })
@@ -48,4 +75,4 @@ const findPostById = async (id) => {
   }
 };
 
-module.exports = { createPost, updatePost, findPostById };
+module.exports = { createPost, updatePost, findPostById, deletePost };

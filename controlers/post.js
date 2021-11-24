@@ -1,4 +1,4 @@
-const { createPost } = require("../db/post");
+const { createPost, deletePost } = require("../db/post");
 
 const postcontroller = {
   create: async (req, res) => {
@@ -13,6 +13,15 @@ const postcontroller = {
       console.log(error);
     }
   },
+  delete: async (req, res) => {
+    const postId = req.body.postId;
+    const deletedPost = await deletePost(postId);
+    if(deletePost){
+      res.json({ok: true});
+      return;
+    }
+    res.json({ok: false});
+  }
 };
 
 module.exports = postcontroller;

@@ -42,14 +42,12 @@ const likeController = {
       const post = await findPostById(postId);
       await res.json({
         n: post.likes.length,
-        message: "Like Removed",
         ok: true,
         liked: false,
       });
     } else {
       await res.json({
         n: -1,
-        message: "error",
         ok: false,
         liked: false,
       });

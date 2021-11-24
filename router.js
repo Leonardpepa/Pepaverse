@@ -37,6 +37,7 @@ router.get("/post/:postId/comment", ensureAuth, commentController.getCommentsByP
 
 //upload a post
 router.post("/users/post", ensureAuth, postController.create);
+router.delete("/users/post", ensureAuth, postController.delete)
 
 //search
 router.post("/users/search", ensureAuth, userController.search);
