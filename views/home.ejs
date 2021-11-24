@@ -1,118 +1,32 @@
 <%- include("partials/head", {user: user}) %> 
-<link rel="stylesheet" href="/partials-css/nav.css">
-<link rel="stylesheet" href="/home.css">
+
+<link rel="stylesheet" href="/shared.css">
+
 </head>
+
 <body>
   <%-  include('partials/nav', {user: user}); %>
   <main id="main" class="container-sm p-4 d-sm-flex flex-sm-column justify-content-sm-center align-items-sm-center align-content-sm-center">
+    
     <h2 class="text-uppercase  mb-4" style="margin: 1rem auto;">Home Page</h2>
-
+    
     <!-- create-post -->
-    <div class="create-posts shadow p-3 mb-5 bg-body rounded">
-      <div class="card mb-1 shadow p-3 mb-5 bg-body rounded" style="max-width: 530px;">
-        <div class="row g-0 ">
-          <div style="margin-top: 3%;"  class=" col-sm-2  text-center">
-            <div style="display: flex;  align-items: center;">
-              <a href="/profile/<%= user._id %> ">
-                <img class = "create-post-img img-thumbnail" src = " <%= user.profileUrl %> " class="img-fluid rounded-start" alt="Users profile">
-              </a>
-              <a class="create-post-name" href=" /profile/<%= user._id %> "> <h5 class="card-title"><%= user.name %></h5> </a>
-            </div>
-          </div>
-          <div class="col-md-0">
-            <div class="card-body">
-              <form  action="/users/post" method="post">
-                <div class="form-floating mb-1">
-                  <input required type="text" class="form-control" name="postTextContent">
-                  <label for="postTextContent">What is in your mind <%= user.name %> ?</label>
-                </div>
-                <input style="float: right; margin: 0.4rem auto;" class="me-md-2 btn btn-primary" type="submit" value="Upload">
-              </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    
+    <%- include("components/createPost", {user: user}) %>
+    
     <h3 class="text-uppercase  mb-4" style="margin: 1rem auto;">Feed</h3>
+    
     <section id="feed"  class="container" >
       <div class="posts">
         <script>
           let yes = {};
         </script>
         <% posts.forEach((post) => { %>
-          <div id="post<%= post._id %>" class="card mb-3 shadow p-2 mb-5 bg-body rounded" style="max-width: 530px;">
-            <!-- delete modal popup -->
-            <div class="modal" tabindex="-1" id="deletePostModal<%= post._id %>">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Delete Post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete this post? </p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button onclick="deletePost('<%= post._id %>')" type="button" class="btn btn-danger delete-post <%= post._id %>" data-bs-dismiss="modal">Delete</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- delete modal popup -->
-            <div class="dropdown">
-              <i class="option fas fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false"></i>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li class="edit-post"><a class="dropdown-item pointer"><i class="far fa-edit"></i> Edit</a></li>
-                <li  data-bs-toggle="modal" data-bs-target="#deletePostModal<%= post._id %>"><a class="dropdown-item pointer"><i class="far fa-trash-alt"></i> Delete</a></li>
-              </ul>
-            </div>
-            <div class="row g-0 p-0">
-                <div class="col-md-3 text-center p-0">
-                  <a href="/profile/<%= post.author._id %> ">
-                    <img class="post-img img-thumbnail" src="<%= post.author.profileUrl %> " alt="Users profile">
-                  </a>
-                </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <a class="post-name" href="/profile/<%= post.author._id %> "><h5 class="card-title"><%= post.author.name %> </h5></a>
-                  <p class="card-text"><%= post.content %> </p>
-                </div>
-                <div class="d-flex post-interactions">
-                  <i style="color: red;" class="fas fa-heart m-2 p-1">  <%= post.likes.length%></i>
-                  <i class="far fa-comment m-2 p-1">  <%= post.comments.length %></i>
-                </div>
-                <div class="d-flex">
-                  <% if (user.likedPosts.includes(post._id)) { %>
-                    <script>
-                      yes["<%= post._id %>"] = true;
-                    </script>
-                    <p style="color: red;"  class="m-2 p-1 like <%= post._id %>"><i class="fas fa-heart "></i> <span>Liked</span></p>
-                  <% }else {%>
-                    <p style="color: black;"  class="m-2 p-1 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
-                    <%}%>
-                  <p class="<%= post._id%> m-2 p-1 comment-btn"><i class="far fa-comment "></i> <span>Comment</span></p>
-                  <p class="m-2 p-2 share"><i class="far fa-share-square"></i> <span>Share</span></p>
-                </div>
-                <p class="card-text m-2"><small class="text-muted"><%= post.createdAt.toDateString() %> </small></p>
-                <!-- comments -->
-                
-                <div class="comments hidden">
-                  <div class="p-2 m-2 shadow-lg  mb-5 bg-body rounded">
-                    <form class="comment-form">
-                      <label for="comment">Add a comment</label>
-                      <input class="form-control <%= post._id %> comment-field" type="text" id="comment" name="comment">
-                      <button type="submit" class="comment-post btn btn-primary">Post</button>
-                    </form>
-                  </div>
-                  <div>
-                  </div>
-                  </div>
-              </div>
-            </div>
-          </div>
+          <%- include("components/post", {post: post, user: user}) %>
         <% }) %>
       </div>
     </section>
+  
   </main> 
   <!-- Button trigger modal -->
 <button style="visibility: hidden; display: none;"  id="click-modal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -292,7 +206,30 @@
                               </div>
                             </div>
                             <!-- delete modal popup -->
-                            `;
+                            <div class="modal" tabindex="-1" id="editCommentModal${comment._id}">
+    
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Edit Comment</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                  <form class="update-comment" onsubmit="if(event.target.content.value === ''){alert('Comment cant be empty'); return;}else{ updateComment('${comment._id}', event.target.content.value);}">
+                                      <div class="modal-body">
+                                        <div>
+                                          <label class="form-label" for="content">Content</label>
+                                          <textarea name="content" style="height: auto; text-align: justify;" class="form-control" rows="15">${comment.content}</textarea>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                      </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+  `;
 
         
         div.appendChild(content);
@@ -383,5 +320,6 @@
       }
 
     }
+
   </script>
   <%- include("partials/footer") %>

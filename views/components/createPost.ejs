@@ -1,0 +1,26 @@
+<div class="create-posts shadow p-3 mb-5 bg-body rounded">
+    <div class="card mb-1 shadow p-3 mb-5 bg-body rounded" style="max-width: 530px;">
+      <div class="row g-0 ">
+        <div style="margin-top: 3%;"  class=" col-sm-2  text-center">
+          <div style="display: flex;  align-items: center;">
+            <a href="/profile/<%= user._id %> ">
+              <img class = "create-post-img img-thumbnail" src = " <%= user.profileUrl %> " class="img-fluid rounded-start" alt="Users profile">
+            </a>
+            <a class="create-post-name" href=" /profile/<%= user._id %> "> <h5 class="card-title"><%= user.name %></h5> </a>
+          </div>
+        </div>
+        <div class="col-md-0">
+          <div class="card-body">
+            <form  action="/users/post" method="post">
+              <div class="form-floating mb-1">
+                <input required type="text" class="form-control" name="postTextContent">
+                <label for="postTextContent">What is in your mind <%= user.name %> ?</label>
+              </div>
+              <input style="float: right; margin: 0.4rem auto;" class="me-md-2 btn btn-primary" type="submit" value="Upload">
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  

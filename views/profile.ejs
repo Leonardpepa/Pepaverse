@@ -1,188 +1,40 @@
 <%- include('partials/head', {user: user}); %>
-<link rel="stylesheet" href="/profile.css">
+
+<link rel="stylesheet" href="/shared.css">
+
 </head>
   <body>
     <!-- nav -->
     <%- include("partials/nav", {user: user}) %> 
     <!-- main --> 
     <main id="main">
-      <div class="container-sm">
-        <div
-          class="card shadow p-3 mb-5 bg-body rounded"
-          style="width: 55%; margin: 0 auto"
-        >
-          <img
-            style="max-width: 200px; margin: 0 auto; border-radius: 50%"
-            src=" <%= profileUser.profileUrl%> "
-            class="card-img-top img-thumbnail"
-            alt="Users Profile picture"
-            width="20%"
-          />
-          <div class="card-body">
-            <h5 class="card-title"><%= profileUser.name %></h5>
-            <p class="card-text"><%= profileUser.description%></p>
-            <% if (user._id.toString() === profileUser._id.toString()) { %>
-            <button
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Edit profile
-            </button>
-            <% } else{ %>
-              <button type="button" class="btn btn-primary add-friend-btn ">Add friend</button>
-            <% }%>
-          </div>
-        </div>
-      </div>
 
-      <div class="container-fluid d-flex justify-content-center align-items-center flex-column">
-        <h3 class="text-uppercase  mb-4" style="margin: 1rem auto;">POSTS</h3>
-        <section id="feed"  class="container-sm" >
+      <section class="container-sm header">
+        <%- include("components/profileCard", {profileUser: profileUser, user: user}) %>
+      </section>
+
+      <section class="body container-fluid d-flex justify-content-center align-items-center flex-column">
+        <% if (user._id.toString() === profileUser._id.toString()) { %>
+          <%- include("components/createPost", {user: user}) %>
+        <% } %>
+        <h3 class="text-uppercase  mb-4 text-center" style="margin: 1rem auto;"><%=profileUser.posts.length === 0? "User hasn't upload any post" : profileUser.name + " Posts" %></h3>
+        
+        <section id="feed"  class="container" >
           <div class="posts">
             <script>
               let yes = {};
             </script>
             <% profileUser.posts.forEach((post) => { %>
-              <div id="post<%= post._id %>" class="card mb-3 shadow p-2 mb-5 bg-body rounded" style="max-width: 530px; margin: 0 auto;">
-                <% if (post.author._id.toString() === user._id.toString()) { %>
-                <!-- delete modal popup -->
-                <div class="modal" tabindex="-1" id="deletePostModal<%= post._id%>">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Delete Post</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Are you sure you want to delete this post? </p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button onclick="deletePost(this.classList[3])" type="button" class="btn btn-danger delete-post <%= post._id %>" data-bs-dismiss="modal">Delete</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- delete modal popup -->
-                <div class="dropdown">
-                  <i class="option fas fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li class="edit-post"><a class="dropdown-item pointer"><i class="far fa-edit"></i> Edit</a></li>
-                    <li  data-bs-toggle="modal" data-bs-target="#deletePostModal<%= post._id %> "><a class="dropdown-item pointer"><i class="far fa-trash-alt"></i> Delete</a></li>
-                  </ul>
-                </div>
-                <% } %>
-                <div class="row g-0 p-0">
-                    <div class="col-md-3 text-center p-0">
-                      <a href="/profile/<%= post.author._id %> ">
-                        <img class="post-img img-thumbnail img-fluid" src="<%= post.author.profileUrl %> "  alt="Users profile">
-                      </a>
-                    </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <a class="post-name" href="/profile/<%= post.author._id %> "><h5 class="card-title"><%= post.author.name %> </h5></a>
-                      <p class="card-text"><%= post.content %> </p>
-                    </div>
-                    <div class="d-flex post-interactions">
-                      <i style="color: red;" class="fas fa-heart m-2 p-1">  <%= post.likes.length%></i>
-                      <i class="far fa-comment m-2 p-1">  <%= post.comments.length %></i>
-                    </div>
-                    <div class="d-flex">
-                      <% if (user.likedPosts.includes(post._id)) { %>
-                        <script>
-                          yes["<%= post._id %>"] = true;
-                        </script>
-                        <p style="color: red;"  class="m-2 p-1 like <%= post._id %>"><i class="fas fa-heart "></i> <span>Liked</span></p>
-                      <% }else {%>
-                        <p style="color: black;"  class="m-2 p-1 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
-                        <%}%>
-                      <p class="<%= post._id%> m-2 p-1 comment-btn"><i class="far fa-comment "></i> <span>Comment</span></p>
-                      <p class="m-2 p-2 share"><i class="far fa-share-square"></i> <span>Share</span></p>
-                    </div>
-                    <p class="card-text m-2"><small class="text-muted"><%= post.createdAt.toDateString() %> </small></p>
-                    <!-- comments -->
-                    
-                    <div class="comments hidden">
-                      <div class="p-2 m-2 shadow-lg  mb-5 bg-body rounded">
-                        <form class="comment-form">
-                          <label for="comment">Add a comment</label>
-                          <input class="form-control <%= post._id %> comment-field" type="text" id="comment" name="comment">
-                          <button type="submit" class="comment-post btn btn-primary">Post</button>
-                        </form>
-                      </div>
-                      <div>
-                      </div>
-                      </div>
-                  </div>
-                </div>
-              </div>
+              <%- include("components/post", {post: post, user: user}) %>
             <% }) %>
           </div>
         </section>
-      </div>
-      
 
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <form class="update-form" action="">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div class="mb-3">
-                  <label class="col-form-label" for="profileUrl">Profile Url</label>
-                  <input
-                    id="profileUrl"
-                    class="form-control"
-                    type="url"
-                    name="profileUrl"
-                    value="<%=user.profileUrl%>"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label class="col-form-label" for="description">Description</label>
-                  <input
-                    id="description"
-                    class="form-control"
-                    type="text"
-                    name="description"
-                    value="<%= user.description%>"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="submit" class="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+      </section>
+
+      <!-- edit profile Modal -->
+      <%- include("components/editProfileModal", { user: user }) %>
+    
     </main>
     <script src="/shared.js"></script>
     <script>
@@ -347,50 +199,73 @@
         const content = document.createElement("div");
         
         if(comment.author._id.toString() === "<%= user._id.toString()%>"){
-          content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">              
-                                <div class="dropdown">
-                                    <i class="option fas fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                      <li data-bs-toggle="modal" data-bs-target="#editCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-edit"></i> Edit</a></li>
-                                      <li data-bs-toggle="modal" data-bs-target="#deleteCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-trash-alt"></i> Delete</a></li>
-                                    </ul>
+          content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
+                              <div class="dropdown">
+                                  <i class="option fas fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li data-bs-toggle="modal" data-bs-target="#editCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-edit"></i> Edit</a></li>
+                                    <li data-bs-toggle="modal" data-bs-target="#deleteCommentModal${comment._id}"><a class="dropdown-item pointer"><i class="far fa-trash-alt"></i> Delete</a></li>
+                                  </ul>
+                                </div>
+                                <div class="row p-0 m-0">
+                                  <div class="m-0 p-0">
+                                    <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
+                                      <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="Users profile">
+                                      <p class="card-title m-1 ">${comment.author.name}</p>
+                                    </a> 
                                   </div>
-                                  <div class="row p-0 m-0">
-                                    <div class="m-0 p-0">
-                                      <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
-                                        <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="Users profile">
-                                        <p class="card-title m-1 ">${comment.author.name}</p>
-                                      </a> 
-                                    </div>
-                                    <div class="m-1 p-0">
-                                      <div class="card-body m-0 p-0">
-                                        <p class="card-text">${comment.content}</p>
-                                        <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                              </div>
-                              
-                              <!-- delete modal popup -->
-                              <div class="modal" tabindex="-1" id="deleteCommentModal${comment._id}">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title">Delete Comment</h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                      <p>Are you sure you want to delete this comment? </p>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                      <button onclick="deleteComment(this.classList[3])" type="button" class="btn btn-danger delete-post  ${comment._id} %>" data-bs-dismiss="modal">Delete</button>
+                                  <div class="m-1 p-0">
+                                    <div class="card-body m-0 p-0">
+                                      <p class="card-text">${comment.content}</p>
+                                      <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
                                     </div>
                                   </div>
                                 </div>
+                            </div>
+                            
+                            <!-- delete modal popup -->
+                            <div class="modal" tabindex="-1" id="deleteCommentModal${comment._id}">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">Delete Comment</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p>Are you sure you want to delete this comment? </p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button onclick="deleteComment(this.classList[3])" type="button" class="btn btn-danger delete-post  ${comment._id} %>" data-bs-dismiss="modal">Delete</button>
+                                  </div>
+                                </div>
                               </div>
-                              <!-- delete modal popup -->
-                              `;
+                            </div>
+                            <!-- delete modal popup -->
+                            <div class="modal" tabindex="-1" id="editCommentModal${comment._id}">
+    
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Edit Comment</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                  <form class="update-comment" onsubmit="if(event.target.content.value === ''){alert('Comment cant be empty'); return;}else{ updateComment('${comment._id}', event.target.content.value);}">
+                                      <div class="modal-body">
+                                        <div>
+                                          <label class="form-label" for="content">Content</label>
+                                          <textarea name="content" style="height: auto; text-align: justify;" class="form-control" rows="15">${comment.content}</textarea>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                      </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+  `;
         }
         else{
           content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">              

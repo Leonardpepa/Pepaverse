@@ -1,4 +1,4 @@
-const { createComment, deleteComment, getCommentsByPostId } = require("../db/comment");
+const { createComment, deleteComment, getCommentsByPostId, updateComment } = require("../db/comment");
 
 const commentController = {
   create: async (req, res, next) => {
@@ -29,6 +29,17 @@ const commentController = {
     res.json({
       ok: false,
     });
+  },
+  update: async (req, res) => {
+    const content = req.body.content;
+    const commentId = req.body.commentId;
+
+    const comment = await updateComment(commentId, {content: content});
+
+    if(!comment){
+      return {ok: false, comment};
+    }
+    return {ok: true, comment};
   },
   getCommentsByPostId: async (req, res, next) => {
     const comments = await getCommentsByPostId(req.params.postId);

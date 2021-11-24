@@ -56,6 +56,20 @@ const deleteComment = async (commentId) => {
   }
 };
 
+const updateComment = async (id, fieldsToUpdate) => {
+  try {
+    const comment = await Comment.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate });
+    if(!comment){
+      return null;
+    }
+
+    return await comment;
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getCommentsByPostId = async (postId) => {
   try {
     const comments = await Comment.find({ post: postId }).populate({
@@ -71,4 +85,4 @@ const getCommentsByPostId = async (postId) => {
   }
 };
 
-module.exports = { createComment, deleteComment, getCommentsByPostId };
+module.exports = { createComment, deleteComment, getCommentsByPostId, updateComment };

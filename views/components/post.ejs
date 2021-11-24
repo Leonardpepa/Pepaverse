@@ -1,0 +1,58 @@
+<div id="post<%= post._id %>" class="card mb-3 shadow p-2 mb-5 bg-body rounded" style="max-width: 530px; margin: 0 auto;">
+    <% if (user._id.toString() === post.author._id.toString()) {%>
+      <!-- delete modal popup -->
+      <%- include("deletePostModal", {post: post}) %>
+      <!-- delete modal popup -->
+
+      <!-- edit modal popup -->
+      <%- include("editPostModal", {post: post}) %>
+      <!-- edit modal popup -->
+      
+      <!-- modal dropdown -->
+      <%- include("optionsDropDown", {post: post}) %>
+      <!-- modal dropdown -->
+    <% } %>
+    <div class="row g-0 p-0">
+        <div class="col-md-3 text-center p-0">
+          <a href="/profile/<%= post.author._id %> ">
+            <img class="post-img img-thumbnail" src="<%= post.author.profileUrl %> " alt="Users profile">
+          </a>
+        </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <a class="post-name" href="/profile/<%= post.author._id %> "><h5 class="card-title"><%= post.author.name %> </h5></a>
+          <p class="card-text"><%= post.content %> </p>
+        </div>
+        <div class="d-flex post-interactions">
+          <i style="color: red;" class="fas fa-heart m-2 p-1">  <%= post.likes.length%></i>
+          <i class="far fa-comment m-2 p-1">  <%= post.comments.length %></i>
+        </div>
+        <div class="d-flex">
+          <% if (user.likedPosts.includes(post._id)) { %>
+            <script>
+              yes["<%= post._id %>"] = true;
+            </script>
+            <p style="color: red;"  class="m-2 p-1 like <%= post._id %>"><i class="fas fa-heart "></i> <span>Liked</span></p>
+          <% }else {%>
+            <p style="color: black;"  class="m-2 p-1 like <%= post._id %>"><i class="far fa-heart "></i> <span>Like</span></p>
+            <%}%>
+          <p class="<%= post._id%> m-2 p-1 comment-btn"><i class="far fa-comment "></i> <span>Comment</span></p>
+          <p class="m-2 p-2 share"><i class="far fa-share-square"></i> <span>Share</span></p>
+        </div>
+        <p class="card-text m-2"><small class="text-muted"><%= post.createdAt.toDateString() %> </small></p>
+        <!-- comments -->
+        
+        <div class="comments hidden">
+          <div class="p-2 m-2 shadow-lg  mb-5 bg-body rounded">
+            <form class="comment-form">
+              <label for="comment">Add a comment</label>
+              <input class="form-control <%= post._id %> comment-field" type="text" id="comment" name="comment">
+              <button type="submit" class="comment-post btn btn-primary">Post</button>
+            </form>
+          </div>
+          <div>
+          </div>
+          </div>
+      </div>
+    </div>
+ </div>

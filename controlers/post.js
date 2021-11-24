@@ -1,4 +1,4 @@
-const { createPost, deletePost } = require("../db/post");
+const { createPost, deletePost, updatePost } = require("../db/post");
 
 const postcontroller = {
   create: async (req, res) => {
@@ -21,6 +21,18 @@ const postcontroller = {
       return;
     }
     res.json({ok: false});
+  },
+
+  update: async (req, res) => {
+    const content = req.body.content;
+    const postId = req.body.postId;
+
+    const post = await updatePost(postId, {content: content});
+
+    if(!post){
+      return {ok: false, post};
+    }
+    return {ok: true, post};
   }
 };
 

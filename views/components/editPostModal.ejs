@@ -1,0 +1,23 @@
+<div class="modal" tabindex="-1" id="editPostModal<%= post._id%>">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+          <form class="update-post" onsubmit=" if(event.target.content.value === ''){alert('Post cant be empty'); event.preventDefault(); return;}else{ updatePost('<%= post._id%>', event.target.content.value);}
+          ">
+              <div class="modal-body">
+                <div>
+                  <label class="form-label" for="content">Content</label>
+                  <textarea name="content" style="height: auto; text-align: justify;" class="form-control" rows="15"><%= post.content %> </textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+              </div>
+        </form>
+      </div>
+    </div>
+  </div>

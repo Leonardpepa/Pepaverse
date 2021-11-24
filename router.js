@@ -32,12 +32,19 @@ router.delete("/users/like", ensureAuth, likeController.delete);
 router.post("/users/comment", ensureAuth, commentController.create);
 router.delete("/users/comment", ensureAuth, commentController.delete);
 
+//update comment
+router.post("/users/comment/update", ensureAuth, commentController.update);
+
+
 //get comments from post
 router.get("/post/:postId/comment", ensureAuth, commentController.getCommentsByPostId)
 
 //upload a post
 router.post("/users/post", ensureAuth, postController.create);
-router.delete("/users/post", ensureAuth, postController.delete)
+router.delete("/users/post", ensureAuth, postController.delete);
+
+//update post
+router.post("/users/post/update", ensureAuth, postController.update);
 
 //search
 router.post("/users/search", ensureAuth, userController.search);

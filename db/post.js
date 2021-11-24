@@ -54,12 +54,11 @@ const deletePost = async (postId) => {
 
 const updatePost = async (id, fieldsToUpdate) => {
   try {
-    const post = await Post.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate })
-      .populate("author")
-      .populate("likes")
-      .populate("comments")
-      .execPopulate();
-
+    const post = await Post.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate });
+    if(!post){
+      return null;
+    }
+    
     return await post;
   } catch (error) {
     console.log(error);

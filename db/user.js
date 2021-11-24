@@ -132,9 +132,7 @@ const createUser = async (
       password,
       (err, user) => {
         if (err) {
-          res.redirect(
-            "/register?e=" + err.message
-          );
+          res.redirect("/register?e=" + err.message);
           return;
         }
         passportAuthenticateLocal(req, res);
@@ -210,6 +208,17 @@ const updateUser = async (id, fieldsToUpdate) => {
   }
 };
 
+const getAllUsers = async (userId) => {
+  const users = await find({
+    _id: { $nin: [userId] },
+  });
+
+  if(!users.length){
+    return [];
+  }
+  return users;
+};
+
 module.exports = {
   findUserById,
   getUserByEmail,
@@ -218,4 +227,5 @@ module.exports = {
   deleteUser,
   updateUser,
   loginUser,
+  getAllUsers,
 };

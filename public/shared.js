@@ -31,3 +31,48 @@ const deleteComment = async (commentId) => {
   }
   return await data;
 };
+
+
+const updatePost = async (postId, content) => {
+  try {
+    const response = await fetch("/users/post/update", {
+      method: "post",
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({postId, content})
+    });
+    const data = await response.json();
+    console.log(data);
+    
+    if(data.ok){
+      window.location.reload();
+    }
+
+  } catch (error) {
+    alert("An Error Occured Please try again");
+  }
+}
+
+const updateComment = async (commentId, content) => {
+  try {
+    const response = await fetch("/users/comment/update", {
+      method: "post",
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({commentId, content})
+    });
+    const data = await response.json();
+        
+    if(data.ok){
+      window.location.reload();
+    }
+
+  } catch (error) {
+    alert("An Error Occured Please try again");
+  }
+}
+
