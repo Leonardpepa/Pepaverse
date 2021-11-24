@@ -11,6 +11,8 @@
 * Create Post ( only text for now )
 * Delete Post
 * Delete Comment
+* Update Post
+* Update Comment
 * Like Post ( any users post )
 * Search Users ( via name )
 * Logout
