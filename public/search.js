@@ -2,24 +2,37 @@ const searchForm = document.querySelector(".search-form");
 const searchInput = document.getElementById("search");
 const searchresults = document.querySelector(".search-results");
 
-searchForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+//https://stackoverflow.com/questions/4220126/run-javascript-function-when-user-finishes-typing-instead-of-on-key-up
+let typingTimer; //timer identifier
+let doneTypingInterval = 350;
 
-  if (!searchInput.value) return;
-
-  const users = await fetchUser(searchInput.value);
-  updateList(await users);
+searchForm.addEventListener("keyup", (e) => {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(displayUsers, doneTypingInterval);
 });
 
-searchInput.addEventListener("input", async (e) => {
+searchForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+});
+
+const displayUsers = async () => {
+  
+  if (!searchInput.value) {
+    return;
+  }
+
   const users = await fetchUser(searchInput.value);
   updateList(await users);
+};
+
+searchInput.addEventListener("input", async (e) => {
+  clearTimeout(typingTimer);
 });
 
 searchInput.addEventListener("focusout", (e) => {
   setTimeout(() => {
     updateList([]);
-  }, 900);
+  }, 800);
 });
 
 const fetchUser = async (name) => {
