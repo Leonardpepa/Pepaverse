@@ -30,9 +30,9 @@ const postcontroller = {
     const post = await updatePost(postId, {content: content});
 
     if(!post){
-      return {ok: false, post};
+      return res.json({ok: false, post});
     }
-    return {ok: true, post};
+    return res.json({ok: true, post});
   }
 };
 

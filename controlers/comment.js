@@ -37,9 +37,9 @@ const commentController = {
     const comment = await updateComment(commentId, {content: content});
 
     if(!comment){
-      return {ok: false, comment};
+      return res.json({ok: false, comment});
     }
-    return {ok: true, comment};
+    return res.json({ok: true, comment});
   },
   getCommentsByPostId: async (req, res, next) => {
     const comments = await getCommentsByPostId(req.params.postId);

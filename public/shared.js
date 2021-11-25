@@ -44,8 +44,7 @@ const updatePost = async (postId, content) => {
       body: JSON.stringify({postId, content})
     });
     const data = await response.json();
-    console.log(data);
-    
+
     if(data.ok){
       window.location.reload();
     }
