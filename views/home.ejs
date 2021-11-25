@@ -146,6 +146,21 @@
       list.forEach(comment => {
         createUIComment(comment, div);
       });
+      const updateCommentForms = document.querySelectorAll(".update-comment");
+
+      updateCommentForms.forEach( (form) => {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const commentId = form.classList[1];
+          const content = e.target.content.value;
+
+          const response = await updateComment(commentId, content);
+          if(response.ok){
+            window.location.reload();
+          }
+        });
+      });
     }
 
     const createUIComment = (comment, div) => {
@@ -214,7 +229,7 @@
                                   <h5 class="modal-title">Edit Comment</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                  <form class="update-comment" onsubmit="if(event.target.content.value === ''){alert('Comment cant be empty'); return;}else{ updateComment('${comment._id}', event.target.content.value);}">
+                                  <form action = "" method = "" class="update-comment ${comment._id}">
                                       <div class="modal-body">
                                         <div>
                                           <label class="form-label" for="content">Content</label>
@@ -227,7 +242,8 @@
                                       </div>
                                 </form>
                               </div>
-                            </div>
+                            </div
+
                           </div>
   `;
 
@@ -320,6 +336,22 @@
       }
 
     }
+
+    const updatePostForms = document.querySelectorAll(".update-post");
+
+      updatePostForms.forEach( (form) => {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const postId = form.classList[1];
+          const content = e.target.content.value;
+
+          const response = await updatePost(postId, content);
+
+          if(response.ok){
+            window.location.reload();
+          }
+        });
+      });
 
   </script>
   <%- include("partials/footer") %>

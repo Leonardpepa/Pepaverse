@@ -41,13 +41,11 @@ const updatePost = async (postId, content) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({postId, content})
+      body: JSON.stringify({postId: postId, content: content})
     });
     const data = await response.json();
-
-    if(data.ok){
-      window.location.reload();
-    }
+    
+    return await data;
 
   } catch (error) {
     alert("An Error Occured Please try again");
@@ -62,13 +60,11 @@ const updateComment = async (commentId, content) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({commentId, content})
+      body: JSON.stringify({commentId: commentId, content: content})
     });
     const data = await response.json();
         
-    if(data.ok){
-      window.location.reload();
-    }
+    return await data;
 
   } catch (error) {
     alert("An Error Occured Please try again");

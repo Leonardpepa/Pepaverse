@@ -291,5 +291,23 @@
         div.appendChild(content);
         return content;
       } 
+
+
+      const updatePostForms = document.querySelectorAll(".update-post");
+
+      updatePostForms.forEach( (form) => {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const postId = form.classList[1];
+          const content = e.target.content.value;
+
+          const response = await updatePost(postId, content);
+
+          if(response.ok){
+            window.location.reload();
+          }
+        });
+      });
+
     </script>
     <%- include('partials/footer'); %>
