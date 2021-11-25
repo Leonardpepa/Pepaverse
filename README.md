@@ -38,5 +38,5 @@ you need to add and configure an .env file as follows
   npm install
   node index.js
 ```
-source for ui components: [Bootsrap](https://getbootstrap.com/)
-source for icons: [Font Awesome](https://fontawesome.com/)
+* source for ui components: [Bootsrap](https://getbootstrap.com/)
+* source for icons: [Font Awesome](https://fontawesome.com/)
