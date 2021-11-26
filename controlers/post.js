@@ -27,7 +27,7 @@ const postcontroller = {
     const content = req.body.content;
     const postId = req.body.postId;
 
-    const post = await updatePost(postId, {content: content});
+    const post = await updatePost(postId, {content: content, updatedAt: Date.now()});
 
     if(!post){
       return res.json({ok: false, post});

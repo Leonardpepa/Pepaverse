@@ -34,7 +34,7 @@ const commentController = {
     const content = req.body.content;
     const commentId = req.body.commentId;
 
-    const comment = await updateComment(commentId, {content: content});
+    const comment = await updateComment(commentId, {content: content, updatedAt: Date.now()});
 
     if(!comment){
       return res.json({ok: false, comment});
