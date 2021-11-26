@@ -158,7 +158,6 @@ const showComments = async (list) => {
         `comments${btn.classList[0]}`
       );
       commentsContainer.classList.toggle("hidden");
-
       if (commentsContainer.children[1].children.length === 0) {
         const data = await fetchComments(btn.classList[0]);
         displayFetchedComments(data.results, commentsContainer.children[1]);
@@ -186,6 +185,8 @@ const displayFetchedComments = (list, div) => {
       if (response.ok) {
         const commentText = document.getElementById(`comment-text${commentId}`);
         commentText.textContent = content;
+        const updatedAt = document.getElementById(`updatedAt${commentId}`);
+        updatedAt.innerHTML = '<small class="text-muted">Last updated 0 minutes ago</small>'
       }
     });
   });

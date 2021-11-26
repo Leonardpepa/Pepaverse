@@ -97,7 +97,7 @@
       });
   
       const createUIComment = (comment, div) => {
-        let updated = Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60);
+      let updated = Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60);
         let unit = "minutes";
         
         if(updated > 60){
@@ -109,11 +109,11 @@
           updated = Math.floor( updated / 24);
           unit = "days";
         }
-        
-        const content = document.createElement("div");
-        
-        if(comment.author._id.toString() === "<%= user._id.toString()%>"){
-          content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
+        let content = document.createElement("div");
+
+        if(comment.author._id.toString() === "<%= user._id%>"){
+          content = document.createElement("div");
+        content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
                               <div class="dropdown">
                                   <i class="option fas fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -130,8 +130,8 @@
                                   </div>
                                   <div class="m-1 p-0">
                                     <div class="card-body m-0 p-0">
-                                      <p class="card-text">${comment.content}</p>
-                                      <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
+                                      <p id= "comment-text${comment._id}" class="card-text">${comment.content}</p>
+                                      <p id="updatedAt${comment._id}" class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
                                     </div>
                                   </div>
                                 </div>
@@ -156,15 +156,15 @@
                               </div>
                             </div>
                             <!-- delete modal popup -->
+
                             <div class="modal" tabindex="-1" id="editCommentModal${comment._id}">
-    
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <h5 class="modal-title">Edit Comment</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                  <form action = "" method = "" class="update-comment ${comment._id}">
+                                  <form class="update-comment ${comment._id}">
                                       <div class="modal-body">
                                         <div>
                                           <label class="form-label" for="content">Content</label>
@@ -173,7 +173,7 @@
                                       </div>
                                       <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
                                       </div>
                                 </form>
                               </div>
@@ -181,31 +181,29 @@
 
                           </div>
   `;
-        }
-        else{
-          content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">              
-                                  <div class="row p-0 m-0">
-                                    <div class="m-0 p-0">
-                                      <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
-                                        <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="Users profile">
-                                        <p class="card-title m-1 ">${comment.author.name}</p>
-                                      </a> 
-                                    </div>
-                                    <div class="m-1 p-0">
-                                      <div class="card-body m-0 p-0">
-                                        <p class="card-text">${comment.content}</p>
-                                        <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
-                                      </div>
+        }else{
+          content.innerHTML = `<div id='comment${comment._id}' class="shadow-lg  mb-5 bg-body rounded p-1 m-2 comment">
+                                <div class="row p-0 m-0">
+                                  <div class="m-0 p-0">
+                                    <a href="profile/${comment.author._id}" class="d-flex justify-content-start align-items-center">
+                                      <img style="max-width: 40px;" src="${comment.author.profileUrl}" class="img-fluid img-thumbnail post-img m-1 " alt="Users profile">
+                                      <p class="card-title m-1 ">${comment.author.name}</p>
+                                    </a> 
+                                  </div>
+                                  <div class="m-1 p-0">
+                                    <div class="card-body m-0 p-0">
+                                      <p id= "comment-text${comment._id}" class="card-text">${comment.content}</p>
+                                      <p id="updatedAt${comment._id}" class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
                                     </div>
                                   </div>
-                              </div>`;
+                                </div>
+                            </div>
+                          </div>
+  `
         }
-
-
         
         div.appendChild(content);
         return content;
-      } 
-      
+    } 
     </script>
     <%- include('partials/footer'); %>
