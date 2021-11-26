@@ -63,105 +63,6 @@
     });
 
 
-    const sendLikeRequest = async (postId) => {
-      const res = await fetch("/users/like", {
-        method: yes[postId] ? "delete":"post",
-        credentials: "include",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({postId: postId}),
-      });
-      const data = await res.json();
-      return await data;
-    }
-
-    const commentForms = document.querySelectorAll(".comment-form");
-    
-    commentForms.forEach( async (form) => {
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const parent = form.parentElement.parentElement;
-        const postInput = parent.getElementsByTagName("input")[0];
-        const div = parent.parentElement.getElementsByClassName("post-interactions")[0];
-        if(postInput.value){
-          const data = await commentPost(postInput.classList[1], postInput.value);
-          if(data.ok){
-            div.children[1].textContent =  " " + (Number(div.children[1].textContent) + 1);
-            const comment = createUIComment(data.comment, parent.parentElement.getElementsByClassName("comments")[0].children[1]);
-            postInput.value = "";
-            comment.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
-          }
-        }
-      });
-    });
-
-
-    const commentPost = async (postId, content) => {
-      const res = await fetch("/users/comment", {
-        method: "post",
-        credentials: "include",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          postId,
-          content,
-        }),
-      });
-      const data = await res.json();
-      return data;
-    }
-
-    const showCommentBtns = document.querySelectorAll(".comment-btn");
-
-    const showComments = async (list) => {
-      list.forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-          btn.parentElement.parentElement.getElementsByClassName("comments")[0].classList.toggle("hidden");
-          if(btn.parentElement.parentElement.getElementsByClassName("comments")[0].children[1].children.length === 0){
-            const data = await fetchComments(btn.classList[0]);
-            displayFetchedComments( data.results , btn.parentElement.parentElement.getElementsByClassName("comments")[0].children[1]);
-          }
-        });
-      });
-    }
-
-    showComments(showCommentBtns);
-
-
-    const fetchComments = async (postId) => {
-      const res = await fetch(`/post/${postId}/comment`, {
-        method: "get",
-        credentials: "include",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-      const data  = await res.json();
-      return data;
-    }
-
-    const displayFetchedComments = (list, div) => {
-      list.forEach(comment => {
-        createUIComment(comment, div);
-      });
-      const updateCommentForms = document.querySelectorAll(".update-comment");
-
-      updateCommentForms.forEach( (form) => {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          const commentId = form.classList[1];
-          const content = e.target.content.value;
-
-          const response = await updateComment(commentId, content);
-          if(response.ok){
-            window.location.reload();
-          }
-        });
-      });
-    }
 
     const createUIComment = (comment, div) => {
       let updated = Math.floor((Date.now() - Date.parse(comment.updatedAt)) / 1000 / 60);
@@ -215,7 +116,7 @@
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button onclick="deleteComment(this.classList[3])" type="button" class="btn btn-danger delete-post  ${comment._id} %>" data-bs-dismiss="modal">Delete</button>
+                                    <button onclick="deleteComment('${comment._id}', '${comment.post}')" type="button" class="btn btn-danger delete-post  ${comment._id} %>" data-bs-dismiss="modal">Delete</button>
                                   </div>
                                 </div>
                               </div>
