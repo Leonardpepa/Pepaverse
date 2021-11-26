@@ -30,7 +30,6 @@ const deleteComment = async (commentId, postId) => {
     comment.parentElement.removeChild(comment);
     const commentDisplay = document.getElementById(`comment-display${postId}`);
     commentDisplay.textContent = ` ${Number(commentDisplay.textContent) - 1}`;
-    
   }
   return await data;
 };
@@ -185,8 +184,26 @@ const displayFetchedComments = (list, div) => {
 
       const response = await updateComment(commentId, content);
       if (response.ok) {
-        window.location.reload();
+        const commentText = document.getElementById(`comment-text${commentId}`);
+        commentText.textContent = content;
       }
     });
   });
 };
+
+const updatePostForms = document.querySelectorAll(".update-post");
+
+updatePostForms.forEach((form) => {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const postId = form.classList[1];
+    const content = e.target.content.value;
+
+    const response = await updatePost(postId, content);
+
+    if (response.ok) {
+      const postText = document.getElementById(`post-text${postId}`);
+      postText.textContent = content;
+    }
+  });
+});

@@ -96,7 +96,7 @@
                                   </div>
                                   <div class="m-1 p-0">
                                     <div class="card-body m-0 p-0">
-                                      <p class="card-text">${comment.content}</p>
+                                      <p id= "comment-text${comment._id}" class="card-text">${comment.content}</p>
                                       <p class="card-text"><small class="text-muted">Last updated ${updated} ${unit} ago</small></p>
                                     </div>
                                   </div>
@@ -122,15 +122,15 @@
                               </div>
                             </div>
                             <!-- delete modal popup -->
+
                             <div class="modal" tabindex="-1" id="editCommentModal${comment._id}">
-    
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <h5 class="modal-title">Edit Comment</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                  <form action = "" method = "" class="update-comment ${comment._id}">
+                                  <form class="update-comment ${comment._id}">
                                       <div class="modal-body">
                                         <div>
                                           <label class="form-label" for="content">Content</label>
@@ -139,7 +139,7 @@
                                       </div>
                                       <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
                                       </div>
                                 </form>
                               </div>
@@ -237,22 +237,6 @@
       }
 
     }
-
-    const updatePostForms = document.querySelectorAll(".update-post");
-
-      updatePostForms.forEach( (form) => {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const postId = form.classList[1];
-          const content = e.target.content.value;
-
-          const response = await updatePost(postId, content);
-
-          if(response.ok){
-            window.location.reload();
-          }
-        });
-      });
 
   </script>
   <%- include("partials/footer") %>
