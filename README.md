@@ -1,4 +1,4 @@
-# Chat App
+# Pepaverse 
 
 # /* still in development */
 
