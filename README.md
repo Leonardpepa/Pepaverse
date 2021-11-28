@@ -33,8 +33,8 @@ you need to add and configure an .env file as follows
 * FRONTED_URL=< http://localhost:< port > for local or a hosted url with your fronted>
 
 ```terminal
-  git clone https://github.com/Leonardpepa/Chat-App.git
-  cd Chat-App/
+  git clone https://github.com/Leonardpepa/Pepaverse.git
+  cd Pepaverse/
   npm install
   node index.js
 ```
