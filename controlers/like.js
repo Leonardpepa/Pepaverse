@@ -13,18 +13,17 @@ const likeController = {
     const likeExists = await findLikeByUserIdandPostId(user._id, postId);
 
     if (likeExists) {
-      await res.json({
+      return await res.json({
         n: -1,
         message: "error",
         ok: false,
         liked: false,
       });
-      return;
     }
 
     const like = await createLike(user._id, postId);
     if (like) {
-      await res.json({
+      return await res.json({
         n: like.postId.likes.length,
         message: "Like Added",
         ok: true,
@@ -40,13 +39,13 @@ const likeController = {
     if (like) {
       const deletedLike = await deleteLike(like._id);
       const post = await findPostById(postId);
-      await res.json({
+      return await res.json({
         n: post.likes.length,
         ok: true,
         liked: false,
       });
     } else {
-      await res.json({
+      return await res.json({
         n: -1,
         ok: false,
         liked: false,

@@ -6,7 +6,7 @@ const  jwt = require('jsonwebtoken');
 
 const authController = {
   google: (req, res) => {
-    passport.authenticate("google", { scope: ["profile", "email"] })(req, res);
+    return passport.authenticate("google", { scope: ["profile", "email"] })(req, res);
   },
   googleCallback: (req, res) => {
     passport.authenticate(
@@ -17,7 +17,7 @@ const authController = {
           if (!err) {
             const token =  jwt.sign({ user: {username: user.username, _id: user._id } }, process.env.SECRET);
             res.cookie('token', token);
-            res.redirect("/");
+            return res.redirect("/");
           }
         });
       }
@@ -25,7 +25,7 @@ const authController = {
   },
   login: async (req, res, next) => {
     const { username, password } = req.body;
-    await loginUser(req, res, username, password);
+    return await loginUser(req, res, username, password);
   },
   register: async (req, res, next) => {
     const { username, password, confirm } = req.body;
@@ -34,19 +34,17 @@ const authController = {
     const searchName = name.toLowerCase();
 
     if (!validateEmail(username)) {
-      res.render("register", { error: { emailError: "Invalid email format" } });
-      return;
+      return res.render("register", { error: { emailError: "Invalid email format" } });
     }
     if (!validatePassword(password, confirm)) {
-      res.render("register", {
+      return res.render("register", {
         error: {
           passwordError:
             "Password should contain atleast one digit, one lower and upper case letter and the length should be atleast 8 characters",
         },
       });
-      return;
     }
-    await createUser(
+    return await createUser(
       req,
       res,
       username,
@@ -60,7 +58,7 @@ const authController = {
     req.logout();
     req.session.destroy(function (err) {
       res.clearCookie('token');
-      res.redirect('/'); //Inside a callback… bulletproof!
+      return res.redirect('/'); //Inside a callback… bulletproof!
     });
   },
 };

@@ -85,4 +85,18 @@ const getCommentsByPostId = async (postId) => {
   }
 };
 
-module.exports = { createComment, deleteComment, getCommentsByPostId, updateComment };
+const getCommentById = async (commentId) => {
+  try {
+    const comment = await Comment.findById(commentId);
+    if(!comment){
+      return null;
+    }
+
+    return comment;
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = {getCommentById, createComment, deleteComment, getCommentsByPostId, updateComment };

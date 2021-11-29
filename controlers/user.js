@@ -14,20 +14,19 @@ const userController = {
 
     const user = await updateUser(req.user._id, { description, profileUrl });
     if (await user) {
-      res.json({
-        ok: true
-      })
-      // res.redirect("/profile/" + req.user._id);
-    }else{
-      res.json({
-        ok: false
-      })
+      return res.json({
+        ok: true,
+      });
+    } else {
+      return res.json({
+        ok: false,
+      });
     }
   },
   search: async (req, res, next) => {
     try {
       const result = await searchUsers(req.body.search);
-      await res.json(result);
+      return await res.json(result);
     } catch (error) {
       console.log(error);
     }

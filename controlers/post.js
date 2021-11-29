@@ -1,4 +1,9 @@
-const { createPost, deletePost, updatePost } = require("../db/post");
+const {
+  getPostById,
+  createPost,
+  deletePost,
+  updatePost,
+} = require("../db/post");
 
 const postcontroller = {
   create: async (req, res) => {
@@ -8,32 +13,48 @@ const postcontroller = {
 
       const post = await createPost(content, author);
 
-      await res.redirect("/");
+      return await res.redirect("/");
     } catch (error) {
       console.log(error);
     }
   },
   delete: async (req, res) => {
     const postId = req.body.postId;
-    const deletedPost = await deletePost(postId);
-    if(deletePost){
-      res.json({ok: true});
-      return;
+
+    const author = (await getPostById(postId)).author;
+
+    if (author.toString() !== req.user._id.toString()) {
+      return res.json({ ok: false });
     }
-    res.json({ok: false});
+
+    const deletedPost = await deletePost(postId);
+    if (deletePost) {
+      return res.json({ ok: true });
+    }
+
+    return res.json({ ok: false });
   },
 
   update: async (req, res) => {
     const content = req.body.content;
     const postId = req.body.postId;
 
-    const post = await updatePost(postId, {content: content, updatedAt: Date.now()});
+    const author = (await getPostById(postId)).author;
 
-    if(!post){
-      return res.json({ok: false, post});
+    if (author.toString() !== req.user._id.toString()) {
+      return res.json({ ok: false });
     }
-    return res.json({ok: true, post});
-  }
+
+    const post = await updatePost(postId, {
+      content: content,
+      updatedAt: Date.now(),
+    });
+
+    if (!post) {
+      return res.json({ ok: false, post });
+    }
+    return res.json({ ok: true, post });
+  },
 };
 
 module.exports = postcontroller;

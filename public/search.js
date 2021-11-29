@@ -4,7 +4,7 @@ const searchresults = document.querySelector(".search-results");
 
 //https://stackoverflow.com/questions/4220126/run-javascript-function-when-user-finishes-typing-instead-of-on-key-up
 let typingTimer; //timer identifier
-let doneTypingInterval = 350;
+let doneTypingInterval = 150;
 
 searchForm.addEventListener("keyup", (e) => {
   clearTimeout(typingTimer);

@@ -74,4 +74,19 @@ const findPostById = async (id) => {
   }
 };
 
-module.exports = { createPost, updatePost, findPostById, deletePost };
+const getPostById = async (postId) => {
+  try {
+    const post = await Post.findById(postId);
+    
+    if(!post){
+      return null;
+    }
+
+    return post;
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = {getPostById, createPost, updatePost, findPostById, deletePost };
