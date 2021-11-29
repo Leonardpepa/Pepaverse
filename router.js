@@ -12,6 +12,8 @@ router.get("/", pageController.home);
 router.get("/login", pageController.login);
 router.get("/register", pageController.register);
 router.get("/profile/:userid", ensureAuth, pageController.profile);
+router.get("/all", ensureAuth, pageController.all);
+
 router.post("/users/update/:userid", ensureAuth, userController.update);
 
 router.get("/auth/google", authController.google);

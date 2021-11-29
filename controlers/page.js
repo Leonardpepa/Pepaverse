@@ -1,4 +1,4 @@
-const { findUserById } = require("../db/user");
+const { findUserById, getAllUsers } = require("../db/user");
 
 const pageController = {
   home: async (req, res) => {
@@ -20,6 +20,10 @@ const pageController = {
     const profileUser = await findUserById(id);
     return await res.render("profile", { profileUser, user: req.user });
   },
+  all: async (req, res) => {
+    const users = await getAllUsers(req.user._id);
+    res.render("all", {user: req.user, allUsers: users});
+  }
 };
 
 module.exports = pageController;

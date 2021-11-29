@@ -209,14 +209,18 @@ const updateUser = async (id, fieldsToUpdate) => {
 };
 
 const getAllUsers = async (userId) => {
-  const users = await find({
-    _id: { $nin: [userId] },
-  });
-
-  if(!users.length){
-    return [];
+  try {
+    const users = await User.find({
+      _id: { $nin: [userId] },
+    });
+  
+    if(!users.length){
+      return [];
+    }
+    return users;
+  } catch (error) {
+    console.log(error);
   }
-  return users;
 };
 
 module.exports = {
