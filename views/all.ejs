@@ -8,7 +8,7 @@
             <% allUsers.forEach(user => { %>
              <div class="p-3 col-sm d-flex flex-column justify-content-center align-items-center" style="margin: 0 auto;" >
                  <a style="text-decoration: none; color: #111;" href="/profile/<%= user._id %>">
-                    <img style="width: 100%; max-width: 100px; border-radius: 50%;" class="img-thumbnail" src="<%= user.profileUrl %>" alt="Users profile">
+                    <img style="width: 100%; max-width: 100px; height: auto; border-radius: 50%;" class="img-thumbnail" src="<%= user.profileUrl %>" alt="Users profile">
                     <p style="font-weight: 600;" class="text-center"><%= user.name %></p>
                 </a>
              </div>
