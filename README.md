@@ -8,6 +8,9 @@
 
 * Login-Register ( via email-password or google-auth20 )
 * Edit Profile ( profile picture url and description )
+* Send Friend Request
+* Accept Friend Request
+* Delete Friend Request
 * Create Post ( only text for now )
 * Delete Post
 * Delete Comment
@@ -19,7 +22,7 @@
 
 # Soon to be implemented
 
-* Friend Request ( send, accept )
+* Live Notofications
 * Private Chat
 
 # Local Installation
