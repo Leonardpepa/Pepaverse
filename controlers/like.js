@@ -3,7 +3,7 @@ const {
   deleteLike,
   findLikeByUserIdandPostId,
 } = require("../db/like");
-const { findPostById } = require("../db/post");
+const { getPostById } = require("../db/post");
 
 const likeController = {
   create: async (req, res, next) => {
@@ -38,7 +38,7 @@ const likeController = {
     const like = await findLikeByUserIdandPostId(userId, postId);
     if (like) {
       const deletedLike = await deleteLike(like._id);
-      const post = await findPostById(postId);
+      const post = await getPostById(postId);
       return await res.json({
         n: post.likes.length,
         ok: true,
