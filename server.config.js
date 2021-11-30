@@ -6,6 +6,7 @@ const session = require("express-session");
 const cookieParser  = require('cookie-parser');
 const morgan = require("morgan");
 const http = require("http");
+const helmet = require("helmet");
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use(
     },
   })
 );
+// app.use(helmet());
 
 const { passport } = require("./passport.config");
 
