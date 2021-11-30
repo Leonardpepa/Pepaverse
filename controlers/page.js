@@ -1,21 +1,23 @@
 const { findUserById, getAllUsers } = require("../db/user");
 const { getFriendshipByUsersId } = require("../db/friendship");
 const { getPostByUserId } = require("../db/post");
+const { getUnSeenNotificationbyUserId } = require("../db/notification");
 const pageController = {
   home: async (req, res) => {
     if (req.isAuthenticated()) {
       const user = await findUserById(req.user._id);
+      
       let posts = [];
+      
+      const notifications = await getUnSeenNotificationbyUserId(user._id);
 
       posts = [...user.posts];
-      
-      for(let i=0; i<user.friends.length; i++){
-        posts = [...posts ,...await getPostByUserId(user.friends[i])]
+
+      for (let i = 0; i < user.friends.length; i++) {
+        posts = [...posts, ...(await getPostByUserId(user.friends[i]))];
       }
 
-      console.log(posts);
-
-      return  res.render("home", { user: user, posts });
+      return res.render("home", { user: user, posts, notifications });
     } else {
       return res.redirect("/login");
     }
@@ -30,6 +32,8 @@ const pageController = {
     const id = req.params.userid;
     const user = await findUserById(req.user._id);
     const profileUser = await findUserById(id);
+    
+    const notifications = await getUnSeenNotificationbyUserId(user._id);
 
     let requestFriendship = await getFriendshipByUsersId(user._id, id);
     let requestedFriendship = await getFriendshipByUsersId(id, user._id);
@@ -39,11 +43,13 @@ const pageController = {
       user,
       requestFriendship,
       requestedFriendship,
+      notifications
     });
   },
   all: async (req, res) => {
     const users = await getAllUsers(req.user._id);
-    res.render("all", { user: req.user, allUsers: users });
+    const notifications = await getUnSeenNotificationbyUserId(req.user._id);
+    res.render("all", { user: req.user, allUsers: users, notifications });
   },
 };
 

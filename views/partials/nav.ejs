@@ -19,7 +19,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <% if (user) { %>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+                  <a class="nav-link active" aria-current="page" href="/"><i class="fas fa-home"></i> Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/profile/<%= user._id %>"
@@ -40,26 +40,33 @@
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
-                  >
-                    Νotifications <!-- <span class="badge bg-danger">4</span>-->
+                  ><i class="fas fa-bell"></i>
+                    Νotifications <% if (notifications.length !== 0) { %>
+                        <span class="badge bg-danger"><%= notifications.length %></span>
+                      <% } %>
                   </a>
                   <ul class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
-                    <% user.notifications.forEach(notification => { %>
-                      <% if (notification && !notification.seen) { %>
+                    <% if (notifications.length === 0) { %>
+                      <li class="dropdown-item disabled">You have 0 notifications</li>
+                    <% } else {%>
+                      <% notifications.forEach(notification => { %>
                         <% if (notification.author && notification.type === "friend-request") { %>
-                          <div class="d-flex justify-content-start align-items-center">
-                            <li><a class="dropdown-item" href="/profile/<%= notification.author._id %>"><%= notification.author.name %> wants to be your friend</a></li>
-                            <button type="button" onclick="acceptFriendRequest('<%= notification.friendship %>')" class = "btn btn-outline-primary btn-sm m-1 ">  Accept</button>
-                          </div>
-                        <% } %>
-                      <% } %>
-                    <% }) %>
-                  </ul>
+                            <div class="d-flex justify-content-start align-items-center">
+                              <a href="/profile/<%= notification.author._id %>">
+                                <img style="width: 100%; height: auto; max-width: 30px; border-radius: 50%;" class="img-thumbnail img-fluid" src="<%= notification.author.profileUrl %>" alt="user profile">
+                              </a>
+                              <li><a class="dropdown-item" href="/profile/<%= notification.author._id %>"><%= notification.author.name %> wants to be your friend</a></li>
+                              <button type="button" onclick="acceptFriendRequest('<%= notification.friendship %>')" class = "btn btn-outline-primary btn-sm m-1 ">  Accept</button>
+                            </div>
+                          <% } %>
+                      <% }) %>
+                    <% } %>
+                    </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="/all">Members</a></li>
+                <li class="nav-item"><a class="nav-link" href="/all"><i class="fas fa-user-friends"></i> Members</a></li>
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="/auth/logout"
-                    >Log out</a
+                    ><i class="fas fa-sign-out-alt"></i> Log out</a
                   >
                 </li>
                 <% } %>
