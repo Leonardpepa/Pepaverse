@@ -58,6 +58,7 @@ const acceptFriendship = async (id) => {
   });
   await Notification.findByIdAndUpdate(friendship.notification, {
     status: "friends",
+    seen: true,
   });
 
   return friendship;

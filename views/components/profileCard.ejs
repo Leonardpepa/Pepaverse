@@ -23,7 +23,7 @@
       class="btn btn-primary"
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
-    >
+    ><i class="fas fa-edit"></i>
       Edit profile
     </button>
     <% } else if(requestFriendship?.status === "pending"){ %>
@@ -31,7 +31,7 @@
       id="<%= requestedFriendship?._id || requestFriendship?._id %>"
       type="button"
       class="btn btn-primary undo-friend-btn"
-    >
+    ><i class="fas fa-user-clock"></i>
       Pending
     </button>
     <% } else if (requestedFriendship?.status === "pending") { %>
@@ -39,7 +39,7 @@
       id="<%= requestedFriendship._id %>"
       type="button"
       class="btn btn-primary accept-friend-request"
-    >
+    ><i class="fas fa-user-check"></i>
       Accept
     </button>
     <% } else if (!requestedFriendship && !requestFriendship) {%>
@@ -47,7 +47,7 @@
       id="<%= profileUser._id %>"
       type="button"
       class="btn btn-primary add-friend-btn"
-    >
+    ><i class="fas fa-user-plus"></i>
       Add friend
     </button>
     <% } else if (user.friends.includes(profileUser._id)) {%>
@@ -55,7 +55,7 @@
       id="<%=  requestedFriendship?._id || requestFriendship?._id %>"
       type="button"
       class="btn btn-primary remove-friendship"
-    >
+    ><i class="fas fa-user-check"></i>
       friends
     </button>
     <% } %>

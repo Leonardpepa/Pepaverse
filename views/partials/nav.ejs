@@ -46,8 +46,11 @@
                   <ul class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
                     <% user.notifications.forEach(notification => { %>
                       <% if (notification && !notification.seen) { %>
-                        <% if (notification.author) { %>
-                          <li><a class="dropdown-item" href="/profile/<%= notification.author._id %>"><%= notification.author.name %> wants to be your friend  <button onclick="acceptFriendRequest('<%= notification.friendship %>')" class = "btn btn-outline-primary btn-sm">  Accept</button></a></li>
+                        <% if (notification.author && notification.type === "friend-request") { %>
+                          <div class="d-flex justify-content-start align-items-center">
+                            <li><a class="dropdown-item" href="/profile/<%= notification.author._id %>"><%= notification.author.name %> wants to be your friend</a></li>
+                            <button type="button" onclick="acceptFriendRequest('<%= notification.friendship %>')" class = "btn btn-outline-primary btn-sm m-1 ">  Accept</button>
+                          </div>
                         <% } %>
                       <% } %>
                     <% }) %>
@@ -89,5 +92,5 @@
       </nav>
       <% if (user) { %>
         <script src="/search.js" defer></script>
+        <script src="/friendShared.js" defer></script>
       <% } %>
-  

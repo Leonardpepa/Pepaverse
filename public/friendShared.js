@@ -14,6 +14,9 @@ const sendFriendRequest = async (id) => {
       }),
     });
     const data = await res.json();
+    if(data.ok){
+      window.location.reload();
+    }
     return data;
 }
 
@@ -29,6 +32,9 @@ const acceptFriendRequest = async (id) => {
         }),
       });
       const data = await res.json();
+      if(data.ok){
+        window.location.reload();
+      }
       return data;
 }
 
@@ -44,6 +50,9 @@ const deleteFriend = async (id) => {
         }),
       });
       const data = await res.json();
+      if(data.ok){
+        window.location.reload();
+      }
       return data;
 }
 
@@ -59,5 +68,8 @@ const undoFriendRequest = async (id) => {
         }),
       });
       const data = await res.json();
+      if(data.ok){
+        window.location.reload();
+      }
       return data;
 }
