@@ -33,7 +33,7 @@ you need to add and configure an .env file as follows
 * GOOGLE_CLIENT_ID=< your google id privided by google for the application >
 * GOOGLE_CLIENT_SECRET=< your google secret privided by google for the application >
 * SECRET=< secret string for the cookie and jwt >
-* FRONTED_URL=< http://localhost:< port > for local or a hosted url with your fronted>
+* FRONTEND_URL=< http://localhost:< port > for local or a hosted url with your fronted>
 
 ```terminal
   git clone https://github.com/Leonardpepa/Pepaverse.git
