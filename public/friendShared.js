@@ -14,7 +14,6 @@ const sendFriendRequest = async (id) => {
       }),
     });
     const data = await res.json();
-    console.log("Add friend", data);
     return data;
 }
 
@@ -30,7 +29,6 @@ const acceptFriendRequest = async (id) => {
         }),
       });
       const data = await res.json();
-      console.log("Accept friend", data);
       return data;
 }
 
@@ -46,7 +44,6 @@ const deleteFriend = async (id) => {
         }),
       });
       const data = await res.json();
-      console.log("delete friend",data);
       return data;
 }
 
@@ -62,6 +59,5 @@ const undoFriendRequest = async (id) => {
         }),
       });
       const data = await res.json();
-      console.log("undo friend",data);
       return data;
 }
