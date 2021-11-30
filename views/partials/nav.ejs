@@ -43,11 +43,14 @@
                   >
                     Νotifications <!-- <span class="badge bg-danger">4</span>-->
                   </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#"></a></li>
-                    <li>
-                      <a class="dropdown-item" href="#"></a>
-                    </li>
+                  <ul class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
+                    <% user.notifications.forEach(notification => { %>
+                      <% if (notification && !notification.seen) { %>
+                        <% if (notification.author) { %>
+                          <li><a class="dropdown-item" href="/profile/<%= notification.author._id %>"><%= notification.author.name %> wants to be your friend  <button onclick="acceptFriendRequest('<%= notification.friendship %>')" class = "btn btn-outline-primary btn-sm">  Accept</button></a></li>
+                        <% } %>
+                      <% } %>
+                    <% }) %>
                   </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="/all">Members</a></li>

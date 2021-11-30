@@ -31,11 +31,13 @@ const deletePost = async (postId) => {
   try {
     const deletedPost = await Post.findByIdAndRemove(postId);
 
-    await User.findByIdAndUpdate(deletedPost.author, { $pull: { posts: postId } });
+    await User.findByIdAndUpdate(deletedPost.author, {
+      $pull: { posts: postId },
+    });
 
     const comments = deletedPost.comments;
 
-    comments.forEach( async (comment) => {
+    comments.forEach(async (comment) => {
       await deleteComment(comment);
     });
 
@@ -44,30 +46,21 @@ const deletePost = async (postId) => {
     likes.forEach(async (like) => {
       await deleteLike(like);
     });
-
-
-  } catch (error) {
-    console.log(error);
-  }
-
-}
-
-const updatePost = async (id, fieldsToUpdate) => {
-  try {
-    const post = await Post.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate });
-    if(!post){
-      return null;
-    }
-    
-    return await post;
   } catch (error) {
     console.log(error);
   }
 };
 
-const findPostById = async (id) => {
+const updatePost = async (id, fieldsToUpdate) => {
   try {
-    const post = await Post.findById(id);
+    const post = await Post.findOneAndUpdate(
+      { _id: id },
+      { ...fieldsToUpdate }
+    );
+    if (!post) {
+      return null;
+    }
+
     return await post;
   } catch (error) {
     console.log(error);
@@ -77,16 +70,48 @@ const findPostById = async (id) => {
 const getPostById = async (postId) => {
   try {
     const post = await Post.findById(postId);
-    
-    if(!post){
+
+    if (!post) {
       return null;
     }
 
     return post;
-
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-module.exports = {getPostById, createPost, updatePost, findPostById, deletePost };
+const getPostByUserId = async (userId) => {
+  const posts = await Post.find({ author: userId }).populate([
+    {
+      path: "author",
+      select: ["name", "profileUrl"],
+    },
+    {
+      path: "comments",
+      options: {
+        sort: {
+          createdAt: "desc",
+        },
+      },
+      populate: [
+        {
+          path: "author",
+          select: ["name", "profileUrl"],
+        },
+      ],
+    },
+  ]);
+  if (!posts) {
+    return [];
+  }
+  return posts;
+};
+
+module.exports = {
+  getPostByUserId,
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost,
+};

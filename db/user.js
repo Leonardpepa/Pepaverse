@@ -8,7 +8,10 @@ const findUserById = async (id) => {
       .select("-hash")
       .select("-salt")
       .populate("likes")
-      .populate("friends")
+      .populate({
+        path: "notifications",
+        populate: [{ path: "author", select: ["name"] }],
+      })
       .populate({
         path: "posts",
         options: {
@@ -49,7 +52,10 @@ const getUserByEmail = async (username) => {
       .select("-hash")
       .select("-salt")
       .populate("likes")
-      .populate("friends")
+      .populate({
+        path: "notifications",
+        populate: [{ path: "author", select: ["name"] }],
+      })
       .populate({
         path: "posts",
         options: {
@@ -87,7 +93,10 @@ const getUserByUsername = async (name) => {
       .select("-hash")
       .select("-salt")
       .populate("likes")
-      .populate("friends")
+      .populate({
+        path: "notifications",
+        populate: [{ path: "author", select: ["name"] }],
+      })
       .populate({
         path: "posts",
         options: {
@@ -178,7 +187,10 @@ const updateUser = async (id, fieldsToUpdate) => {
       .select("-hash")
       .select("-salt")
       .populate("likes")
-      .populate("friends")
+      .populate({
+        path: "notifications",
+        populate: [{ path: "author", select: ["name"] }],
+      })
       .populate({
         path: "posts",
         options: {
@@ -213,8 +225,8 @@ const getAllUsers = async (userId) => {
     const users = await User.find({
       _id: { $nin: [userId] },
     });
-  
-    if(!users.length){
+
+    if (!users.length) {
       return [];
     }
     return users;

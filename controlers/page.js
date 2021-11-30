@@ -1,10 +1,21 @@
 const { findUserById, getAllUsers } = require("../db/user");
-
+const { getFriendshipByUsersId } = require("../db/friendship");
+const { getPostByUserId } = require("../db/post");
 const pageController = {
   home: async (req, res) => {
     if (req.isAuthenticated()) {
       const user = await findUserById(req.user._id);
-      return await res.render("home", { user: user, posts: user.posts });
+      let posts = [];
+
+      posts = [...user.posts];
+      
+      for(let i=0; i<user.friends.length; i++){
+        posts = [...posts ,...await getPostByUserId(user.friends[i])]
+      }
+
+      console.log(posts);
+
+      return  res.render("home", { user: user, posts });
     } else {
       return res.redirect("/login");
     }
@@ -17,13 +28,23 @@ const pageController = {
   },
   profile: async (req, res) => {
     const id = req.params.userid;
+    const user = await findUserById(req.user._id);
     const profileUser = await findUserById(id);
-    return await res.render("profile", { profileUser, user: req.user });
+
+    let requestFriendship = await getFriendshipByUsersId(user._id, id);
+    let requestedFriendship = await getFriendshipByUsersId(id, user._id);
+
+    return await res.render("profile", {
+      profileUser,
+      user,
+      requestFriendship,
+      requestedFriendship,
+    });
   },
   all: async (req, res) => {
     const users = await getAllUsers(req.user._id);
-    res.render("all", {user: req.user, allUsers: users});
-  }
+    res.render("all", { user: req.user, allUsers: users });
+  },
 };
 
 module.exports = pageController;

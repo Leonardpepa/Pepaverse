@@ -1,27 +1,140 @@
-    <div
-          class="profile-card card shadow p-3 mb-5 bg-body rounded"
-          style=" margin: 0 auto"
-        >
-          <img
-            style="max-width: 200px; margin: 0 auto; border-radius: 50%"
-            src=" <%= profileUser.profileUrl%> "
-            class="card-img-top img-thumbnail"
-            alt="Users Profile picture"
-            width="20%"
-          />
-          <div class="card-body">
-            <h5 style=" color: black; font-size: x-large; font-weight: bold;" class="card-title"><%= profileUser.name %></h5>
-            <p class="card-text"><%= profileUser.description%></p>
-            <% if (user._id.toString() === profileUser._id.toString()) { %>
-            <button
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Edit profile
-            </button>
-            <% } else{ %>
-              <button type="button" class="btn btn-primary add-friend-btn ">Add friend</button>
-            <% }%>
-          </div>
-        </div>
+<div
+  class="profile-card card shadow p-3 mb-5 bg-body rounded"
+  style="margin: 0 auto"
+>
+  <img
+    style="max-width: 200px; margin: 0 auto; border-radius: 50%"
+    src=" <%= profileUser.profileUrl%> "
+    class="card-img-top img-thumbnail"
+    alt="Users Profile picture"
+    width="20%"
+  />
+
+  <div class="card-body">
+    <h5
+      style="color: black; font-size: x-large; font-weight: bold"
+      class="card-title"
+    >
+      <%= profileUser.name %>
+    </h5>
+    <p class="card-text"><%= profileUser.description%></p>
+    <% if (user._id.toString() === profileUser._id.toString()) { %>
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      Edit profile
+    </button>
+    <% } else if(requestFriendship?.status === "pending"){ %>
+    <button onclick="undoFriendRequest('<%= requestedFriendship?._id || requestFriendship?._id %>')"
+      id="<%= requestedFriendship?._id || requestFriendship?._id %>"
+      type="button"
+      class="btn btn-primary undo-friend-btn"
+    >
+      Pending
+    </button>
+    <% } else if (requestedFriendship?.status === "pending") { %>
+    <button onclick="acceptFriendRequest('<%= requestedFriendship._id %>')"
+      id="<%= requestedFriendship._id %>"
+      type="button"
+      class="btn btn-primary accept-friend-request"
+    >
+      Accept
+    </button>
+    <% } else if (!requestedFriendship && !requestFriendship) {%>
+    <button onclick="sendFriendRequest('<%= profileUser._id %>')"
+      id="<%= profileUser._id %>"
+      type="button"
+      class="btn btn-primary add-friend-btn"
+    >
+      Add friend
+    </button>
+    <% } else if (user.friends.includes(profileUser._id)) {%>
+      <button onclick="deleteFriend('<%=  requestedFriendship?._id || requestFriendship?._id %>')"
+      id="<%=  requestedFriendship?._id || requestFriendship?._id %>"
+      type="button"
+      class="btn btn-primary remove-friendship"
+    >
+      friends
+    </button>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  // const addFriendButton = document.querySelector(".add-friend-btn");
+  // addFriendButton && addFriendButton.addEventListener("click", async (e) => {
+
+  //   const receiver = addFriendButton.id;
+
+  //   const res = await fetch("/notification", {
+  //     method: "post",
+  //     credentials: "include",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       receiver,
+  //       type: "friend-request",
+  //       postId: null,
+  //     }),
+  //   });
+  //   const data = await res.json();
+  //   console.log("Add friend", data);
+  //   return data;
+  // });
+
+  // const acceptFriendButton = document.querySelector(".accept-friend-request");
+  // acceptFriendButton && acceptFriendButton.addEventListener("click", async (e) => {
+  //   const res = await fetch("/friendship/accept", {
+  //     method: "post",
+  //     credentials: "include",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       friendshipId: acceptFriendButton.id,
+  //     }),
+  //   });
+  //   const data = await res.json();
+  //   console.log("Accept friend", data);
+  //   return data;
+  // });
+
+  // const deleteFriendshipButton = document.querySelector(".remove-friendship");
+
+  // deleteFriendshipButton && deleteFriendshipButton.addEventListener("click", async (e) => {
+  //   const res = await fetch("/friendship", {
+  //     method: "delete",
+  //     credentials: "include",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       friendshipId: deleteFriendshipButton.id,
+  //     }),
+  //   });
+  //   const data = await res.json();
+  //   console.log("delete friend",data);
+  //   return data;
+  // })
+
+  // const undoFriendship = document.querySelector(".undo-friend-btn");
+
+  // undoFriendship && undoFriendship.addEventListener("click", async(e) => {
+  //   const res = await fetch("/friendship/undo", {
+  //     method: "delete",
+  //     credentials: "include",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       friendshipId: undoFriendship.id,
+  //     }),
+  //   });
+  //   const data = await res.json();
+  //   console.log("undo friend",data);
+  //   return data;
+  // });
+</script>

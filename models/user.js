@@ -55,6 +55,12 @@ const userSchema = new Mongoose.Schema({
       ref: "Post",
     },
   ],
+  notifications: [
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Notification",
+    },
+  ],
   searchName: {
     type: String,
   },

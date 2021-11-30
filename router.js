@@ -7,6 +7,8 @@ const pageController = require("./controlers/page");
 const authController = require("./controlers/auth");
 const userController = require("./controlers/user");
 const commentController = require("./controlers/comment");
+const notificationController = require("./controlers/notification");
+const friendshipController = require("./controlers/friendship");
 
 router.get("/", pageController.home);
 router.get("/login", pageController.login);
@@ -37,9 +39,12 @@ router.delete("/users/comment", ensureAuth, commentController.delete);
 //update comment
 router.post("/users/comment/update", ensureAuth, commentController.update);
 
-
 //get comments from post
-router.get("/post/:postId/comment", ensureAuth, commentController.getCommentsByPostId)
+router.get(
+  "/post/:postId/comment",
+  ensureAuth,
+  commentController.getCommentsByPostId
+);
 
 //upload a post
 router.post("/users/post", ensureAuth, postController.create);
@@ -50,5 +55,13 @@ router.post("/users/post/update", ensureAuth, postController.update);
 
 //search
 router.post("/users/search", ensureAuth, userController.search);
+
+router.post("/notification", ensureAuth, notificationController.create);
+
+router.post("/friendship/accept", ensureAuth, friendshipController.accept);
+
+router.delete("/friendship", ensureAuth, friendshipController.delete);
+
+router.delete("/friendship/undo", ensureAuth, friendshipController.undo);
 
 module.exports = router;
