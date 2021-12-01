@@ -1,6 +1,6 @@
 const { findUserById, getAllUsers } = require("../db/user");
 const { getFriendshipByUsersId } = require("../db/friendship");
-const { getPostByUserId } = require("../db/post");
+const { getPostByUserId, getPostById } = require("../db/post");
 const { getUnSeenNotificationbyUserId } = require("../db/notification");
 const pageController = {
   home: async (req, res) => {
@@ -51,6 +51,13 @@ const pageController = {
     const notifications = await getUnSeenNotificationbyUserId(req.user._id);
     res.render("all", { user: req.user, allUsers: users, notifications });
   },
+  post: async (req, res) => {
+    const post = await getPostById(req.params.id);
+
+    const notifications = await getUnSeenNotificationbyUserId(req.user._id);
+    
+    res.render("post-display", {user: req.user, notifications, post});
+  }
 };
 
 module.exports = pageController;

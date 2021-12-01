@@ -25,16 +25,18 @@ const commentController = {
   },
   delete: async (req, res, next) => {
     const author = (await getCommentById(req.body.commentId)).author;
-
+    
     if (author.toString() !== req.user._id.toString()) {
       return res.json({
         ok: false,
+
       });
     }
     const comment = await deleteComment(req.body.commentId);
     if (comment) {
       return res.json({
         ok: true,
+        comment: comment,
       });
     }
   },

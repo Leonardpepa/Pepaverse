@@ -25,6 +25,14 @@ const notificationSchema = new Mongoose.Schema(
       type: String,
       default: "pending"
     },
+    like: {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Like",
+    },
+    comment: {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+    },
     friendship: { 
       type: Mongoose.Schema.Types.ObjectId,
       ref: "Friendship",

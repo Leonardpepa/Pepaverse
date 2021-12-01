@@ -28,6 +28,7 @@ const likeController = {
         message: "Like Added",
         ok: true,
         liked: true,
+        like: like._id,
       });
     }
   },
@@ -43,6 +44,7 @@ const likeController = {
         n: post.likes.length,
         ok: true,
         liked: false,
+        like: like._id,
       });
     } else {
       return await res.json({

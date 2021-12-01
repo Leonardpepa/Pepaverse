@@ -1,7 +1,7 @@
 const sendFriendRequest = async (id) => {
     const receiver = id
 
-    const res = await fetch("/notification", {
+    const res = await fetch("/notification/friend-request/create", {
       method: "post",
       credentials: "include",
       headers: {

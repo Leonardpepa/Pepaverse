@@ -31,7 +31,7 @@
   <!-- Button trigger modal -->
 <button style="visibility: hidden; display: none;"  id="click-modal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 </button>
-  <script src="shared.js"></script>
+  <script src="/shared.js"></script>
   <script>
     const likeBtnArray = document.querySelectorAll(".like");
     
@@ -39,8 +39,7 @@
       btn.addEventListener("click", async (e) => {
         const res = await sendLikeRequest(btn.classList[3]);
         const parent = btn.parentElement.parentElement;
-        const div = parent.getElementsByClassName("post-interactions")[0];
-
+        const displayLike = document.getElementById(`like-display${btn.classList[3]}`);
         if(res.ok){
           if(res.liked){
             yes[btn.classList[3]] = true;
@@ -48,14 +47,18 @@
             btn.children[0].classList.remove("far");
             btn.children[0].classList.add("fas");
             btn.children[1].textContent = "Liked"
-            div.children[0].textContent = " " + (Number(div.children[0].textContent) + 1);
+            displayLike.textContent = " " + (Number(displayLike.textContent) + 1);
+            if(btn.classList[4].toString() !== '<%= user._id.toString() %>'){
+              await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+            }
           }else{
             yes[btn.classList[3]] = false;
             btn.style.color = "black";
             btn.children[0].classList.remove("fas");
             btn.children[0].classList.add("far");
             btn.children[1].textContent = "Like"
-            div.children[0].textContent = " " + (Number(div.children[0].textContent) - 1);
+            displayLike.textContent = " " + (Number(displayLike.textContent) - 1);
+            await deleteLikeNotification(res.like);
           }
         }
       });

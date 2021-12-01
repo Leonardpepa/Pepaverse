@@ -1,3 +1,4 @@
+
 const deletePost = async (postId) => {
   const res = await fetch("/users/post", {
     method: "delete",
@@ -30,6 +31,7 @@ const deleteComment = async (commentId, postId) => {
     comment.parentElement.removeChild(comment);
     const commentDisplay = document.getElementById(`comment-display${postId}`);
     commentDisplay.textContent = ` ${Number(commentDisplay.textContent) - 1}`;
+    await deleteCommentNotification(data.comment._id);
   }
   return await data;
 };
@@ -99,6 +101,77 @@ const commentPost = async (postId, content) => {
   return data;
 };
 
+const createLikeNotification = async (author, receiver, post, like) => {
+  const res = await fetch("/notification/like/create", {
+    method: "post",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      author: author,
+      receiver: receiver,
+      post: post,
+      type: "like",
+      like: like,
+    }),
+  });
+  const data = await res.json();
+  return data;
+};
+
+const deleteLikeNotification = async (id) => {
+  const res = await fetch("/notification/like/delete", {
+    method: "delete",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      like: id,
+    }),
+  });
+  const data = await res.json();
+  return data;
+};
+
+const createCommentNotification = async (author, receiver, post, comment) => {
+  const res = await fetch("/notification/comment/create", {
+    method: "post",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      author: author,
+      receiver: receiver,
+      post: post,
+      type: "comment",
+      like: null,
+      comment: comment,
+    }),
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+};
+
+const deleteCommentNotification = async (comment) => {
+  const res = await fetch("/notification/comment/delete", {
+    method: "delete",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      comment: comment,
+    }),
+  });
+  const data = await res.json();
+  console.log(data);
+  return data;
+};
+
 const fetchComments = async (postId) => {
   const res = await fetch(`/post/${postId}/comment`, {
     method: "get",
@@ -138,6 +211,13 @@ commentForms.forEach(async (form) => {
         const comment = createUIComment(data.comment, commentDiv);
 
         postInput.value = "";
+
+        await createCommentNotification(
+          data.comment.author._id,
+          postInput.classList[3],
+          data.comment.post,
+          data.comment._id
+        );
 
         comment.scrollIntoView({
           behavior: "smooth",
@@ -186,7 +266,8 @@ const displayFetchedComments = (list, div) => {
         const commentText = document.getElementById(`comment-text${commentId}`);
         commentText.textContent = content;
         const updatedAt = document.getElementById(`updatedAt${commentId}`);
-        updatedAt.innerHTML = '<small class="text-muted">Last updated 0 minutes ago</small>'
+        updatedAt.innerHTML =
+          '<small class="text-muted">Last updated 0 minutes ago</small>';
       }
     });
   });

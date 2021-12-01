@@ -69,7 +69,10 @@ const updatePost = async (id, fieldsToUpdate) => {
 
 const getPostById = async (postId) => {
   try {
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).populate({
+      path: "author",
+      select: ["name", "profileUrl"],
+    });
 
     if (!post) {
       return null;

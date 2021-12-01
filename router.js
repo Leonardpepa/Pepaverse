@@ -15,6 +15,7 @@ router.get("/login", pageController.login);
 router.get("/register", pageController.register);
 router.get("/profile/:userid", ensureAuth, pageController.profile);
 router.get("/all", ensureAuth, pageController.all);
+router.get("/post/:id", ensureAuth, pageController.post);
 
 router.post("/users/update/:userid", ensureAuth, userController.update);
 
@@ -56,8 +57,20 @@ router.post("/users/post/update", ensureAuth, postController.update);
 //search
 router.post("/users/search", ensureAuth, userController.search);
 
-router.post("/notification", ensureAuth, notificationController.create);
+//notifications
+router.post("/notification/friend-request/create", ensureAuth, notificationController.createFriendRequest);
 
+router.post("/notification/like/create", ensureAuth, notificationController.createLikeNotification);
+
+router.delete("/notification/like/delete", ensureAuth, notificationController.deleteByLike);
+
+router.post("/notification/comment/create", ensureAuth, notificationController.createCommentNotification);
+
+router.delete("/notification/comment/delete", ensureAuth, notificationController.deleteByComment);
+
+router.post("/notification/:id/seen", ensureAuth, notificationController.updateSeen);
+
+//friend request
 router.post("/friendship/accept", ensureAuth, friendshipController.accept);
 
 router.delete("/friendship", ensureAuth, friendshipController.delete);

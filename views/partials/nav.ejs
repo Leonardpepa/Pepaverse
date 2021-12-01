@@ -51,14 +51,29 @@
                     <% } else {%>
                       <% notifications.forEach(notification => { %>
                         <% if (notification.author && notification.type === "friend-request") { %>
-                            <div class="d-flex justify-content-start align-items-center">
+                            <div class=" item d-flex justify-content-start align-items-center">
                               <a href="/profile/<%= notification.author._id %>">
                                 <img style="width: 100%; height: auto; max-width: 30px; border-radius: 50%;" class="img-thumbnail img-fluid" src="<%= notification.author.profileUrl %>" alt="user profile">
                               </a>
                               <li><a class="dropdown-item" href="/profile/<%= notification.author._id %>"><%= notification.author.name %> wants to be your friend</a></li>
                               <button type="button" onclick="acceptFriendRequest('<%= notification.friendship %>')" class = "btn btn-outline-primary btn-sm m-1 ">  Accept</button>
                             </div>
+                          <% } else if (notification.author && notification.type === "like") {%>
+                            <div id= "<%= notification._id %>" data-url="/post/<%= notification.post %>" class="item d-flex justify-content-start align-items-center">
+                              <a href="/profile/<%= notification.author._id %>">
+                                <img style="width: 100%; height: auto; max-width: 30px; border-radius: 50%;" class="img-thumbnail img-fluid" src="<%= notification.author.profileUrl %>" alt="user profile">
+                              </a>
+                              <li><a class="dropdown-item"  href="#"><%= notification.author.name %> liked your post</a></li>
+                            </div>
+                          <% } else if (notification.author && notification.type === "comment") { %>
+                            <div id= "<%= notification._id %>" data-url="/post/<%= notification.post %>" class="item d-flex justify-content-start align-items-center">
+                              <a href="/profile/<%= notification.author._id %>">
+                                <img style="width: 100%; height: auto; max-width: 30px; border-radius: 50%;" class="img-thumbnail img-fluid" src="<%= notification.author.profileUrl %>" alt="user profile">
+                              </a>
+                              <li><a class="dropdown-item" href="#"><%= notification.author.name %> commented on your post</a></li>
+                            </div>
                           <% } %>
+                          
                       <% }) %>
                     <% } %>
                     </ul>
@@ -100,4 +115,22 @@
       <% if (user) { %>
         <script src="/search.js" defer></script>
         <script src="/friendShared.js" defer></script>
+        <script defer>
+          document.querySelectorAll(".item").forEach((element) => {
+            element.addEventListener("click", async (e) => {
+              const res = await fetch(`/notification/${element.id}/seen`, {
+                method: "post",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+              const data = await res.json();
+              if(data.ok){
+                window.location.href = element.getAttribute("data-url");
+              }
+            });
+          });
+
+        </script>
       <% } %>
