@@ -60,18 +60,12 @@ const createFriendRequestNotifification = async (
 };
 
 const createLikeNotification = async (author, receiver, post, type, like) => {
-  
-  let exists =
-    (await Notification.findOne({
-      author,
-      receiver: receiver,
-      type: "like",
-    })) ||
-    (await Notification.findOne({
-      author: receiver,
-      receiver: author,
-      type: "like",
-    }));
+  let exists = await Notification.findOne({
+    author,
+    receiver: receiver,
+    type: "like",
+    post: post,
+  });
 
   if (exists) {
     return null;
@@ -105,7 +99,6 @@ const createCommentNotification = async (
   like,
   comment
 ) => {
-  
   let notification = await new Notification({
     author,
     receiver,
