@@ -14,6 +14,7 @@
 * Create Post ( only text for now )
 * Delete Post
 * Delete Comment
+* Notifications (like, comment, friend request)
 * Update Post
 * Update Comment
 * Like Post ( any users post )
