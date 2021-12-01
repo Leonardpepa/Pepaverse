@@ -19,7 +19,7 @@
 * Update Post
 * Update Comment
 * Like Post ( any users post )
-* * Notifications (like, comment, friend request) requires page refresh to show
+* Notifications (like, comment, friend request) requires page refresh to show
 * Search Users ( via name )
 * Logout
 
