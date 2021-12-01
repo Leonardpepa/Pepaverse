@@ -23,7 +23,7 @@
 
 # Soon to be implemented
 
-* Live Notofications
+* Live Notifications
 * Private Chat
 
 # Local Installation
