@@ -2,7 +2,7 @@
 
 # /* still in development */
 
-# Pepaverse is an open source social network build with node.js, mongoDB, passport.js and socket.io
+# Pepaverse is an open source social network build with nodejs, mongoDB, passportjs and socket.io
 
 # it started as my first attempt to create a chat application but now has been evolved to my fist attempt creating my own social network to share with my friends
 
