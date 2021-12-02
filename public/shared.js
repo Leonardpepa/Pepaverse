@@ -1,3 +1,4 @@
+
 const deletePost = async (postId) => {
   const res = await fetch("/users/post", {
     method: "delete",
@@ -151,6 +152,7 @@ const createCommentNotification = async (author, receiver, post, comment) => {
     }),
   });
   const data = await res.json();
+  console.log(data);
   return data;
 };
 
@@ -166,6 +168,7 @@ const deleteCommentNotification = async (comment) => {
     }),
   });
   const data = await res.json();
+  console.log(data);
   return data;
 };
 
@@ -209,16 +212,12 @@ commentForms.forEach(async (form) => {
 
         postInput.value = "";
 
-        const notification = await createCommentNotification(
+        await createCommentNotification(
           data.comment.author._id,
           postInput.classList[3],
           data.comment.post,
           data.comment._id
         );
-
-        if(notification.ok){
-          socket.emit("CREATE_COMMENT_NOTIFICATION", notification);
-        }
 
         comment.scrollIntoView({
           behavior: "smooth",
@@ -290,17 +289,3 @@ updatePostForms.forEach((form) => {
     }
   });
 });
-
-const updateNotificationSeen = async (element) => {
-  const res = await fetch(`/notification/${element.id}/seen`, {
-    method: "post",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  if (data.ok) {
-    window.location.href = element.getAttribute("data-url");
-  }
-};
