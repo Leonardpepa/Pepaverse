@@ -20,7 +20,7 @@
         
         <section id="feed"  class="container" >
           <div class="posts">
-            <script>
+            <script defer>
               let yes = {};
             </script>
             <% profileUser.posts.forEach((post) => { %>
@@ -35,8 +35,8 @@
       <%- include("components/editProfileModal", { user: user }) %>
     
     </main>
-    <script src="/shared.js"></script>
-    <script>
+    <script  src="/shared.js"></script>
+    <script >
       document.querySelector(".update-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const userid = "<%= user._id %>;"
@@ -85,7 +85,10 @@
             btn.children[1].textContent = "Liked"
             displayLike.textContent = " " + (Number(displayLike.textContent) + 1);
             if(btn.classList[4].toString() !== '<%= user._id.toString() %>'){
-              await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+              const notifResponse =  await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+              if(notifResponse.ok){
+                socket.emit("CREATE_LIKE_NOTIFICATION", notifResponse);
+              }
             }
           }else{
             yes[btn.classList[3]] = false;

@@ -42,12 +42,12 @@
                     aria-expanded="false"
                   ><i class="fas fa-bell"></i>
                     Νotifications <% if (notifications.length !== 0) { %>
-                        <span class="badge bg-danger"><%= notifications.length %></span>
+                        <span id="notification-badge" class="badge bg-danger"><%= notifications.length %></span>
                       <% } %>
                   </a>
-                  <ul class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
+                  <ul id="notifications" class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
                     <% if (notifications.length === 0) { %>
-                      <li class="dropdown-item disabled">You have 0 notifications</li>
+                      <li id="zero-notifications" class="dropdown-item disabled">You have 0 notifications</li>
                     <% } else {%>
                       <% notifications.forEach(notification => { %>
                         <% if (notification.author && notification.type === "friend-request") { %>
@@ -131,6 +131,5 @@
               }
             });
           });
-
         </script>
       <% } %>

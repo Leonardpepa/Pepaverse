@@ -29,6 +29,7 @@ const createFriendRequestNotifification = async (
     type,
     post: null,
     like: null,
+    friendship: null,
   }).save();
 
   if (!notification) {
@@ -47,16 +48,20 @@ const createFriendRequestNotifification = async (
     return null;
   }
 
-  await Notification.findByIdAndUpdate(notification._id, {
-    friendship: friendship._id,
+  notification = await Notification.findByIdAndUpdate(friendship.notification, {
+    $set: { friendship: friendship._id },
   });
-
+  
+  
   await User.findOneAndUpdate(
     { _id: receiver },
     { $push: { notifications: notification } }
   );
 
-  return notification;
+  return await Notification.findById(notification._id).populate({
+    path: "author",
+    select: ["name", "profileUrl"],
+  });
 };
 
 const createLikeNotification = async (author, receiver, post, type, like) => {
@@ -77,6 +82,7 @@ const createLikeNotification = async (author, receiver, post, type, like) => {
     type,
     post,
     like,
+    friendship: null,
   }).save();
 
   if (!notification) {
@@ -88,7 +94,10 @@ const createLikeNotification = async (author, receiver, post, type, like) => {
     { $push: { notifications: notification } }
   );
 
-  return notification;
+  return await Notification.findById(notification._id).populate({
+    path: "author",
+    select: ["name", "profileUrl"],
+  });
 };
 
 const createCommentNotification = async (
@@ -106,6 +115,7 @@ const createCommentNotification = async (
     post,
     like,
     comment,
+    friendship: null,
   }).save();
 
   if (!notification) {
@@ -117,7 +127,10 @@ const createCommentNotification = async (
     { $push: { notifications: notification } }
   );
 
-  return notification;
+  return await Notification.findById(notification._id).populate({
+    path: "author",
+    select: ["name", "profileUrl"],
+  });
 };
 
 const deleteNotification = async (id) => {
@@ -142,7 +155,10 @@ const deleteNotificationByCommentId = async (id) => {
     { _id: notification.receiver },
     { $pull: { notifications: notification._id } }
   );
-  return notification;
+  return notification.populate({
+    path: "author",
+    select: ["name", "profileUrl"],
+  });
 };
 
 const deleteNotificationByLikeId = async (id) => {
@@ -154,7 +170,10 @@ const deleteNotificationByLikeId = async (id) => {
     { _id: notification.receiver },
     { $pull: { notifications: notification._id } }
   );
-  return notification;
+  return notification.populate({
+    path: "author",
+    select: ["name", "profileUrl"],
+  });
 };
 
 const getUnSeenNotificationbyUserId = async (id) => {

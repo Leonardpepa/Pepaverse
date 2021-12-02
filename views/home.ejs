@@ -18,7 +18,7 @@
     
     <section id="feed"  class="container" >
       <div class="posts">
-        <script>
+        <script defer>
           let yes = {};
         </script>
         <% posts.forEach((post) => { %>
@@ -31,8 +31,8 @@
   <!-- Button trigger modal -->
 <button style="visibility: hidden; display: none;"  id="click-modal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 </button>
-  <script src="/shared.js"></script>
-  <script>
+  <script defer  src="/shared.js"></script>
+  <script defer>
     const likeBtnArray = document.querySelectorAll(".like");
     
     likeBtnArray.forEach(btn => {
@@ -49,7 +49,10 @@
             btn.children[1].textContent = "Liked"
             displayLike.textContent = " " + (Number(displayLike.textContent) + 1);
             if(btn.classList[4].toString() !== '<%= user._id.toString() %>'){
-              await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+              const notifResponse =  await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+              if(notifResponse.ok){
+                socket.emit("CREATE_LIKE_NOTIFICATION", notifResponse);
+              }
             }
           }else{
             yes[btn.classList[3]] = false;
@@ -180,7 +183,7 @@ const createUIComment = (comment, div) => {
 
  
   </script>
-  <script>
+  <script defer>
     const hasAvatar = "<%= user.profileUrl %>";
 
     window.addEventListener('load', async (e) => {
