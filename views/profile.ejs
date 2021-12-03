@@ -34,6 +34,7 @@
     </main>
     <script defer src="/shared.js"></script>
     <script defer>
+      let yes = {};
       document.querySelector(".update-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const userid = "<%= user._id %>;"
