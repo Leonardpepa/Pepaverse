@@ -43,12 +43,12 @@
       </div>
       <div class="d-flex">
         <% if (user.likedPosts.includes(post._id)) { %>
-          
-        <p liked = "true" id="like<%= post._id %>" style="color: red" class="m-2 p-1 like <%= post._id %> <%= post.author._id %>">
+
+        <p onclick="like(this)" liked = "true" id="like<%= post._id %>" style="color: red" class="m-2 p-1 like <%= post._id %> <%= post.author._id %>">
           <i class="fas fa-heart"></i> <span>Liked</span>
         </p>
         <% }else {%>
-        <p id="<%= post._id %>" style="color: black" class="m-2 p-1 like <%= post._id %> <%= post.author._id %>">
+        <p onclick="like(this)" liked = "" id="<%= post._id %>" style="color: black" class="m-2 p-1 like <%= post._id %> <%= post.author._id %>">
           <i class="far fa-heart"></i> <span>Like</span>
         </p>
         <%}%>

@@ -22,7 +22,7 @@ const createComment = async (postId, userId, content) => {
     );
 
     if (comment) {
-      return comment.populate({
+      return await Comment.findById(comment._id).populate({
         path: "author",
         select: ["name", "profileUrl"],
       });
@@ -39,7 +39,7 @@ const deleteComment = async (commentId) => {
     if (!comment) {
       return null;
     }
-    
+
     await User.findOneAndUpdate(
       { _id: comment.author },
       { $pull: { comments: commentId } }
@@ -58,13 +58,15 @@ const deleteComment = async (commentId) => {
 
 const updateComment = async (id, fieldsToUpdate) => {
   try {
-    const comment = await Comment.findOneAndUpdate({ _id: id }, { ...fieldsToUpdate });
-    if(!comment){
+    const comment = await Comment.findOneAndUpdate(
+      { _id: id },
+      { ...fieldsToUpdate }
+    );
+    if (!comment) {
       return null;
     }
 
     return await comment;
-
   } catch (error) {
     console.log(error);
   }
@@ -88,15 +90,23 @@ const getCommentsByPostId = async (postId) => {
 const getCommentById = async (commentId) => {
   try {
     const comment = await Comment.findById(commentId);
-    if(!comment){
+    if (!comment) {
       return null;
     }
 
-    return comment;
-
+    return await Comment.findById(comment._id).populate({
+      path: "author",
+      select: ["name", "profileUrl"],
+    });
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-module.exports = {getCommentById, createComment, deleteComment, getCommentsByPostId, updateComment };
+module.exports = {
+  getCommentById,
+  createComment,
+  deleteComment,
+  getCommentsByPostId,
+  updateComment,
+};

@@ -218,9 +218,9 @@ commentForms.forEach(async (form) => {
           data.comment._id
         );
 
-        if (resData.ok) {
-          socket.emit("CREATE_COMMENT_NOTIFICATION", resData);
-        }
+        // if (resData.ok) {
+        //   socket.emit("CREATE_COMMENT_NOTIFICATION", resData);
+        // }
 
         comment.scrollIntoView({
           behavior: "smooth",
@@ -306,3 +306,33 @@ const updateNotificationSeen = async (element) => {
     window.location.href = element.getAttribute("data-url");
   }
 };
+
+const like = async (btn) => {
+  const res = await sendLikeRequest(btn.classList[3], btn.getAttribute("liked"));
+        const parent = btn.parentElement.parentElement;
+        const displayLike = document.getElementById(`like-display${btn.classList[3]}`);
+        if(res.ok){
+          if(res.liked){
+            btn.setAttribute("liked", "true");
+            btn.style.color = "red";
+            btn.children[0].classList.remove("far");
+            btn.children[0].classList.add("fas");
+            btn.children[1].textContent = "Liked"
+            displayLike.textContent = " " + (Number(displayLike.textContent) + 1);
+            if(btn.classList[4].toString() !== '<%= user._id.toString() %>'){
+              const data = await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+              // if(data.ok){
+              //   socket.emit("CREATE_LIKE_NOTIFICATION", data);
+              // }
+            }
+          }else{
+            btn.setAttribute("liked", "");
+            btn.style.color = "black";
+            btn.children[0].classList.remove("fas");
+            btn.children[0].classList.add("far");
+            btn.children[1].textContent = "Like"
+            displayLike.textContent = " " + (Number(displayLike.textContent) - 1);
+            await deleteLikeNotification(res.like);
+          }
+        }
+}
