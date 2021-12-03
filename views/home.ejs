@@ -18,6 +18,9 @@
     
     <section id="feed"  class="container" >
       <div class="posts">
+        <script>
+          const yes = {};
+        </script>
         <% posts.forEach((post) => { %>
           <%- include("components/post", {post: post, user: user}) %>
         <% }) %>
@@ -31,7 +34,6 @@
   <script defer src="/shared.js"></script>
   <script defer>
 
-    let yes = {};
     
     const likeBtnArray = document.querySelectorAll(".like");
     
