@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const { server } = require("./server.config");
 const jwt = require("jsonwebtoken");
 
-const io = new Server(server);
+const io = new Server(server, {});
 
 const configureIO = () => {
   const users = {};
