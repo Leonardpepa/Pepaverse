@@ -20,7 +20,7 @@
         
         <section id="feed"  class="container" >
           <div class="posts">
-            <script>
+            <script defer>
               let yes = {};
             </script>
             <% profileUser.posts.forEach((post) => { %>
@@ -35,8 +35,8 @@
       <%- include("components/editProfileModal", { user: user }) %>
     
     </main>
-    <script src="/shared.js"></script>
-    <script>
+    <script defer src="/shared.js"></script>
+    <script defer>
       document.querySelector(".update-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const userid = "<%= user._id %>;"
