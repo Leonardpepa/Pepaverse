@@ -26,7 +26,7 @@
       <script src="/socket.io/socket.io.js:" ></script>
       <script src="/sharedUI.js"></script>
       <script>
-        const socket = io("ws://pepaverse.herokuapp.com/socket.io/?EIO=4&transport=websocket", {
+        const socket = io(`ws://pepaverse.herokuapp.com:'<%= process.env.PORT %>'/socket.io/?EIO=4&transport=websocket`, {
           withCredentials: true,
         });
 
