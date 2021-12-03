@@ -1,3 +1,6 @@
+
+let yes = {};
+
 const deletePost = async (postId) => {
   const res = await fetch("/users/post", {
     method: "delete",

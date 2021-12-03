@@ -20,9 +20,6 @@
         
         <section id="feed"  class="container" >
           <div class="posts">
-            <script defer>
-              let yes = {};
-            </script>
             <% profileUser.posts.forEach((post) => { %>
               <%- include("components/post", {post: post, user: user}) %>
             <% }) %>

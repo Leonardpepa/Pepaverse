@@ -18,9 +18,6 @@
     
     <section id="feed"  class="container" >
       <div class="posts">
-        <script defer>
-          let yes = {};
-        </script>
         <% posts.forEach((post) => { %>
           <%- include("components/post", {post: post, user: user}) %>
         <% }) %>
