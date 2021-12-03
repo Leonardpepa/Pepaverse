@@ -26,9 +26,7 @@
       <script src="/socket.io/socket.io.js:" ></script>
       <script src="/sharedUI.js"></script>
       <script>
-        const socket = io({
-          withCredentials: true,
-        });
+        const socket = io();
 
         socket.on("FRIEND_REQUEST_NOTIFICATION", (data) => {
           createFriendRequestNotificationUI(data);
