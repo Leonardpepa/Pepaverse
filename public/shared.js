@@ -1,4 +1,5 @@
 
+
 const deletePost = async (postId) => {
   const res = await fetch("/users/post", {
     method: "delete",
@@ -72,9 +73,9 @@ const updateComment = async (commentId, content) => {
   }
 };
 
-const sendLikeRequest = async (postId) => {
+const sendLikeRequest = async (postId, liked ) => {
   const res = await fetch("/users/like", {
-    method: yes[postId] ? "delete" : "post",
+    method: liked ? "delete" : "post",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",

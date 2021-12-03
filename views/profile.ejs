@@ -20,9 +20,6 @@
         
         <section id="feed"  class="container" >
           <div class="posts">
-            <script>
-              const yes = {};
-            </script>
             <% profileUser.posts.forEach((post) => { %>
               <%- include("components/post", {post: post, user: user}) %>
             <% }) %>
@@ -73,12 +70,12 @@
     likeBtnArray.forEach(btn => {
       
       btn.addEventListener("click", async (e) => {
-        const res = await sendLikeRequest(btn.classList[3]);
+        const res = await sendLikeRequest(btn.classList[3], btn.getAttribute("liked"));
         const parent = btn.parentElement.parentElement;
         const displayLike = document.getElementById(`like-display${btn.classList[3]}`);
         if(res.ok){
           if(res.liked){
-            yes[btn.classList[3]] = true;
+            btn.setAttribute("liked", "true");
             btn.style.color = "red";
             btn.children[0].classList.remove("far");
             btn.children[0].classList.add("fas");
@@ -91,7 +88,7 @@
               }
             }
           }else{
-            yes[btn.classList[3]] = false;
+            btn.setAttribute("liked", "");
             btn.style.color = "black";
             btn.children[0].classList.remove("fas");
             btn.children[0].classList.add("far");
