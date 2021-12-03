@@ -85,7 +85,10 @@
             btn.children[1].textContent = "Liked"
             displayLike.textContent = " " + (Number(displayLike.textContent) + 1);
             if(btn.classList[4].toString() !== '<%= user._id.toString() %>'){
-              await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+              const data = await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
+              if(data.ok){
+                socket.emit("CREATE_LIKE_NOTIFICATION", data);
+              }
             }
           }else{
             yes[btn.classList[3]] = false;

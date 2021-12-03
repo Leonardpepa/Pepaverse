@@ -24,9 +24,21 @@
     <link rel="stylesheet" href="/partials-css/nav.css">
     <% if (user) { %>
       <script src="/socket.io/socket.io.js"></script>
+      <script src="/sharedUI.js"></script>
       <script>
         const socket = io("<%= process.env.FRONTEND_URL %>", {
           withCredentials: true,
         });
+
+        socket.on("FRIEND_REQUEST_NOTIFICATION", (data) => {
+          createFriendRequestNotificationUI(data);
+        });
+        socket.on("LIKE_NOTIFICATION", (data) => {
+          createLikeNotificationUi(data);
+        });
+        socket.on("COMMENT_NOTIFICATION", (data) => {
+          createCommentNotificationUI(data);
+        });
+
       </script>
     <% } %>
