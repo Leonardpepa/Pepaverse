@@ -23,13 +23,20 @@
     />
     <link rel="stylesheet" href="/partials-css/nav.css">
     <% if (user) { %>
-      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <script  defer src="/sharedUI.js"></script>
       <script defer>
         const socket = io("https://pepaverse.herokuapp.com", {
-            "reconnection": true,
+            reconnection: true,
           }
+
         );
+
+        if(socket.connected === false || socket.connected === undefined){
+            socket = io.connect('https://pepaverse.herokuapp.com', {forceNew: true}); 
+            console.log('Reconnecting to server');
+            alert('Reconnecting to server');
+        }
 
         socket.on("FRIEND_REQUEST_NOTIFICATION", (data) => {
           createFriendRequestNotificationUI(data);
@@ -41,5 +48,5 @@
           createCommentNotificationUI(data);
         });
 
-      </script> -->
+      </script>
     <% } %>
