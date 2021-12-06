@@ -22,6 +22,7 @@ app.use(
     SameSite: true,
     cookie: {
       httpOnly: true,
+      sameSite: true,
     },
   })
 );
