@@ -6,9 +6,9 @@ const pageController = {
   home: async (req, res) => {
     if (req.isAuthenticated()) {
       const user = await findUserById(req.user._id);
-      
+
       let posts = [];
-      
+
       const notifications = await getUnSeenNotificationbyUserId(user._id);
 
       posts = [...user.posts];
@@ -16,6 +16,12 @@ const pageController = {
       for (let i = 0; i < user.friends.length; i++) {
         posts = [...posts, ...(await getPostByUserId(user.friends[i]))];
       }
+
+      posts.sort(function (a, b) {
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
 
       return res.render("home", { user: user, posts, notifications });
     } else {
@@ -32,7 +38,7 @@ const pageController = {
     const id = req.params.userid;
     const user = await findUserById(req.user._id);
     const profileUser = await findUserById(id);
-    
+
     const notifications = await getUnSeenNotificationbyUserId(user._id);
 
     let requestFriendship = await getFriendshipByUsersId(user._id, id);
@@ -43,7 +49,7 @@ const pageController = {
       user,
       requestFriendship,
       requestedFriendship,
-      notifications
+      notifications,
     });
   },
   all: async (req, res) => {
@@ -55,9 +61,9 @@ const pageController = {
     const post = await getPostById(req.params.id);
 
     const notifications = await getUnSeenNotificationbyUserId(req.user._id);
-    
-    res.render("post-display", {user: req.user, notifications, post});
-  }
+
+    res.render("post-display", { user: req.user, notifications, post });
+  },
 };
 
 module.exports = pageController;
