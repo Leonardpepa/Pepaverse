@@ -218,9 +218,9 @@ commentForms.forEach(async (form) => {
           data.comment._id
         );
 
-        // if (resData.ok) {
-        //   socket.emit("CREATE_COMMENT_NOTIFICATION", resData);
-        // }
+        if (resData.ok) {
+          socket.emit("CREATE_COMMENT_NOTIFICATION", resData);
+        }
 
         comment.scrollIntoView({
           behavior: "smooth",
@@ -321,9 +321,9 @@ const like = async (btn) => {
             displayLike.textContent = " " + (Number(displayLike.textContent) + 1);
             if(btn.classList[4].toString() !== '<%= user._id.toString() %>'){
               const data = await createLikeNotification('<%= user._id %>', btn.classList[4], btn.classList[3], res.like);
-              // if(data.ok){
-              //   socket.emit("CREATE_LIKE_NOTIFICATION", data);
-              // }
+              if(data.ok){
+                socket.emit("CREATE_LIKE_NOTIFICATION", data);
+              }
             }
           }else{
             btn.setAttribute("liked", "");
