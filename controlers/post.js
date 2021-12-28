@@ -19,27 +19,33 @@ const postcontroller = {
     }
   },
   delete: async (req, res) => {
-    const postId = req.body.postId;
+    console.log("yes");
+    try {
+      const postId = req.body.postId;
 
-    const author = (await getPostById(postId)).author;
+      const author = (await getPostById(postId)).author._id;
 
-    if (author.toString() !== req.user._id.toString()) {
+      if (author.toString() !== req.user._id.toString()) {
+        return res.json({ ok: false });
+      }
+
+      const deletedPost = await deletePost(postId);
+      
+      if (deletePost) {
+        return res.json({ ok: true });
+      }
+
       return res.json({ ok: false });
+    } catch (error) {
+      console.log(error);
     }
-
-    const deletedPost = await deletePost(postId);
-    if (deletePost) {
-      return res.json({ ok: true });
-    }
-
-    return res.json({ ok: false });
   },
 
   update: async (req, res) => {
     const content = req.body.content;
     const postId = req.body.postId;
 
-    const author = (await getPostById(postId)).author;
+    const author = (await getPostById(postId)).author._id;
 
     if (author.toString() !== req.user._id.toString()) {
       return res.json({ ok: false });
@@ -49,6 +55,7 @@ const postcontroller = {
       content: content,
       updatedAt: Date.now(),
     });
+
 
     if (!post) {
       return res.json({ ok: false, post });

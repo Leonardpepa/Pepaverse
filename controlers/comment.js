@@ -24,7 +24,7 @@ const commentController = {
     });
   },
   delete: async (req, res, next) => {
-    const author = (await getCommentById(req.body.commentId)).author;
+    const author = (await getCommentById(req.body.commentId)).author._id;
     
     if (author.toString() !== req.user._id.toString()) {
       return res.json({
@@ -44,7 +44,7 @@ const commentController = {
     const content = req.body.content;
     const commentId = req.body.commentId;
 
-    const author = (await getCommentById(req.body.commentId)).author;
+    const author = (await getCommentById(req.body.commentId)).author._id;
 
     if (author.toString() !== req.user._id.toString()) {
       return res.json({ ok: false, comment });
