@@ -46,4 +46,3 @@ you need to add and configure an .env file as follows
 ```
 * source for ui components: [Bootsrap](https://getbootstrap.com/)
 * source for icons: [Font Awesome](https://fontawesome.com/)
-# Live [Pepaverse](https://pepaverse.herokuapp.com)
