@@ -22,31 +22,32 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/partials-css/nav.css">
-    <!-- <% if (user) { %>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <% if (user) { %>
       <script  defer src="/sharedUI.js"></script>
       <script defer>
+        // Connect to the WebSocket server
+        const socket = new WebSocket('ws://localhost:8080');
+        
+        socket.onopen = function() {
+          console.log('WebSocket connection established');
 
-        let socket = io("https://pepaverse.herokuapp.com", {
-            reconnection: true,
+          socket.onmessage = function(message){
+            notification = JSON.parse(message.data)
+            
+            if (notification.type == "FRIEND_REQUEST_NOTIFICATION"){
+              createFriendRequestNotificationUI(notification.data);
+            }
+
+            if (notification.type == "COMMENT_NOTIFICATION"){
+              createCommentNotificationUI(notification.data);
+            }
+
+            if (notification.type == "LIKE_NOTIFICATION"){
+              createLikeNotificationUi(notification.data);
+            }
           }
 
-        );
-
-        if(socket.connected === false || socket.connected === undefined){
-            socket = io.connect('https://pepaverse.herokuapp.com', {forceNew: true}); 
-            alert('Reconnecting to server');
-        }
-
-        socket.on("FRIEND_REQUEST_NOTIFICATION", (data) => {
-          createFriendRequestNotificationUI(data);
-        });
-        socket.on("LIKE_NOTIFICATION", (data) => {
-          createLikeNotificationUi(data);
-        });
-        socket.on("COMMENT_NOTIFICATION", (data) => {
-          createCommentNotificationUI(data);
-        });
+        };
 
       </script>
-    <% } %> -->
+    <% } %>

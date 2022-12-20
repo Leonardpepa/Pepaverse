@@ -15,7 +15,10 @@ const sendFriendRequest = async (id) => {
     });
     const data = await res.json();
     if(data.ok){
-      // await socket.emit("CREATE_FRIEND_REQUEST", data);
+      if (socket.OPEN){
+        const notif = JSON.stringify({"type": "CREATE_FRIEND_REQUEST", data}); 
+        await socket.send(notif)
+      }
       window.location.reload();
     }
     return data;

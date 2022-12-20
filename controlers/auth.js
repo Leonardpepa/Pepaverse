@@ -55,10 +55,11 @@ const authController = {
     );
   },
   logout: async (req, res, next) => {
-    req.logout();
-    req.session.destroy(function (err) {
-      res.clearCookie('token');
-      return res.redirect('/'); //Inside a callback… bulletproof!
+    req.logout((err) => {
+      req.session.destroy(function (err) {
+        res.clearCookie('token');
+        return res.redirect('/'); 
+      });
     });
   },
 };

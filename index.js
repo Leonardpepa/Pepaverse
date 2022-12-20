@@ -5,8 +5,7 @@ const router = require("./router.js");
 const { initdb } = require("./db.config");
 
 initdb();
-require("./socket")();
-
+require("./webSocketHandler")();
 app.use("/", router);
 
 const PORT = process.env.PORT || 3000;

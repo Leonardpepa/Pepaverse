@@ -118,6 +118,14 @@ const createLikeNotification = async (author, receiver, post, like) => {
     }),
   });
   const data = await res.json();
+
+  if(data.ok){
+    if (socket.OPEN){
+      const notif = JSON.stringify({"type": "CREATE_LIKE_NOTIFICATION", data}); 
+      await socket.send(notif)
+    }
+  }
+
   return data;
 };
 
@@ -153,6 +161,15 @@ const createCommentNotification = async (author, receiver, post, comment) => {
     }),
   });
   const data = await res.json();
+
+  if(data.ok){
+    if (socket.OPEN){
+      const notif = JSON.stringify({"type": "CREATE_COMMENT_NOTIFICATION", data}); 
+      await socket.send(notif)
+    }
+  }
+
+
   return data;
 };
 
