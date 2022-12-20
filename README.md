@@ -2,7 +2,7 @@
 
 # /* still in development */
 
-# Pepaverse is an open source social network build with nodejs, mongoDB, passportjs and socket.io
+# Pepaverse is an open source social network build with nodejs, mongoDB, passportjs and web sockets
 
 # it started as my first attempt to create a chat application but now has been evolved to my fist attempt creating my own social network to share with my friends
 
@@ -19,13 +19,12 @@
 * Update Post
 * Update Comment
 * Like Post ( any users post )
-* Notifications (like, comment, friend request) requires page refresh to show
+* Notifications (like, comment, friend request) in real time using web sockets
 * Search Users ( via name )
 * Logout
 
 # Soon to be implemented
-
-* Live Notifications
+* Live Notifications (DONE!)
 * Private Chat
 
 # Local Installation
