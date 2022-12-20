@@ -21,12 +21,10 @@
     "mongoose": "^6.0.9",
     "mongoose-findorcreate": "^3.0.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.1.0",
-    "socket.io": "^4.3.1",
     "ws": "^8.11.0"
   }
 }
