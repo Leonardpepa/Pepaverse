@@ -75,7 +75,7 @@ const createCommentNotificationUI = (data) => {
   const div = document.createElement("div");
 
   div.innerHTML = `
-      <div onclick = "updateNotificationSeen(this)" id= "${data.notification._id}" data-url="/post/${data.notification.post}" class="item d-flex justify-content-start align-items-center">
+      <div onclick = "updateNotificationSeen(this)" id="${data.notification._id}" data-url="/post/${data.notification.post}" class="item d-flex justify-content-start align-items-center">
         <a href="/profile/${data.notification.author._id}">
           <img style="width: 100%; height: auto; max-width: 30px; border-radius: 50%;" class="img-thumbnail" src="${data.notification.author.profileUrl}" alt="user profile">
         </a>
