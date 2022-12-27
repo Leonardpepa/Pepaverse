@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 const jwt = require("jsonwebtoken");
-const { json } = require('express');
-const wss = new WebSocket.Server({ port: 8080 });
+const { server } = require("./server.config");
+const wss = new WebSocket.Server({server: server});
 const clients = new Map();
 
 const closureFunc  = () => {
