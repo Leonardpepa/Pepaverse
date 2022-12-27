@@ -23,6 +23,7 @@
     />
     <link rel="stylesheet" href="/partials-css/nav.css">
     <% if (user) { %>
+      <script defer src="/sound.js"></script>
       <script  defer src="/sharedUI.js"></script>
       <script defer>
         // Connect to the WebSocket server
@@ -36,14 +37,17 @@
             
             if (notification.type == "FRIEND_REQUEST_NOTIFICATION"){
               createFriendRequestNotificationUI(notification.data);
+              playNotification();
             }
 
             if (notification.type == "COMMENT_NOTIFICATION"){
               createCommentNotificationUI(notification.data);
+              playNotification();
             }
 
             if (notification.type == "LIKE_NOTIFICATION"){
               createLikeNotificationUi(notification.data);
+              playNotification();
             }
           }
 
