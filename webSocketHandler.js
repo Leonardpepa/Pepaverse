@@ -19,8 +19,6 @@ const closureFunc  = () => {
               console.log("Loggedin " + ws.authUser.username);
             });
           
-          } else {
-              console.log(err);
           }
 
           ws.on("message", (message) => {
