@@ -15,7 +15,6 @@ const closureFunc  = () => {
               
               if(err){
                 console.log(err);
-                return;
               }
               
               ws.authUser = decoded.user;
