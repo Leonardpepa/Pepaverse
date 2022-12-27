@@ -26,7 +26,7 @@
       <script  defer src="/sharedUI.js"></script>
       <script defer>
         // Connect to the WebSocket server
-        const socket = new WebSocket('https://pepaverse.onrender.com');
+        const socket = new WebSocket('ws://pepaverse.onrender.com');
         
         socket.onopen = function() {
           console.log('WebSocket connection established');
