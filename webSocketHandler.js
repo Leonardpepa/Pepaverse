@@ -12,6 +12,12 @@ const closureFunc  = () => {
             const token = cookie.split("token=")[1].split(";")[0];
             
             jwt.verify(token, process.env.SECRET, function (err, decoded) {
+              
+              if(err){
+                console.log(err);
+                return;
+              }
+              
               ws.authUser = decoded.user;
               
               clients.set(String(ws.authUser._id), ws);
