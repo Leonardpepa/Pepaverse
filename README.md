@@ -1,8 +1,7 @@
 # Pepaverse 
 
 # /* still in development */
-# Live Preview
-[Pepaverse](https://pepaverse.onrender.com/)
+# Live Preview [Pepaverse](https://pepaverse.onrender.com/)
 
 # Pepaverse is an open source social network build with nodejs, mongoDB, passportjs and web sockets
 
