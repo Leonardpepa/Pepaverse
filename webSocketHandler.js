@@ -27,9 +27,15 @@ const closureFunc  = () => {
           }
 
           ws.on("message", (message) => {
-            jsonMessage = JSON.parse(message.toString());
+            let jsonMessage = {"type": ""}
+            
+            try {
+              jsonMessage = JSON.parse(message.toString());
+            } catch (error) {
+              console.log(error);
+            }
 
-            type = jsonMessage.type;
+            const type = jsonMessage.type;
 
             if (type == "CREATE_FRIEND_REQUEST"){
               console.log(jsonMessage);
