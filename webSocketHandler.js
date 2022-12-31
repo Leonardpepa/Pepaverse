@@ -15,13 +15,12 @@ const closureFunc  = () => {
               
               if(err){
                 console.log(err);
+              }else{
+                ws.authUser = decoded.user;
+                
+                clients.set(String(ws.authUser._id), ws);
               }
               
-              ws.authUser = decoded.user;
-              
-              clients.set(String(ws.authUser._id), ws);
-              
-              console.log("Loggedin " + ws.authUser.username);
             });
           
           }
@@ -91,7 +90,6 @@ const closureFunc  = () => {
 
           // When the client closes the connection, remove them from the list of connected clients
           ws.on('close', () => {
-            console.log("logged out" + ws.authUser.username);
             clients.delete(String(ws.authUser._id));
           });
   });
