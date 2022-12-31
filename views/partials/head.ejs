@@ -28,6 +28,8 @@
       <script defer>
         // Connect to the WebSocket server
         const socket = new WebSocket('wss://pepaverse.onrender.com');
+        <!-- const socket = new WebSocket('ws://localhost:3000'); -->
+
         
         socket.onopen = function() {
           console.log('WebSocket connection established');

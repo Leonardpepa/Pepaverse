@@ -89,8 +89,8 @@ const closureFunc  = () => {
           })
 
           // When the client closes the connection, remove them from the list of connected clients
-          ws.on('close', () => {
-            clients.delete(String(ws.authUser._id));
+          ws.on('close', (ws) => {
+            clients.delete(String(ws?.authUser?._id));
           });
   });
 
