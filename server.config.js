@@ -6,6 +6,8 @@ const session = require("express-session");
 const cookieParser  = require('cookie-parser');
 const morgan = require("morgan");
 const http = require("http");
+const MongoStore = require('connect-mongo');
+
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -21,6 +23,12 @@ app.use(
     cookie: {
       httpOnly: true,
     },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_DB_URL,
+      crypto: {
+        secret: process.env.SECRET
+      }
+    })
   })
 );
 
