@@ -6,7 +6,6 @@ const session = require("express-session");
 const cookieParser  = require('cookie-parser');
 const morgan = require("morgan");
 const http = require("http");
-// const helmet = require("helmet");
 
 app.set("view engine", "ejs");
 app.use(express.json());
